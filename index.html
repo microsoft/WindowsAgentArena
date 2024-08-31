@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Windows Agent Arena: Evaluating Multi-modal OS Agents at Scale.">
+  <meta name="keywords" content="Windows Agent Arena, WAA, AI Agents">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Windows Agent Arena: Evaluating Multi-modal OS Agents at Scale</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <style>
+    .responsive-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%; /* Adjust the width as needed */
+        margin: 0 auto;
+    }
+
+    .banner-image {
+        display: block;
+        width: 140px;
+    }
+
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .text-container {
+        min-width: fit-content;
+        text-align: center;
+        flex: 1;
+    }
+
+    .microsoft-authors {
+        margin-left: 140px;
+        margin-right: 140px
+    }
+
+    @media (min-width: 768px) {
+        .responsive-container {
+            justify-content: center;
+        }
+
+        .content-container {
+            flex-direction: row;
+            justify-content: center; /* Center horizontally */
+            align-items: center;
+            width: 80%; /* Adjust as needed */
+        }
+
+        .banner-image {
+            margin: 0;
+        }
+
+        .text-container {
+            text-align: center;
+            margin-left: 20px;
+            min-width: fit-content;
+        }
+
+        .microsoft-authors {
+            margin-left: 140px;
+            margin-right: 140px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .responsive-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-container {
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
+            align-items: center;
+            width: 80%; /* Adjust as needed */
+        }
+
+        .title.is-1 {
+            font-size: 1.8rem; /* Smaller font size for mobile */
+        }
+
+        .subtitle.is-4 {
+            font-size: 1.2rem; /* Smaller font size for mobile */
+        }
+
+        .banner-image {
+            margin-bottom: 20px; /* Add space between the image and the text */
+            width: 40%; /* Full width */
+            margin-bottom: 0px;
+        }
+
+        .microsoft-authors {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <div class="responsive-container">
+                        <div class="content-container">
+                            <img src="./static/images/logo.png" alt="Banner Image" class="banner-image" width="200"/>
+                            <div class="text-container">
+                                <h1 class="title is-1" style="word-break: keep-all;">Windows Agent Arena</h1>
+                                <h2 class="subtitle is-4" style="word-break: keep-all;">Evaluating Multi-Modal OS Agents at Scale</h2>
+                            </div>
+            </div>
+            </div>
+          <div style="margin-top: 32px;" class="is-size-5 publication-authors microsoft-authors">
+            <span class="author-block">
+                <a href="http://rogeriobonatti.com/">Rogerio Bonatti</a>,
+            </span>
+            <span class="author-block">
+                Dan Zhao,
+            </span>
+            <span class="author-block">
+                <a href="https://francescobonacci.com/">Francesco Bonacci</a>,
+            </span>
+            <span class="author-block">
+                Dillon Dupont,
+            </span>
+            <span class="author-block">
+                Sara Abdali,
+            </span>
+            <span class="author-block">
+                Yinheng Li,
+            </span>
+            <span class="author-block">
+                Justin Wagle,
+            </span>
+            <span class="author-block">
+                Kazuhito Koishida
+            </span>
+        </div>
+        
+        <div class="is-size-5 publication-authors">
+            <span class="author-block"><strong>Microsoft</strong></span>
+        </div>
+        
+        <div style="margin-top: 12px; margin-bottom: 12px;" >
+          <hr style="margin-top: 32px; border: none; border-top: 1px solid rgb(93, 89, 89); width: 50%; margin: 0 auto;">
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <div style="flex: 1; margin-right: 20px;">
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block"><a href="https://arthurfenderbucker.github.io/">Arthur Bucker</a>,</span>
+                    <span class="author-block"><a href="https://lawrencekjang.github.io/">Lawrence Jang</a></span>
+                </div>
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block"><strong>Carnegie Mellon University</strong></span>
+                </div>
+            </div>
+            <div style="flex: 1; margin-left: 20px;">
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block">Zack Hui</span>
+                </div>
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block"><strong>Columbia University</strong></span>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 6px;" class="column has-text-centered">
+          <div class="publication-links">
+            <!-- PDF Link. -->
+            <span class="link-block">
+              <a href="static/files/windows_agent_arena.pdf"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                </span>
+                <span>Paper</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/2011.12948"
+                  class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                </span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <!-- Video Link. -->
+            <span class="link-block">
+              <a href="https://www.youtube.com/TODO"
+                  class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fab fa-youtube"></i>
+                </span>
+                <span>Video [soon]</span>
+              </a>
+            </span>
+            <!-- Code Link. -->
+            <span class="link-block">
+              <a href="https://github.com/microsoft/WindowsAgentArena"
+                  class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
+                </a>
+            </span>
+            <span class="link-block">
+              <a href="https://www.microsoft.com/applied-sciences/projects/windows-agent-arena"
+                 class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fas fa-book"></i>
+                </span>
+                <span>Blog post</span>
+                </a>
+            </span>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser" style="margin-top: -16px;">
+  <div class="container is-max-desktop" style="margin-top: -16px; margin-bottom: -16px;">
+    <h2 class="subtitle has-text-centered">
+    </span>We built a scalable open-sourced framework to test and develop AI agents that can reason, plan and act on a PC using language models</span>
+  </h2>
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/mosaic.mp4"
+                type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop" style="margin-top: -25px;">
+    <!-- Abstract. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths"> -->
+        <!-- <h2 class="title is-3">Windows Agent Arena benchmark</h2> -->
+        <div class="content has-text-justified">
+          <p>Large language models (LLMs) show remarkable potential to act as computer agents, enhancing human productivity and software accessibility in multi-modal tasks that require planning and reasoning. However, measuring agent performance in realistic environments remains a challenge since:</p>
+          <ul>
+            <li>(i) most benchmarks are limited to specific modalities or domains (e.g., text-only, web navigation, Q&A, coding) and</li>
+            <li>(ii) full benchmark evaluations are slow (on the order of magnitude of days) given the multi-step sequential nature of tasks.</li>
+          </ul>
+          <p>To address these challenges, we introduce the <strong>WindowsAgentArena</strong> (WAA): a reproducible, <em>general</em> environment focusing exclusively on the Windows operating system (OS) where agents can operate freely within a real Windows OS and use the same wide range of applications, tools, and web browsers available to human users when solving tasks. We adapt the <a href="https://os-world.github.io/">OSWorld</a> framework to create 150+ diverse Windows tasks across representative domains that require agent abilities in planning, screen understanding, and tool usage. Our benchmark is also <em>scalable</em> and can be seamlessly parallelized in Azure for a full benchmark evaluation in as little as <strong>20 minutes</strong>.</p>
+          <p>To demonstrate WAA's capabilities, we also introduce a new multi-modal agent, <strong>Navi</strong>, showing it can achieve a success rate of <strong>19.5%</strong>, compared to <strong>74.5%</strong> for human performance. In addition, we show Navi's strong performance on another popular web-based benchmark, Mind2Web.</p>
+          <p>We offer extensive quantitative and qualitative analysis of Navi's performance, and provide insights into the challenges and opportunities for future research in agent development and data generation using WAA.</p>
+          <!-- <p>Code and baseline models: <a href="https://github.com/microsoft/WindowsAgentArena">github.com/microsoft/WindowsAgentArena</a>.</p> -->
+        </div>
+      <!-- </div>
+    </div> -->
+    <!--/ Abstract. -->
+
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/edge_track.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/vscode.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/vlc.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/notepad.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/bing.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/edge.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/paint.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/main.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths"> -->
+        <h2 class="title is-3">Windows Agent Arena tasks:</h2>
+        <div class="content has-text-justified">
+          <!-- <p>
+            We present the first method capable of photorealistically reconstructing a non-rigidly
+            deforming scene using photos/videos captured casually from mobile phones.
+          </p> -->
+          <p>
+            Our initial release consists of 154 diverse tasks spanning applications
+            which represent the typical user workloads within Windows OS: editing documents and spreadsheets
+            (LibreOffice Calc /Writer), browsing the internet (Microsoft Edge, Google Chrome), Windows system tasks (File Explorer, Settings), coding (Visual Studio Code), watching videos (VLC Player), and
+            utility functions (Notepad, Clock, Paint):
+          </p>
+        </div>
+      <!-- </div>
+    </div> -->
+    <!--/ Abstract. -->
+
+    <div class="content has-text-centered">
+      <!-- insert image -->
+      <img src="./static/images/tasks.png" height="200" alt="Tasks">
+    </div>
+
+    <div class="content has-text-justified">
+      <!-- <p>
+        We present the first method capable of photorealistically reconstructing a non-rigidly
+        deforming scene using photos/videos captured casually from mobile phones.
+      </p> -->
+      <p>
+        Task evaluation is deterministic, and we use custom scripts to generate a reward at the end of each episode:
+      </p>
+    </div>
+
+    <div class="content has-text-centered">
+      <!-- insert image -->
+      <img src="./static/images/eval.png" height="200" alt="Eval">
+    </div>
+
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths"> -->
+        <h2 class="title is-3">Azure agent parallelization: results in minutes, not days:</h2>
+        <div class="content has-text-justified">
+          <!-- <p>
+            We present the first method capable of photorealistically reconstructing a non-rigidly
+            deforming scene using photos/videos captured casually from mobile phones.
+          </p> -->
+          <p>
+            We designed the infrastructure behind WINDOWSAGENTARENA to support flexible, local execution
+during the prototyping phase as well as scalable and secure cloud parallelization in Azure. The core
+of our system is a Docker container that hosts the Windows 11 VM. Within the container, we deploy
+a client process for task scheduling and configuration as well as the agent and the evaluation scripts.
+The VM is our main simulation environment: a Python Flask server acts as the bridge between the
+container and the VM by receiving commands from the client processes and executing them within
+the VM; it also sends observations and files back to the client.
+          </p>
+          <p>
+            We use Azure Machine Learning jobs to parallelize the benchmark
+evaluation using compute instances. The process is similar to the local setup, but the VMs are
+instantiated and terminated with each experiment submission. We use the Azure Blob Store to
+manage the Windows 11 snapshot and output logs while the code is pre-configured in the Docker
+image. Tasks are distributed evenly among the workers, and the results are aggregated at the end of
+the run.
+          </p>
+        </div>
+      <!-- </div>
+    </div> -->
+    <!--/ Abstract. -->
+
+    <div class="content has-text-centered">
+      <!-- insert image -->
+      <img src="./static/images/deploy.png" height="200" alt="Deploy">
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths"> -->
+        <h2 class="title is-3">Navi, an agent for Windows navigation:</h2>
+        <div class="content has-text-justified">
+          <!-- <p>
+            We present the first method capable of photorealistically reconstructing a non-rigidly
+            deforming scene using photos/videos captured casually from mobile phones.
+          </p> -->
+          <p>
+          We use chain-of-thought prompting to instruct our agent, Navi, to reason about
+          the current state of the computer, its own past actions, and decide on the most appropriate next action. 
+          Our agent receive as input the title of the current foreground window, titles for all other windows or browser tabs currently open, and a representation of the current screen. We consider several methods to process the screen representation
+          for the agent as input and create Set-of-Marks (SoMs):
+          </p>
+          <ul>
+            <li>UIA tree parsing: extracts the visible elements from the Windows UI Automation tree</li>
+            <li>DOM tree parsing: extracts the visible elements from the DOM tree (browser only)</li>
+            <li>OCR: proprietary and open models (<a href="https://github.com/tesseract-ocr/tesseract">Tesseract</a>)</li>
+            <li>Icon and image detection: proprietary and open models (<a href="https://github.com/IDEA-Research/GroundingDINO">Grounding DINO</a>)</li>
+            <li><a href="https://arxiv.org/abs/2408.00203">OmniParser</a>: proprietary model that detects detects text, icons, and images and provides icon captioning</li>
+          </ul>
+          <p>
+          Below you can see a step-by-step example of Navi's reasoning process and screen parsing during a task:
+          </p>
+        </div>
+      <!-- </div>
+    </div> -->
+    <!--/ Abstract. -->
+
+    <div class="content has-text-centered">
+      <img src="./static/images/agent_example.png" height="200" alt="Agent Example">
+    </div>
+
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths"> -->
+        <h2 class="title is-3">Results:</h2>
+        <div class="content has-text-justified">
+          <!-- <p>
+            We present the first method capable of photorealistically reconstructing a non-rigidly
+            deforming scene using photos/videos captured casually from mobile phones.
+          </p> -->
+          <p>
+          We benchmark several state-of-the-art visual-language model agent configurations. 
+          We find that all existing models achieve low performance in comparison to  human behavior, with large variance between domains.
+          </p>
+          <p>
+          The quality of the Set-of-Marks plays a crucial role in the agent's performance. Agents that rely only on pixel-based OCR and icon detection achieve lower performance than those that also use the UIA tree. We also find that Omniparser's icon captioning capability boots performance.
+          </p>
+        </div>
+      <!-- </div>
+    </div> -->
+    <!--/ Abstract. -->
+
+    <div class="content has-text-centered">
+      <!-- insert image -->
+      <img src="./static/images/results.png" height="200" alt="Results">
+    </div>
+
+
+  </div>
+</section>
+
+
+<section class="section" id="Citations">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX citation</h2>
+    <pre><code>@article{bonatti2024arena,
+  author    = {Bonatti, Rogerio and Zhao, Dan and Bonacci, Francesco and Dupont, Dillon, and Abdali, Sara and Li, Yinheng and Wagle, Justin and Koishida, Kazuhito and Bucker, Arthur and Jang, Lawrence and Hui, Zack},
+  title     = {Windows Agent Arena: Evaluating Multi-Modal OS Agents at Scale},
+  institution = {Microsoft},
+  year      = {2024},
+  month = {September}, 
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/files/windows_agent_arena.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/microsoft/WindowsAgentArena" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
