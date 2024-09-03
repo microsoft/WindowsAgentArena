@@ -95,6 +95,11 @@ For a list of parameters that can be changed during building of the docker image
 
 ### 3. Prepare the Windows 11 image
 
+<div align="center">
+    <video src="https://github.com/user-attachments/assets/560f50dc-c188-40df-b109-624b270eade6" height="500" alt="local_prepare_golden_image">
+</div>
+
+
 #### 3.1 Download Windows 11 Evaluation .iso file:
 1. Visit [Microsoft Evaluation Center](https://info.microsoft.com/ww-landing-windows-11-enterprise.html), accept the Terms of Service, and download a **Windows 11 Enterprise Evaluation (90-day trial, English, United States)** ISO file [~6GB]
 2. After downloading, rename the file to `setup.iso` and copy it to the directory `WindowsAgentArena/src/win-arena-container/vm/image`
