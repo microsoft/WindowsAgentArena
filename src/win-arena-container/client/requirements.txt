@@ -1,8 +1,8 @@
 numpy~=1.24.3
-Pillow~=10.2.0
+Pillow~=10.3.0
 fabric
 gymnasium~=0.28.1
-requests~=2.31.0
+requests~=2.32.0
 transformers~=4.36.0
 torch~=2.2.0
 accelerate
