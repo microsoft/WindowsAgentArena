@@ -96,7 +96,7 @@ For a list of parameters that can be changed during building of the docker image
 ### 3. Prepare the Windows 11 image
 
 <div align="center">
-    <video src="https://github.com/user-attachments/assets/1c6c4767-a114-4b74-bc72-46bedc3e6571" height="500" alt="local_prepare_golden_image">
+    <video src="https://github.com/user-attachments/assets/6d55b9b5-3242-49af-be20-64f2086108b9" height="500" alt="local_prepare_golden_image">
 </div>
 
 #### 3.1 Download Windows 11 Evaluation .iso file:
