@@ -267,7 +267,7 @@ We offer a seamless way to run the Windows Agent Arena on Azure ML Compute VMs. 
 - (Optional) You can also generate the `experiments.json` by using both the `--experiments_json` and `--update_json` parameters of `run_azure.py`, the above JSON is equivalent to the following command:
 ```bash
 cd scripts
-python run_azure.py --experiments_json "./scripts/experiments.json" --update_json --exp_name "experiment_1" --ci_startup_script_path "Users/<YOUR_USER>/compute-instance-startup.sh" --agent "navi" --json_name "evaluation_examples_windows/test_all.json" --num_workers 4 --som_origin oss --a11y_backend win32
+python run_azure.py --experiments_json "experiments.json" --update_json --exp_name "experiment_1" --ci_startup_script_path "Users/<YOUR_USER>/compute-instance-startup.sh" --agent "navi" --json_name "evaluation_examples_windows/test_all.json" --num_workers 4 --som_origin oss --a11y_backend win32
 ```
 
 - Deploy the agent on Azure ML Compute by running:
@@ -283,7 +283,7 @@ az login --use-device-code # https://learn.microsoft.com/en-us/cli/azure/install
 
 # From your activated conda environment:
 cd scripts
-python run_azure.py --experiments_json "./scripts/experiments.json"
+python run_azure.py --experiments_json "experiments.json"
 ```
 
 For any unfinished experiments in `experiments.json`, the script will: 
@@ -295,7 +295,7 @@ The logs from the run will be saved in a `agent_outputs` folder in the same blob
 
 ```bash
 cd scripts
-python show_azure.py --json_config "./scripts/experiments.json" --result_dir <path_to_downloaded_agent_outputs_folder>
+python show_azure.py --json_config "experiments.json" --result_dir <path_to_downloaded_agent_outputs_folder>
 ```
 
 ## 🤖 BYOA: Bring Your Own Agent
