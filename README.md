@@ -1,21 +1,13 @@
 
+<div align="center">
+    
 ![Banner](img/banner.png)
+[![Website](https://img.shields.io/badge/Website-red)](https://microsoft.github.io/WindowsAgentArena)
+[![arXiv](https://img.shields.io/badge/Paper-green)](https://arxiv.org/abs/<TODO>)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs](https://img.shields.io/badge/PRs-Welcome-blue)](https://github.com/microsoft/WindowsAgentArena)
 
-<p style="margin-top:0px" align="center">
-    <a href="https://microsoft.github.io/WindowsAgentArena" style="color:transparent;">
-        <img src="https://img.shields.io/badge/Website-red">
-    </a>
-    <a href="https://arxiv.org/abs/<TODO>" style="color:transparent;">
-        <img src="https://img.shields.io/badge/Paper-green">
-    </a>
-    <a href="https://opensource.org/licenses/MIT" style="color:transparent;">
-        <img src="https://img.shields.io/badge/License-MIT-yellow.svg">
-    </a>
-    <a href="#" style="color:transparent;">
-        <img src="https://img.shields.io/badge/PRs-Welcome-blue">
-    </a>
-    <br/>
-</p>
+</div>
 
 **Windows Agent Arena (WAA) 🪟** is a scalable OS platform for testing and benchmarking multi-modal AI agents. WAA empowers researchers and developers with a reproduceable and realistic Windows OS environment where they can test AI models in a diverse range of tasks. 
 
