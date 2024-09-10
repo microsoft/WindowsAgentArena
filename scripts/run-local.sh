@@ -19,6 +19,9 @@ browser_port=8006
 rdp_port=3390
 start_client=true
 agent="navi"
+model="gpt-4-vision-preview"
+som_origin="oss"
+a11y_backend="uia"
 gpu_enabled=false
 
 # Parse the command line arguments
@@ -72,6 +75,18 @@ while [[ $# -gt 0 ]]; do
             agent=$2
             shift 2
             ;;
+        --model)
+            model=$2
+            shift 2
+            ;;
+        --som-origin)
+            som_origin=$2
+            shift 2
+            ;;
+        --a11y-backend)
+            a11y_backend=$2
+            shift 2
+            ;;
         --gpu-enabled)
             gpu_enabled=$2
             shift 2
@@ -95,6 +110,9 @@ while [[ $# -gt 0 ]]; do
             echo "  --rdp-port <port> : Port to expose for connecting to the VM using RDP (default: 3390)"
             echo "  --start-client <true/false> : Whether to start the arena client process (default: true)"
             echo "  --agent <promptagent/navi> : Agent to use for the arena container (default: navi)"
+            echo "  --model <model>: The model to use (default: gpt-4-vision-preview, available options are: gpt-4o-mini, gpt-4-vision-preview, gpt-4o, gpt-4-1106-vision-preview)"
+            echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss)"
+            echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
             echo "  --mode <dev/azure> : Mode (default: azure)"
             exit 0
@@ -125,4 +143,4 @@ if [[ -z "$OPENAI_API_KEY" && (-z "$AZURE_API_KEY" || -z "$AZURE_ENDPOINT") ]]; 
     log_error_exit "Either OPENAI_API_KEY must be set or both AZURE_API_KEY and AZURE_ENDPOINT must be set: $1"
 fi
 
-./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT
+./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT

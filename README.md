@@ -173,12 +173,12 @@ The table below provides a comparison of various non-proprietary techniques and 
 | Hyperparameter     | Possible Values                    | Description                                                                                      | Recommended Complementary Value                   |
 |---------------|------------------------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------------|
 | `som_origin`  | `oss`, `a11y`, `mixed-oss`          | Determines how the Set-of-Mark (SoM) is achieved.                                                | `win32` for `oss`; `uia` for `a11y`, `mixed-oss`   |
-|               | `mixed`, `mixed-oss`  | If set to any "mixed" option, the agent partially relies on the accessibility tree for SoM entities. | `uia` (more reliable but slower)                   |
+|               | `mixed-oss`  | If set to any "mixed" option, the agent partially relies on the accessibility tree for SoM entities. | `uia` (more reliable but slower)                   |
 |               | `oss`                               | Uses webparse, groundingdino, and OCR (TesseractOCR) pipelines.                                   | `win32` (faster performance)                       |
 |               | `a11y`                              | Relies on accessibility tree extraction for SoM.                                                 | `uia` (more reliable but slower)                   |
 | `a11y_backend`| `win32`, `uia`                      | Dictates how the accessibility tree should be extracted.                                          | `win32` for `oss`; `uia` for `a11y` and mixed types|
 |               | `win32`                             | Faster but less reliable accessibility tree extraction.                                           | Use with `oss` or non-"mixed" types.               |
-|               | `uia`                               | Slower but more reliable accessibility tree extraction.                                           | Use with `a11y`, `mixed`, `mixed-oss` |
+|               | `uia`                               | Slower but more reliable accessibility tree extraction.                                           | Use with `a11y`, `mixed-oss` |
 
 #### 4.2 Local development tips
 

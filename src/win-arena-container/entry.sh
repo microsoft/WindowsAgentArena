@@ -8,6 +8,9 @@ echo "Starting WinArena..."
 prepare_image=false
 start_client=true
 agent="navi"
+model="gpt-4-vision-preview"
+som_origin="oss"
+a11y_backend="uia"
 clean_results=true
 worker_id="0"
 num_workers="1"
@@ -26,6 +29,18 @@ while [[ $# -gt 0 ]]; do
             ;;
         --agent)
             agent=$2
+            shift 2
+            ;;
+        --model)
+            model=$2
+            shift 2
+            ;;
+        --som-origin)
+            som_origin=$2
+            shift 2
+            ;;
+        --a11y-backend)
+            a11y_backend=$2
             shift 2
             ;;
         --clean-results)
@@ -54,6 +69,9 @@ while [[ $# -gt 0 ]]; do
             echo "  --prepare-image <true/false>    Prepare an arena image (default: false)"
             echo "  --start-client <true/false>     Start the arena client process (default: true)"
             echo "  --agent <agent>                 The agent to use (default: navi)"
+            echo "  --model <model>                 The model to use (default: gpt-4-vision-preview, available options are: gpt-4o-mini, gpt-4-vision-preview, gpt-4o, gpt-4-1106-vision-preview)"
+            echo "  --som-origin <som_origin>       The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss)"
+            echo "  --a11y-backend <a11y_backend>   The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --clean-results <bool>          Clean the results directory before running the client (default: true)"
             echo "  --worker-id <id>                The worker ID"
             echo "  --num-workers <num>             The number of workers"
@@ -85,7 +103,7 @@ else
     # Start the client script
     if [ "$start_client" = "true" ]; then
         echo "Starting client..."
-        ./start_client.sh --agent $agent --clean-results $clean_results --worker-id $worker_id --num-workers $num_workers --result-dir $result_dir --json-name $json_name
+        ./start_client.sh --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --clean-results $clean_results --worker-id $worker_id --num-workers $num_workers --result-dir $result_dir --json-name $json_name
     else
         echo "Keeping container alive"
         while true; do
