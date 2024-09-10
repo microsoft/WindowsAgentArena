@@ -19,6 +19,9 @@ browser_port=8006
 rdp_port=3390
 start_client=true
 agent="navi"
+model="gpt-4-vision-preview"
+som_origin="oss"
+a11y_backend="uia"
 gpu_enabled=false
 OPENAI_API_KEY=""
 AZURE_API_KEY=""
@@ -75,6 +78,18 @@ while [[ $# -gt 0 ]]; do
             agent=$2
             shift 2
             ;;
+        --model)
+            model=$2
+            shift 2
+            ;;
+        --som-origin)
+            som_origin=$2
+            shift 2
+            ;;
+        --a11y-backend)
+            a11y_backend=$2
+            shift 2
+            ;;
         --gpu-enabled)
             gpu_enabled=$2
             shift 2
@@ -110,6 +125,9 @@ while [[ $# -gt 0 ]]; do
             echo "  --rdp-port <port> : Port to expose for connecting to the VM using RDP (default: 3390)"
             echo "  --start-client <true/false> : Whether to start the arena client process (default: true)"
             echo "  --agent <promptagent/navi> : Agent to use for the arena container (default: navi)"
+            echo "  --model <model>: The model to use (default: gpt-4-vision-preview, available options are: gpt-4o-mini, gpt-4-vision-preview, gpt-4o, gpt-4-1106-vision-preview)"
+            echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss)"
+            echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
             echo "  --openai-api-key <key> : The OpenAI API key"
             echo "  --azure-api-key <key> : The Azure OpenAI API key"
@@ -247,7 +265,7 @@ invoke_docker_container() {
     docker_command+=" $winarena_full_image_name:$winarena_image_tag"
     
     # Set the entrypoint arguments
-    entrypoint_args=" -c './entry.sh --prepare-image $prepare_image --start-client $start_client --agent $agent'"
+    entrypoint_args=" -c './entry.sh --prepare-image $prepare_image --start-client $start_client --agent $agent' --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled"
     if [ "$interactive" = true ]; then
         entrypoint_args=""
     fi
