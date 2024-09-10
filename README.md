@@ -170,7 +170,7 @@ python show_results.py --result_dir <path_to_results_folder>
 
 The table below provides a comparison of various non-proprietary techniques and their hyperparameters used by the Navi agent in our study:
 
-| Hyperparameter     | Possible Values                    | Description                                                                                      | Recommended `a11y_backend` Value                   |
+| Hyperparameter     | Possible Values                    | Description                                                                                      | Recommended Complementary Value                   |
 |---------------|------------------------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------------|
 | `som_origin`  | `oss`, `a11y`, `mixed-oss`          | Determines how the Set-of-Mark (SoM) is achieved.                                                | `win32` for `oss`; `uia` for `a11y`, `mixed-oss`   |
 |               | `mixed`, `mixed-oss`  | If set to any "mixed" option, the agent partially relies on the accessibility tree for SoM entities. | `uia` (more reliable but slower)                   |
