@@ -13,18 +13,9 @@
 
 We offer deployment of agents **at scale** using the Azure cloud infrastructure. You can run multiple agents in parallel and get results for hundreds of tasks in a matter of minutes, not days.
 
-<!-- <div align="center">
-    <video src="https://microsoft.github.io/WindowsAgentArena/static/videos/waa_intro.mp4" height="500" alt="release_video">
-</div> -->
-
 <div align="center">
-    <video src="https://github.com/user-attachments/assets/6d55b9b5-3242-49af-be20-64f2086108b9" height="500" alt="local_prepare_golden_image">
+    <video src="https://github.com/user-attachments/assets/e0a8d88d-d28a-493d-b74f-2455f36c21f1" width="400" alt="waa_intro">
 </div>
-
-<div align="center">
-    <img src="img/main.png" alt="main" height="200"/>
-</div>
-
 
 ## 📢 Updates
 - 2024-08-16: We released our [paper](https://arxiv.org/abs/TODO), [code](https://github.com/microsoft/WindowsAgentArena), [project page](https://WindowsAgentArena.github.io), and [blog post](https://www.microsoft.com/applied-sciences/projects/windows-agent-arena). Check it out!
@@ -43,6 +34,11 @@ month = {September},
 ```
 
 ## ☝️ Pre-requisites:
+
+<div align="center">
+    <img src="img/main.png" alt="main" height="200"/>
+</div>
+
 - Docker daemon installed and running. On Windows, we recommend using [Docker with WSL 2](https://docs.docker.com/desktop/wsl/).
 - An [OpenAI](https://platform.openai.com/docs/introduction) or [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) API Key.
 - Python 3.9 - we recommend using [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html) and creating an adhoc python environment for running the scripts. For creating a new environment run `conda create -n winarena python=3.9`.
