@@ -3,7 +3,7 @@
     
 ![Banner](img/banner.png)
 [![Website](https://img.shields.io/badge/Website-red)](https://microsoft.github.io/WindowsAgentArena)
-[![arXiv](https://img.shields.io/badge/Paper-green)](https://arxiv.org/abs/<TODO>)
+[![arXiv](https://img.shields.io/badge/Paper-green)](https://raw.githubusercontent.com/microsoft/WindowsAgentArena/blob/website/static/files/windows_agent_arena.pdf)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs](https://img.shields.io/badge/PRs-Welcome-blue)](https://github.com/microsoft/WindowsAgentArena)
 
@@ -14,8 +14,14 @@
 We offer deployment of agents **at scale** using the Azure cloud infrastructure. You can run multiple agents in parallel and get results for hundreds of tasks in a matter of minutes, not days.
 
 <div align="center">
+    <video src="https://microsoft.github.io/WindowsAgentArena/static/videos/waa_intro.mp4" height="500" alt="local_prepare_golden_image">
+</div>
+
+
+<div align="center">
     <img src="img/main.png" alt="main" height="200"/>
 </div>
+
 
 ## 📢 Updates
 - 2024-08-16: We released our [paper](https://arxiv.org/abs/TODO), [code](https://github.com/microsoft/WindowsAgentArena), [project page](https://WindowsAgentArena.github.io), and [blog post](https://www.microsoft.com/applied-sciences/projects/windows-agent-arena). Check it out!
