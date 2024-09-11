@@ -24,7 +24,7 @@ We offer deployment of agents **at scale** using the Azure cloud infrastructure.
 Our technical report paper can be found [here](https://github.com/microsoft/WindowsAgentArena/raw/229997e5ea7991c9976b7f86c07dc5102722534a/static/files/windows_agent_arena.pdf).
 If you find this environment useful, please consider citing our work:
 ```
-@misc{bonatti2024windows,
+@article{bonatti2024windows,
 author = { Bonatti, Rogerio and Zhao, Dan and Bonacci, Francesco and Dupont, Dillon, and Abdali, Sara and Li, Yinheng and Wagle, Justin and Koishida, Kazuhito and Bucker, Arthur and Jang, Lawrence and Hui, Zack},
 title = {Windows Agent Arena: Evaluating Multi-Modal OS Agents at Scale},
 institution = {Microsoft},
