@@ -168,7 +168,7 @@ cd src/win-arena-container/client
 python show_results.py --result_dir <path_to_results_folder>
 ```
 
-The table below provides a comparison of various non-proprietary techniques and their hyperparameters used by the Navi agent in our study:
+The table below provides a comparison of various combinations of hyperparameters used by the Navi agent in our study, which can be overridden by specifying `--som-origin <som_origin> --a11y-backend <a11y_backend>` when running the `run-local.sh` script:
 
 | Hyperparameter     | Possible Values                    | Description                                                                                      | Recommended Complementary Value                   |
 |---------------|------------------------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------------|
