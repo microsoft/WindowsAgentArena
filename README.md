@@ -3,7 +3,7 @@
     
 ![Banner](img/banner.png)
 [![Website](https://img.shields.io/badge/Website-red)](https://microsoft.github.io/WindowsAgentArena)
-[![arXiv](https://img.shields.io/badge/Paper-green)](https://raw.githubusercontent.com/microsoft/WindowsAgentArena/blob/website/static/files/windows_agent_arena.pdf)
+[![arXiv](https://img.shields.io/badge/Paper-green)](https://github.com/microsoft/WindowsAgentArena/raw/229997e5ea7991c9976b7f86c07dc5102722534a/static/files/windows_agent_arena.pdf)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs](https://img.shields.io/badge/PRs-Welcome-blue)](https://github.com/microsoft/WindowsAgentArena)
 
@@ -18,10 +18,10 @@ We offer deployment of agents **at scale** using the Azure cloud infrastructure.
 </div>
 
 ## 📢 Updates
-- 2024-08-16: We released our [paper](https://arxiv.org/abs/TODO), [code](https://github.com/microsoft/WindowsAgentArena), [project page](https://WindowsAgentArena.github.io), and [blog post](https://www.microsoft.com/applied-sciences/projects/windows-agent-arena). Check it out!
+- 2024-09-11: We released our [paper](https://github.com/microsoft/WindowsAgentArena/raw/229997e5ea7991c9976b7f86c07dc5102722534a/static/files/windows_agent_arena.pdf), [code](https://github.com/microsoft/WindowsAgentArena), [project page](https://microsoft.github.io/WindowsAgentArena), and [blog post](https://www.microsoft.com/applied-sciences/projects/windows-agent-arena). Check it out!
 
 ## 📚 Citation
-Our technical report paper can be found [here](https://arxiv.org/abs/TODO).
+Our technical report paper can be found [here](https://github.com/microsoft/WindowsAgentArena/raw/229997e5ea7991c9976b7f86c07dc5102722534a/static/files/windows_agent_arena.pdf).
 If you find this environment useful, please consider citing our work:
 ```
 @misc{bonatti2024windows,
