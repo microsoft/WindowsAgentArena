@@ -13,10 +13,13 @@
 
 We offer deployment of agents **at scale** using the Azure cloud infrastructure. You can run multiple agents in parallel and get results for hundreds of tasks in a matter of minutes, not days.
 
-<div align="center">
-    <video src="https://microsoft.github.io/WindowsAgentArena/static/videos/waa_intro.mp4" height="500" alt="local_prepare_golden_image">
-</div>
+<!-- <div align="center">
+    <video src="https://microsoft.github.io/WindowsAgentArena/static/videos/waa_intro.mp4" height="500" alt="release_video">
+</div> -->
 
+<div align="center">
+    <video src="https://github.com/user-attachments/assets/6d55b9b5-3242-49af-be20-64f2086108b9" height="500" alt="local_prepare_golden_image">
+</div>
 
 <div align="center">
     <img src="img/main.png" alt="main" height="200"/>
