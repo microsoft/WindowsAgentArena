@@ -9,12 +9,12 @@
 
 </div>
 
-**Windows Agent Arena (WAA) 🪟** is a scalable OS platform for testing and benchmarking multi-modal AI agents. WAA empowers researchers and developers with a reproduceable and realistic Windows OS environment where they can test AI models in a diverse range of tasks. 
+**Windows Agent Arena (WAA) 🪟** is a scalable Windows AI agent platform for testing and benchmarking multi-modal, desktop AI agents. WAA provides researchers and developers with a reproducible and realistic Windows OS environment for AI research, where agentic AI workflows can be tested across a diverse range of tasks.
 
-We offer deployment of agents **at scale** using the Azure cloud infrastructure. You can run multiple agents in parallel and get results for hundreds of tasks in a matter of minutes, not days.
+WAA supports the deployment of agents **at scale** using the Azure ML cloud infrastructure, allowing for the parallel running of multiple agents and delivering quick benchmark results for hundreds of tasks in minutes, not days.
 
 <div align="center">
-    <video src="https://github.com/user-attachments/assets/e0a8d88d-d28a-493d-b74f-2455f36c21f1" width="400" alt="waa_intro">
+    <video src="https://github.com/user-attachments/assets/e0a8d88d-d28a-493d-b74f-2455f36c21f1" alt="waa_intro">
 </div>
 
 ## 📢 Updates
