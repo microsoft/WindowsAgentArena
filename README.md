@@ -3,7 +3,7 @@
     
 ![Banner](img/banner.png)
 [![Website](https://img.shields.io/badge/Website-red)](https://microsoft.github.io/WindowsAgentArena)
-[![arXiv](https://img.shields.io/badge/Paper-green)](https://raw.githubusercontent.com/microsoft/WindowsAgentArena/website/static/files/windows_agent_arena.pdf)
+[![arXiv](https://img.shields.io/badge/Paper-green)](https://arxiv.org/abs/2409.08264)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs](https://img.shields.io/badge/PRs-Welcome-blue)](https://github.com/microsoft/WindowsAgentArena)
 
@@ -18,10 +18,10 @@ WAA supports the deployment of agents **at scale** using the Azure ML cloud infr
 </div>
 
 ## 📢 Updates
-- 2024-09-11: We released our [paper](https://raw.githubusercontent.com/microsoft/WindowsAgentArena/website/static/files/windows_agent_arena.pdf), [code](https://github.com/microsoft/WindowsAgentArena), [project page](https://microsoft.github.io/WindowsAgentArena), and [blog post](https://www.microsoft.com/applied-sciences/projects/windows-agent-arena). Check it out!
+- 2024-09-13: We released our [paper](https://arxiv.org/abs/2409.08264), [code](https://github.com/microsoft/WindowsAgentArena), [project page](https://microsoft.github.io/WindowsAgentArena), and [blog post](https://www.microsoft.com/applied-sciences/projects/windows-agent-arena). Check it out!
 
 ## 📚 Citation
-Our technical report paper can be found [here](https://raw.githubusercontent.com/microsoft/WindowsAgentArena/website/static/files/windows_agent_arena.pdf).
+Our technical report paper can be found [here](https://arxiv.org/abs/2409.08264).
 If you find this environment useful, please consider citing our work:
 ```
 @article{bonatti2024windows,
