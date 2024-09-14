@@ -238,7 +238,7 @@ We offer a seamless way to run the Windows Agent Arena on Azure ML Compute VMs. 
         az storage blob upload-batch --account-name <STORAGE_ACCOUNT_NAME> --destination <CONTAINER_NAME> --source <LOCAL_FOLDER>
         # For a list of parameters check: https://docs.microsoft.com/en-us/cli/azure/storage/blob?view=azure-cli-latest
         ```
-    - Alternatively, use the [Azure portal](https://portal.azure.com/) interface to upload the folder. Navigate to the storage account, click on `Storage browser->Blob containers`, select your container, and upload the folder. This option is not recomended for large files as connections might get unstable.
+    - Alternatively, use the [Azure portal](https://portal.azure.com/) interface to upload the folder. Navigate to the storage account, click on `Storage browser->Blob containers`, select your container, and upload the folder. This option is not recommended for large files as connections might get unstable.
     
 - [Optional] If you are not using the default `windowsarena/winarena:latest` image, you can upload your custom image to the Azure Container Registry. You can do so by following the [Azure Container Registry documentation](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal)
     ```bash
