@@ -11,6 +11,7 @@ prepare_image=false
 skip_build=true
 interactive=false
 connect=false
+use_kvm=true
 mount_vm_storage=true
 mount_client=true
 mount_server=true
@@ -45,6 +46,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --connect)
             connect=$2
+            shift 2
+            ;;
+        --use-kvm)
+            use_kvm=$2
             shift 2
             ;;
         --mount-vm-storage)
@@ -103,6 +108,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --skip-build <true/false> : Skip building the arena container image (default: true)"
             echo "  --interactive <true/false> : Launches the arena container in interactive mode, providing access to the command line (bin/bash) without initiating the client or VM server processes. (default: false)"
             echo "  --connect <true/false> : Whether to attach to an existing arena container, only if the container exists (default: false)"
+            echo "  --use-kvm <true/false> : Whether to use KVM for VM acceleration (default: true)"
             echo "  --mount-vm-storage <true/false> : Mount the VM storage directory (default: true)"
             echo "  --mount-client <true/false> : Mount the client directory (default: true)"
             echo "  --mount-server <true/false> : Mount the server directory. Applies only for --mode dev. (default: true)"
@@ -143,4 +149,4 @@ if [[ -z "$OPENAI_API_KEY" && (-z "$AZURE_API_KEY" || -z "$AZURE_ENDPOINT") ]]; 
     log_error_exit "Either OPENAI_API_KEY must be set or both AZURE_API_KEY and AZURE_ENDPOINT must be set: $1"
 fi
 
-./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT
+./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --use-kvm $use_kvm --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT

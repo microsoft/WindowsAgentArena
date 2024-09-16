@@ -13,17 +13,18 @@ getrealpath () (
     fi
 )
 
-# Core function to extract a JSON field value, only from the first level of the JSON structure using regex
+# Core function to extract a JSON field value, only from the first level of the JSON structure
 extract_json_field() {
     local field_name=$1
     local input=$2
-    # Use regex to extract the field value at the first JSON level
+    # Use sed to extract the field value at the first JSON level
     local result
-    result=$(echo "$input" | grep -oP '"'"$field_name"'"\s*:\s*"\K[^"]+')
-    if [[ $? -ne 0 ]]; then
+    result=$(echo "$input" | sed -n 's/.*"'"$field_name"'"[[:space:]]*:[[:space:]]*\([^,}]*\).*/\1/p' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    if [[ -z "$result" ]]; then
         echo ""
     else
-        echo "$result"
+        # Remove surrounding quotes if present
+        echo "$result" | sed 's/^"//;s/"$//'
     fi
 }
 
