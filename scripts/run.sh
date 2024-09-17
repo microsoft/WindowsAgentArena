@@ -12,6 +12,8 @@ skip_build=true
 interactive=false
 connect=false
 use_kvm=true
+ram_size=8G
+cpu_cores=8
 mount_vm_storage=true
 mount_client=true
 mount_server=true
@@ -53,6 +55,14 @@ while [[ $# -gt 0 ]]; do
             ;;
         --use-kvm)
             use_kvm=$2
+            shift 2
+            ;;
+        --ram-size)
+            ram_size=$2
+            shift 2
+            ;;
+        --cpu-cores)
+            cpu_cores=$2
             shift 2
             ;;
         --mount-vm-storage)
@@ -124,6 +134,8 @@ while [[ $# -gt 0 ]]; do
             echo "  --interactive <true/false> : Launches the arena container in interactive mode, providing access to the command line (bin/bash) without initiating the client or VM server processes. (default: false)"
             echo "  --connect <true/false> : Whether to attach to an existing arena container, only if the container exists (default: false)"
             echo "  --use-kvm <true/false> : Whether to use KVM for VM acceleration (default: true)"
+            echo "  --ram-size <ram_size> : RAM size for the VM (default: 8GB)"
+            echo "  --cpu-cores <cpu_cores> : Number of CPU cores for the VM (default: 8)"
             echo "  --mount-vm-storage <true/false> : Mount the VM storage directory (default: true)"
             echo "  --mount-client <true/false> : Mount the client directory (default: true)"
             echo "  --mount-server <true/false> : Mount the server directory. Applies only for --mode dev. (default: true)"
@@ -232,7 +244,15 @@ invoke_docker_container() {
     # Add KVM
     if [ "$use_kvm" = true ]; then
         docker_command+=" --device=/dev/kvm"
+    else
+        docker_command+=" -e KVM=N"
     fi
+
+    # Set the RAM size
+    docker_command+=" -e RAM_SIZE=$ram_size"
+
+    # Set the CPU cores
+    docker_command+=" -e CPU_CORES=$cpu_cores"
 
     # Mount the setup image
     if [ "$prepare_image" = true ]; then
