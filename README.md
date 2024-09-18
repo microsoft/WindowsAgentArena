@@ -337,7 +337,10 @@ If you are interested in contributing, please check out our [Task Development Gu
 
 ## 👏 Acknowledgements
 
-We thank the [OS World](https://github.com/xlang-ai/OSWorld) and [Dockur](https://github.com/dockur/windows) teams for their open-source frameworks which inspired this project.
+- [OS World](https://github.com/xlang-ai/OSWorld) for the original benchmark task framework.
+- [Dockur](https://github.com/dockur/windows) for the Docker infrastructure underlying WAA.
+- [GroundingDINO](https://github.com/IDEA-Research/GroundingDINO) for the object detection module in our Navi Agent.
+- [NotebookLM](https://notebooklm.google.com) for our AI-generated podcast.
 
 ## 🤝 Contributing
 
