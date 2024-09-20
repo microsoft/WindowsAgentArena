@@ -183,14 +183,6 @@ def test(
             som_origin=args.som_origin,
             temperature=args.temperature
         )
-    elif cfg_args["agent_name"] == "promptagent":
-        agent = PromptAgent(
-            model=args.model,
-            max_tokens=args.max_tokens,
-            action_space=args.action_space,
-            observation_type=args.observation_type,
-            max_trajectory_length=args.max_trajectory_length,
-        )
     else:
         raise ValueError(f"Unknown agent name: {cfg_args['agent_name']}")
     
