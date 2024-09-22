@@ -109,9 +109,27 @@ cd ./scripts
 ./run-local.sh --prepare-image true
 ```
 
-During development, if you want to include any changes made in the `src/win-arena-container` directory in the WAA golden image, please ensure to specify the flag `--skip-build false` (default to true). This will ensure that a new container image is built instead than using the prebuilt `windowsarena/winarena:latest` image.
+##### Customizing resource allocation for the local run
 
-You can check the VM install screen by accessing `http://localhost:8006` in your browser (unless you have provided an alternate `--browser-port` parameter). The preparation process is fully automated and will take around 20 minutes. 
+By default, the `run-local.sh` script attempts to create a QEMU VM with 8 GB of RAM and 8 CPU cores. If your system has limited resources, you can override these defaults by specifying the desired RAM and CPU allocation:
+
+```bash
+./run-local.sh --prepare-image true --ram-size 4G --cpu-cores 4
+```
+
+##### Support for KVM acceleration
+
+If your system does not support [KVM acceleration](https://github.com/dockur/windows?tab=readme-ov-file#how-do-i-verify-if-my-system-supports-kvm), you can disable it by specifying the `--use-kvm false` flag:
+
+```bash
+./run-local.sh --use-kvm false
+```
+
+Note that running the benchmark locally without KVM acceleration is not recommended due to performance issues. In this case, we recommend preparing the golden image for later running the benchmark on Azure. 
+
+##### Monitoring the image preparation
+
+You can check the VM install screen by accessing `http://localhost:8006` in your browser (unless you have provided an alternate `--browser-port` parameter). The preparation process is fully automated and will take around 20 minutes.
 
 **Please do not interfere with the VM while it is being prepared. It will automatically shut down when the provisioning process is complete.**
 
@@ -139,7 +157,8 @@ You will find the 30GB WAA golden image in `WindowsAgentArena/src/win-arena-cont
 
 <br/>
 
-NOTES:
+##### Additional Notes
+- During development, if you want to include any changes made in the `src/win-arena-container` directory in the WAA golden image, please ensure to specify the flag `--skip-build false` to the `run-local.sh` script (default to true). This will ensure that a new container image is built instead than using the prebuilt `windowsarena/winarena:latest` image.
 - If you have previously run an installation process and want to do it again from scratch, make sure to delete the content of `storage`.
 - We recommend copying this `storage` folder to a safe location outside of the repository in case you or the agent accidentally corrupt the VM at some point and you want to avoid a fresh setup.
 - Depending on your docker settings, you might have to run the above command with `sudo`.
