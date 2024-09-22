@@ -5,7 +5,7 @@
 [![Website](https://img.shields.io/badge/Website-red)](https://microsoft.github.io/WindowsAgentArena)
 [![arXiv](https://img.shields.io/badge/Paper-green)](https://arxiv.org/abs/2409.08264)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PRs](https://img.shields.io/badge/PRs-Welcome-blue)](https://github.com/microsoft/WindowsAgentArena)
+[![PRs](https://img.shields.io/badge/AI-Podcast-blue.svg?logo=data:image/svg%2bxml;base64,PHN2ZyBmaWxsPSIjZmZmZmZmIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgaWQ9IlNWR1JlcG9fYmdDYXJyaWVyIiBzdHJva2Utd2lkdGg9IjAiPjwvZz48ZyBpZD0iU1ZHUmVwb190cmFjZXJDYXJyaWVyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjwvZz48ZyBpZD0iU1ZHUmVwb19pY29uQ2FycmllciI+PHBhdGggZD0iTTEzLDRWMjBhMSwxLDAsMCwxLTIsMFY0YTEsMSwwLDAsMSwyLDBaTTgsNUExLDEsMCwwLDAsNyw2VjE4YTEsMSwwLDAsMCwyLDBWNkExLDEsMCwwLDAsOCw1Wk00LDdBMSwxLDAsMCwwLDMsOHY4YTEsMSwwLDAsMCwyLDBWOEExLDEsMCwwLDAsNCw3Wk0xNiw1YTEsMSwwLDAsMC0xLDFWMThhMSwxLDAsMCwwLDIsMFY2QTEsMSwwLDAsMCwxNiw1Wm00LDJhMSwxLDAsMCwwLTEsMXY4YTEsMSwwLDAsMCwyLDBWOEExLDEsMCwwLDAsMjAsN1oiPjwvcGF0aD48L2c+PC9zdmc+)](https://microsoft.github.io/WindowsAgentArena/static/files/waa_podcast.wav)
 
 </div>
 
@@ -337,7 +337,10 @@ If you are interested in contributing, please check out our [Task Development Gu
 
 ## 👏 Acknowledgements
 
-We thank the [OS World](https://github.com/xlang-ai/OSWorld) and [Dockur](https://github.com/dockur/windows) teams for their open-source frameworks which inspired this project.
+- [OS World](https://github.com/xlang-ai/OSWorld) for the original benchmark task framework.
+- [Dockur](https://github.com/dockur/windows) for the Docker infrastructure underlying WAA.
+- [GroundingDINO](https://github.com/IDEA-Research/GroundingDINO) for the object detection module in our Navi Agent.
+- [NotebookLM](https://notebooklm.google.com) for our AI-generated podcast.
 
 ## 🤝 Contributing
 
