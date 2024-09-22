@@ -157,7 +157,7 @@ You will find the 30GB WAA golden image in `WindowsAgentArena/src/win-arena-cont
 
 <br/>
 
-##### Other Notes:
+##### Additional Notes
 - During development, if you want to include any changes made in the `src/win-arena-container` directory in the WAA golden image, please ensure to specify the flag `--skip-build false` to the `run-local.sh` script (default to true). This will ensure that a new container image is built instead than using the prebuilt `windowsarena/winarena:latest` image.
 - If you have previously run an installation process and want to do it again from scratch, make sure to delete the content of `storage`.
 - We recommend copying this `storage` folder to a safe location outside of the repository in case you or the agent accidentally corrupt the VM at some point and you want to avoid a fresh setup.
