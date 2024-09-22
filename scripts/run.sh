@@ -11,6 +11,9 @@ prepare_image=false
 skip_build=true
 interactive=false
 connect=false
+use_kvm=true
+ram_size=8G
+cpu_cores=8
 mount_vm_storage=true
 mount_client=true
 mount_server=true
@@ -48,6 +51,18 @@ while [[ $# -gt 0 ]]; do
             ;;
         --connect)
             connect=$2
+            shift 2
+            ;;
+        --use-kvm)
+            use_kvm=$2
+            shift 2
+            ;;
+        --ram-size)
+            ram_size=$2
+            shift 2
+            ;;
+        --cpu-cores)
+            cpu_cores=$2
             shift 2
             ;;
         --mount-vm-storage)
@@ -118,6 +133,9 @@ while [[ $# -gt 0 ]]; do
             echo "  --skip-build <true/false> : Skip building the arena container image (default: true)"
             echo "  --interactive <true/false> : Launches the arena container in interactive mode, providing access to the command line (bin/bash) without initiating the client or VM server processes. (default: false)"
             echo "  --connect <true/false> : Whether to attach to an existing arena container, only if the container exists (default: false)"
+            echo "  --use-kvm <true/false> : Whether to use KVM for VM acceleration (default: true)"
+            echo "  --ram-size <ram_size> : RAM size for the VM (default: 8GB)"
+            echo "  --cpu-cores <cpu_cores> : Number of CPU cores for the VM (default: 8)"
             echo "  --mount-vm-storage <true/false> : Mount the VM storage directory (default: true)"
             echo "  --mount-client <true/false> : Mount the client directory (default: true)"
             echo "  --mount-server <true/false> : Mount the server directory. Applies only for --mode dev. (default: true)"
@@ -184,6 +202,12 @@ echo "Using VM storage mount path: $vm_storage_mount_path"
 echo "Using server mount path: $server_mount_path"
 echo "Using client mount path: $client_mount_path"
 
+# Check if /dev/kvm exists
+if [ ! -e /dev/kvm ]; then
+    echo "/dev/kvm not found. Setting use_kvm to false."
+    use_kvm=false
+fi
+
 # Check if at least one key has been set: OPENAI_API_KEY or both AZURE_API_KEY and AZURE_ENDPOINT
 if [[ -z "$OPENAI_API_KEY" && (-z "$AZURE_API_KEY" || -z "$AZURE_ENDPOINT") ]]; then
     log_error_exit "Either OPENAI_API_KEY must be set or both AZURE_API_KEY and AZURE_ENDPOINT must be set: $1"
@@ -214,8 +238,21 @@ invoke_docker_container() {
     # Set the container name
     docker_command+=" --name $container_name"
 
+    # Set the platform
+    docker_command+=" --platform linux/amd64"
+
     # Add KVM
-    docker_command+=" --device=/dev/kvm"
+    if [ "$use_kvm" = true ]; then
+        docker_command+=" --device=/dev/kvm"
+    else
+        docker_command+=" -e KVM=N"
+    fi
+
+    # Set the RAM size
+    docker_command+=" -e RAM_SIZE=$ram_size"
+
+    # Set the CPU cores
+    docker_command+=" -e CPU_CORES=$cpu_cores"
 
     # Mount the setup image
     if [ "$prepare_image" = true ]; then
