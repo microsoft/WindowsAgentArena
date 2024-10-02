@@ -302,7 +302,7 @@ invoke_docker_container() {
     docker_command+=" $winarena_full_image_name:$winarena_image_tag"
     
     # Set the entrypoint arguments
-    entrypoint_args=" -c './entry.sh --prepare-image $prepare_image --start-client $start_client --agent $agent' --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled"
+    entrypoint_args=" -c './entry.sh --prepare-image $prepare_image --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled'"
     if [ "$interactive" = true ]; then
         entrypoint_args=""
     fi
