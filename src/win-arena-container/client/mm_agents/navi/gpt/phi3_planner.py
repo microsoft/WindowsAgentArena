@@ -28,7 +28,7 @@ class Phi3_Planner:
     def plan(self, images, user_query):
         if len(images)>3:
 
-            response0=self.phi3v.process_images(self.system_prompt, "This is the the first image of two images, please remeber this, this image will be ref later on"+user_query, images[0], max_tokens=4096, temperature=self.temperature)
+            response0=self.phi3v.process_images(self.system_prompt, "This is the first image of two images, please remeber this, this image will be ref later on"+user_query, images[0], max_tokens=4096, temperature=self.temperature)
             response = self.phi3v.process_images("the last iamge are "+response0+self.system_prompt, user_query, images[1], max_tokens=4096, temperature=self.temperature)
         else:
             response = self.phi3v.process_images(self.system_prompt, user_query, images[-1], max_tokens=4096, temperature=self.temperature)
