@@ -23,14 +23,14 @@ class TrajectoryRecorder:
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="txt"))
                 with open(file_path, "w") as f:
                     f.write(value if value else "No data available")
-                obs_content[key] = file_path
+                obs_content[key] = os.path.basename(file_path)
                 
             elif isinstance(value, bytes):
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="png"))
                 with open(file_path, "wb") as f:
                     f.write(value)
-                obs_content[key] = file_path
+                obs_content[key] = os.path.basename(file_path)
                 
             elif isinstance(value, (int, float)):
                 obs_content[key] = value
@@ -45,20 +45,20 @@ class TrajectoryRecorder:
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="npy"))
                 np.save(file_path, value)
-                obs_content[key] = file_path
+                obs_content[key] = os.path.basename(file_path)
                 
             elif "PIL" in str(type(value)):
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="png"))
                 value.save(file_path)
-                obs_content[key] = file_path
+                obs_content[key] = os.path.basename(file_path)
                 
             elif isinstance(value, (dict, list)):
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="json"))
                 with open(file_path, "w") as f:
                     json.dump(value, f)
-                obs_content[key] = file_path
+                obs_content[key] = os.path.basename(file_path)
                 
             else:
                 obs_content[key] = f"key: {key}: {type(value)} not saved"
@@ -119,8 +119,10 @@ class TrajectoryRecorder:
             html = []
             html.append(f"<pre>\n{example['instruction']}\n</pre>")
             html += self.dict_to_html(init_dict, "env.reset(config)")
-            obs_image = os.path.relpath(init_dict.get('screenshot', ""), self.result_dir)
-            html.append(f"<img style='max-width: 100%' onclick='window.open(this.src, \"_blank\")' src='{obs_image}'/>")
+            if obs_image := init_dict.get('screenshot', ""):
+                html.append(f"<img style='max-width: 100%' onclick='window.open(this.src, \"_blank\")' src='{obs_image}'/>")
+            else:
+                html.append(f"<pre>No image</pre>")
             f.write("".join(html))
 
     def record_step(self, obs: Dict[str, Any], logs: Dict[str, Any], 
@@ -138,8 +140,7 @@ class TrajectoryRecorder:
                 "action": action,
                 "reward": reward,
                 "done": done,
-                "info": info,
-                "screenshot_file": f"step_{step_idx + 1}_{action_timestamp}.png"
+                "info": info
             }
             traj_data.update(obs_saved_content)
             traj_data.update(logs_saved_content)
@@ -157,9 +158,10 @@ class TrajectoryRecorder:
             }, "agent.predict(obs)")
             html.append(f"<pre>\n{html_lib.escape(action)}\n</pre>")
             html += self.dict_to_html(obs_saved_content, "env.step(action)")
-            if obs_saved_content.get('screenshot'):
-                obs_image = os.path.relpath(obs_saved_content['screenshot'], self.result_dir)
+            if obs_image := obs_saved_content.get('screenshot'):
                 html.append(f"<img style='max-width: 100%' onclick='window.open(this.src, \"_blank\")' src='{obs_image}'/>")
+            else:
+                html.append(f"<pre>No image</pre>")
             f.write("".join(html))
 
     def record_end(self, result: float, start_time: datetime.datetime) -> None:

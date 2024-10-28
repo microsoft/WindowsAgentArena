@@ -1,3 +1,4 @@
+"""Script to run & evaluate agent-loop on a single example from the benchmark."""
 import datetime
 import json
 import logging
