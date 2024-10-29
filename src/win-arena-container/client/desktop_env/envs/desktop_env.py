@@ -4,6 +4,7 @@ import logging
 import os
 import subprocess
 import time
+import json
 from typing import Callable, Any, Optional, Tuple
 from typing import List, Dict, Union
 
@@ -11,6 +12,7 @@ import gymnasium as gym
 
 from desktop_env.controllers.python import PythonController
 from desktop_env.controllers.setup import SetupController
+from desktop_env.controllers.vm import VMController
 from desktop_env.evaluators import metrics, getters
 
 logger = logging.getLogger("desktopenv.env")
@@ -89,6 +91,9 @@ class DesktopEnv(gym.Env):
 
         self.controller = PythonController(vm_ip=self.vm_ip)
         self.setup_controller = SetupController(vm_ip=self.vm_ip, cache_dir=self.cache_dir_base)
+        self.vm_controller = VMController(cache_dir=self.cache_dir_base)
+
+        logger.info("(QEMU) get_status: %s", json.dumps(self.vm_controller.get_status(), indent=2))
 
         # mode: human or machine
         self.instruction = None
@@ -129,60 +134,20 @@ class DesktopEnv(gym.Env):
         logger.error("VM did not become ready after %d attempts.", max_attempts)
         return False
 
-    # def _start_emulator(self):
-    #     if self.remote_vm:
-    #         logger.error("Not implemented! Starting emulator is not supported for remote VMs!")
-    #     else:
-    #         while True:
-    #             try:
-    #                 output = subprocess.check_output("vmrun -T ws list", shell=True, stderr=subprocess.STDOUT)
-    #                 output = output.decode()
-    #                 output: List[str] = output.splitlines()
-    #                 # if self.path_to_vm.lstrip("~/") in output:
-    #                 if self.path_to_vm in output:
-    #                     logger.info("VM is running.")
-    #                     break
-    #                 else:
-    #                     logger.info("Starting VM...")
-    #                     _execute_command(["vmrun", "-T", "ws", "start", self.path_to_vm]) if not self.headless \
-    #                         else _execute_command(["vmrun", "-T", "ws", "start", self.path_to_vm, "nogui"])
-    #                     time.sleep(3)
-    #             except subprocess.CalledProcessError as e:
-    #                 logger.error(f"Error executing command: {e.output.decode().strip()}")
-
     def _get_vm_ip(self):
         return self.vm_ip
-        # if self.remote_vm:
-        #     logger.error(" IP should be provided for remote VMs!")
-        #     return self.vm_ip
-        # else:
-        #     max_retries = 20
-        #     logger.info("Getting IP Address...")
-        #     for _ in range(max_retries):
-        #         try:
-        #             output = _execute_command(["vmrun", "-T", "ws", "getGuestIPAddress", self.path_to_vm, "-wait"]).strip()
-        #             logger.info(f"IP address: {output}")
-        #             return output
-        #         except Exception as e:
-        #             print(e)
-        #             time.sleep(5)
-        #             logger.info("Retrying...")
-        #     raise Exception("Failed to get VM IP address!")
 
     def _save_state(self):
-        # TODO: Implement the logic to save the state of the VM
-        if self.remote_vm:
-            self.controler.save_state(self.snapshot_name)
-            # logger.error("Not implemented! Saving state is not supported for remote VMs!")
-        # else:
-        #     _execute_command(["vmrun", "-T", "ws" "snapshot", self.path_to_vm, self.snapshot_name])
+        # TODO: test this
+        # self.vm_controller.take_snapshot(self.snapshot_name)
+        logger.error("Not implemented! Saving state is not supported for remote VMs!")
 
     def _get_screenshot(self):
         screenshot = None
         # Get the screenshot and save to the image_path
         max_retries = 20
         for _ in range(max_retries):
-            screenshot = self.controller.get_screenshot()
+            screenshot = self.vm_controller.take_screenshot()
             if screenshot is not None:
                 break
             print("Retrying to get screenshot...")
@@ -290,10 +255,10 @@ class DesktopEnv(gym.Env):
 
         if self.remote_vm:
             # TODO: Implement this
+            # self.controller.revert_to_snapshot(self.snapshot_name)
+            
             logger.error("Not implemented! Reverting to snapshot is not supported for remote VMs! Closing all applications instead")
             self.setup_controller._close_all_setup()
-            # logger.info("Not closing all windows, testing CHROME")
-            # self.controller.revert_to_snapshot(self.snapshot_name)
 
         time.sleep(5)
 
