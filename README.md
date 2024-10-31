@@ -306,7 +306,7 @@ For any unfinished experiments in `experiments.json`, the script will:
 2. Run one ML Training Job named `<exp_name>` per VM.
 3. Dispose the VMs once the jobs are completed.
 
-The logs from the run will be saved in a `agent_outputs` folder in the same blob container where you uploaded the Windows 11 image. You can download the `agent_outputs` folder to your local machine and run the `show_azure.py` script to see the results from every experiment as a markdown table.
+The logs from the run will be saved in an `agent_outputs` folder in the same blob container where you uploaded the Windows 11 image. You can download the `agent_outputs` folder to your local machine and run the `show_azure.py` script to see the results from every experiment as a markdown table.
 
 ```bash
 cd scripts
