@@ -144,7 +144,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --start-client <true/false> : Whether to start the arena client process (default: true)"
             echo "  --agent <navi> : Agent to use for the arena container (default: navi)"
             echo "  --model <model>: The model to use (default: gpt-4-vision-preview, available options are: gpt-4o-mini, gpt-4-vision-preview, gpt-4o, gpt-4-1106-vision-preview)"
-            echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss)"
+            echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss, omni, mixed-omni)"
             echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
             echo "  --openai-api-key <key> : The OpenAI API key"

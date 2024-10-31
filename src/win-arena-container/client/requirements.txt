@@ -3,7 +3,7 @@ Pillow~=10.3.0
 fabric
 gymnasium~=0.28.1
 requests~=2.32.0
-transformers~=4.36.0
+transformers~=4.46.1
 torch~=2.2.0
 accelerate
 opencv-python~=4.8.1.78
@@ -65,3 +65,5 @@ anytree
 supervision
 ultralytics
 py7zr
+anthropic
+einops

@@ -160,7 +160,7 @@ def test(
     }
 
     if cfg_args["agent_name"] == "navi":
-        if cfg_args["som_origin"] in ["a11y"]:
+        if cfg_args["som_origin"] in ["a11y", "omni", "mixed-omni"]:
             som_config = None
         elif cfg_args["som_origin"] in ["oss", "mixed-oss"]:
             som_config = {
@@ -183,6 +183,9 @@ def test(
             som_origin=args.som_origin,
             temperature=args.temperature
         )
+    elif cfg_args["agent_name"] == "claude":
+        from mm_agents.claude.agent import ClaudeAgent
+        agent = ClaudeAgent()
     else:
         raise ValueError(f"Unknown agent name: {cfg_args['agent_name']}")
     

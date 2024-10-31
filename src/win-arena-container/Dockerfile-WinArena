@@ -45,10 +45,6 @@ RUN find / -maxdepth 3 -type f -name "*.sh" -exec dos2unix {} \; && chmod +x /*.
 # Install fuse
 RUN apt-get update && apt-get install -y fuse
 
-# Download GroundingDINO weights file and place it in the models directory
-RUN mkdir -p /models/groundingDINO/
-RUN wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth -O /models/groundingDINO/groundingdino_swint_ogc.pth
-
 ENV YRES="900"
 ENV XRES="1440"
 ENV RAM_SIZE="8G"

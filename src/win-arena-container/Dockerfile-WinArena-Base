@@ -1,7 +1,10 @@
 # Stage 1: Pull Python from the official Python Docker image
 FROM python:3.9-slim AS python-stage
 
-# Stage 2: Start from windows-local base image
+# OPTIONAL: Stage 2: Pull CUDA 11.8
+FROM nvidia/cuda:11.8.0-base-ubuntu22.04 AS cuda-stage
+
+# Stage 3: Start from windows-local base image
 FROM windowsarena/windows-local:latest
 
 # Define build argument for profiling mode (default is off)
@@ -17,6 +20,11 @@ RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     && rm -rf /var/lib/apt/lists/*
 
+# OPTIONAL: Copy CUDA libraries and binaries from CUDA stage
+COPY --from=cuda-stage /usr/local/cuda-11.8 /usr/local/cuda-11.8
+ENV PATH="/usr/local/cuda-11.8/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda-11.8/lib64:${LD_LIBRARY_PATH}"
+
 # Copy Python binaries and libraries from the Python stage
 COPY --from=python-stage /usr/local /usr/local
 
@@ -31,6 +39,13 @@ COPY src/win-arena-container/client/requirements.txt /client/requirements.txt
 # Combine all Python package installations into one RUN statement to minimize layering
 RUN pip install --no-cache-dir -r /client/requirements.txt && \
     pip install --no-cache-dir requests easyocr tenacity onnxruntime pyOpenSSL sentencepiece anytree
+
+
+# Download model weights
+RUN mkdir -p /models/groundingDINO/ && \
+    wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth -O /models/groundingDINO/groundingdino_swint_ogc.pth && \
+    apt-get update && apt-get install -y git git-lfs && git lfs install && \
+    git clone https://huggingface.co/microsoft/OmniParser /models/omni
 
 # Conditionally run the disk usage profiling if PROFILE_MODE is true
 RUN if [ "$PROFILE_MODE" = "true" ]; then \
