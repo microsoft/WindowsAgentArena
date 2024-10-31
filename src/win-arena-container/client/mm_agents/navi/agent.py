@@ -75,7 +75,7 @@ class NaviAgent:
             server: str = "azure",
             model: str = "gpt-4o", # openai or "phi3-v"
             som_config = None,
-            som_origin = "oss", # "oss", "a11y", "mixed-oss"
+            som_origin = "oss", # "oss", "a11y", "mixed-oss", "omni", "mixed-omni"
             obs_view = "screen", # "screen" or "window"
             auto_window_maximize = False,
             use_last_screen = True,
@@ -107,6 +107,9 @@ class NaviAgent:
         if som_origin in ["oss", "mixed-oss"]: # oss extractor
             from mm_agents.navi.screenparsing_oss.parser import ScreenParser
             self.extractor = ScreenParser(config)
+        elif som_origin in ["omni", "mixed-omni"]: # omni extractor
+            from mm_agents.navi.screenparsing_oss.omniparser.omniparser import Omniparser
+            self.omni_proposal = Omniparser()
 
         if model == 'phi3-v':
             from mm_agents.navi.gpt.phi3_planner import Phi3_Planner
@@ -274,7 +277,90 @@ class NaviAgent:
                 image_debug, image_prompt, list_of_text = self.parser_to_prompt(image, regions, color_mapping_debug, color_mapping_prompt) # full set-of-marks drawing w/ visibility filtering, overlap detection, and colors
                 logs['foreground_window_regions'] = image_debug
                 logs['foreground_window_prompt'] = image_prompt
+            
+            elif self.som_origin == "mixed-omni":
+                # combine both a11y and omni extractors
                 
+                # a11y extractor
+                from mm_agents.navi.a11y_demo import propose_ents as get_a11y_ents, get_mask_from_entities, filter_entities_with_mask, detections_to_entities, filter_nonvis_and_oob_entities
+                from mm_agents.navi.screenparsing_oss.utils.som import  filter_entities
+                import numpy as np
+                rendering = "N/A"
+                regions_a11y = get_a11y_ents(obs['accessibility_tree'])
+                regions_a11y = filter_entities(regions_a11y)
+                regions_a11y = filter_nonvis_and_oob_entities(regions_a11y, image.width, image.height)
+                mask = get_mask_from_entities(regions_a11y, image.width, image.height)
+                #convert mask to pil
+                mask_img = np.stack([mask]*3, axis=-1).astype(np.uint8)
+                logs['foreground_window_mask'] = Image.fromarray(mask_img*255)
+                
+                
+                # omni extractor
+                rendering = "N/A"
+                regions_omni = self.omni_proposal.propose_ents(image, with_captions=False)
+                
+                # create logging image
+                color_mapping_debug = {"a11y": "magenta", "image": "red", "text": "blue", "icon": "green"}
+                try:
+                    image_debug_ex, _, models_debug_txt = self.parser_to_prompt(image, regions_a11y + regions_omni, color_mapping_debug, color_mapping_debug)
+                    logs['foreground_window_regions_a11y_models'] = image_debug_ex
+                except Exception: pass
+                
+                # combine both outputs
+                regions_omni = filter_entities_with_mask(regions_omni, mask, th=0.5)
+                regions = regions_a11y + regions_omni
+                
+                ### DEBUG CAPTION INPUT
+                # width, height = image.size
+                # ents_rects = [
+                #     (ent, (
+                #         ent['shape']['x'] / width, 
+                #         ent['shape']['y'] / height, 
+                #         (ent['shape']['x'] + ent['shape']['width']) / width, 
+                #         (ent['shape']['y'] + ent['shape']['height']) / height
+                #     ))
+                #     for ent in regions
+                #     if not ent.get('text', '').strip()
+                # ]
+                # target_ents, target_rects = [list(tup) for tup in zip(*ents_rects)]
+                # logs['target_ents_before'] = copy.deepcopy(target_ents)
+                # logs['target_ents'] = target_ents
+                # logs['target_rects'] = target_rects
+                ###
+                
+                # perform omni captioning on unlabeled ents
+                try:
+                    logs['parsed_content_icon'] = self.omni_proposal.caption_ents(image, regions)
+                except Exception as e:
+                    logger.error("Failed to caption icons.", e)
+                
+                # try to organize a11y tree into "icon" and "text" so on-screen text set-of-marks can be reduced
+                for region in regions:
+                    width, height = region['shape']['width'], region['shape']['height']
+                    is_90_percent_square = 0.9 <= width / height <= 1.1
+                    if region['type'] == 'a11y':
+                        region['type'] = 'icon' if is_90_percent_square else 'text'
+                
+                rects = [[int(ent["shape"]["x"]), int(ent["shape"]["y"]), int((ent["shape"]["x"]+ent["shape"]["width"])), int((ent["shape"]["y"]+ent["shape"]["height"]))] for ent in regions]
+                color_mapping_debug = {"image": "red", "text": "blue", "icon": "green"}
+                color_mapping_prompt = {"image": "red", "icon": "green"}
+                image_debug, image_prompt, list_of_text = self.parser_to_prompt(image, regions, color_mapping_debug, color_mapping_prompt) # full set-of-marks drawing w/ visibility filtering, overlap detection, and colors
+                logs['foreground_window_regions'] = image_debug
+                logs['foreground_window_prompt'] = image_prompt
+                
+            elif self.som_origin == "omni":
+                
+                # omni extractor
+                rendering = "N/A"
+                regions = self.omni_proposal.propose_ents(image, with_captions=True)
+                
+                rects = [[int(ent["shape"]["x"]), int(ent["shape"]["y"]), int((ent["shape"]["x"]+ent["shape"]["width"])), int((ent["shape"]["y"]+ent["shape"]["height"]))] for ent in regions]
+                color_mapping_debug = {"image": "red", "text": "blue", "icon": "green"}
+                color_mapping_prompt = {"image": "red", "icon": "green"}
+                image_debug, image_prompt, list_of_text = self.parser_to_prompt(image, regions, color_mapping_debug, color_mapping_prompt) # full set-of-marks drawing w/ visibility filtering, overlap detection, and colors
+                logs['foreground_window_regions'] = image_debug
+                logs['foreground_window_prompt'] = image_prompt
+
             else:
                 # OSS extractor
                 rendering = "N/A"

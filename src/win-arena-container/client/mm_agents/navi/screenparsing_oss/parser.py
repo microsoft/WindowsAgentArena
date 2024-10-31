@@ -22,6 +22,9 @@ def make_proposer_instance(proposer_name, config):
     elif proposer_name == 'webparse':
         from mm_agents.navi.screenparsing_oss.webparse.webparse import WebParse
         return WebParse(**inst_config)
+    elif proposer_name == 'omniparser':
+        from mm_agents.navi.screenparsing_oss.omniparser.omniparser import Omniparser
+        return Omniparser(**inst_config)
     else:
         raise ValueError(f"Unknown proposer: {proposer_name}")
 

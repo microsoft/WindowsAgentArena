@@ -18,6 +18,7 @@ WAA supports the deployment of agents **at scale** using the Azure ML cloud infr
 </div>
 
 ## 📢 Updates
+- 2024-10-30: We released the code for our Navi agent with Omniparser! For the top performing mode in the paper, run `./run-local.sh --som-origin mixed-omni --gpu-enabled true`
 - 2024-10-23: Microsoft open-sourced [Omniparser](https://github.com/microsoft/OmniParser), the current top performing screen understanding model in our benchmark.
 - 2024-09-13: We released our [paper](https://arxiv.org/abs/2409.08264), [code](https://github.com/microsoft/WindowsAgentArena), [project page](https://microsoft.github.io/WindowsAgentArena), and [blog post](https://www.microsoft.com/applied-sciences/projects/windows-agent-arena). Check it out!
 
@@ -48,9 +49,6 @@ Clone the repository and install dependencies:
 ```bash
 git clone https://github.com/microsoft/WindowsAgentArena.git
 cd WindowsAgentArena
-```
-
-```bash
 # Install the required dependencies in your python environment
 # conda activate winarena
 pip install -r requirements.txt
@@ -84,10 +82,7 @@ To build your own image from scratch (optional):
 ```bash
 cd scripts
 ./build-container-image.sh
-```
-
-For a list of parameters that can be changed during building of the docker images:
-```bash
+# For docker image build options:
 ./build-container-image.sh --help
 ```
 
@@ -109,28 +104,7 @@ To prepare the gold snapshot, run **once**:
 cd ./scripts
 ./run-local.sh --prepare-image true
 ```
-
-##### Customizing resource allocation for the local run
-
-By default, the `run-local.sh` script attempts to create a QEMU VM with 8 GB of RAM and 8 CPU cores. If your system has limited resources, you can override these defaults by specifying the desired RAM and CPU allocation:
-
-```bash
-./run-local.sh --prepare-image true --ram-size 4G --cpu-cores 4
-```
-
-##### Support for KVM acceleration
-
-If your system does not support [KVM acceleration](https://github.com/dockur/windows?tab=readme-ov-file#how-do-i-verify-if-my-system-supports-kvm), you can disable it by specifying the `--use-kvm false` flag:
-
-```bash
-./run-local.sh --use-kvm false
-```
-
-Note that running the benchmark locally without KVM acceleration is not recommended due to performance issues. In this case, we recommend preparing the golden image for later running the benchmark on Azure. 
-
-##### Monitoring the image preparation
-
-You can check the VM install screen by accessing `http://localhost:8006` in your browser (unless you have provided an alternate `--browser-port` parameter). The preparation process is fully automated and will take around 20 minutes.
+You can monitor progress at `http://localhost:8006`. The preparation process is fully automated and will take ~20 minutes.
 
 **Please do not interfere with the VM while it is being prepared. It will automatically shut down when the provisioning process is complete.**
 
@@ -173,18 +147,18 @@ find . -maxdepth 1 -type f -exec dos2unix {} +
 
 #### 4.1 Running the base benchmark
 
-The entire setup runs inside a docker container. The entry point for the agent is the `src/win-arena-container/run.py` script (copied to `/client/run.py` in the container). The Windows OS runs as a VM process inside the container, and they communicate via GET/POST. To run the entire setup at once, run:
+You're now ready to launch the evaluation. To run the baseline agent on all benchmark tasks, do:
 
 ```bash
 cd scripts
-./run-local.sh --start-client true
+./run-local.sh
+# For client/agent options:
+# ./run-local.sh --help
 ```
 
-On your host, open your browser and go to http://localhost:8006 to see the Windows VM with the agent running.
-
-For a list of parameters that can be changed:
+Open http://localhost:8006 to see the Windows VM with the agent running. If you have a beefy PC, you can instead run the strongest agent configuration in our paper by doing:
 ```bash
-./run-local.sh --help
+./run-local.sh --gpu-enabled true --som-origin mixed-omni --a11y-backend uia
 ```
 
 At the end of the run you can display the results using the command:
@@ -193,17 +167,21 @@ cd src/win-arena-container/client
 python show_results.py --result_dir <path_to_results_folder>
 ```
 
-The table below provides a comparison of various combinations of hyperparameters used by the Navi agent in our study, which can be overridden by specifying `--som-origin <som_origin> --a11y-backend <a11y_backend>` when running the `run-local.sh` script:
+#### Available Configurations
 
-| Hyperparameter     | Possible Values                    | Description                                                                                      | Recommended Complementary Value                   |
-|---------------|------------------------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------------|
-| `som_origin`  | `oss`, `a11y`, `mixed-oss`          | Determines how the Set-of-Mark (SoM) is achieved.                                                | `win32` for `oss`; `uia` for `a11y`, `mixed-oss`   |
-|               | `mixed-oss`  | If set to any "mixed" option, the agent partially relies on the accessibility tree for SoM entities. | `uia` (more reliable but slower)                   |
-|               | `oss`                               | Uses webparse, groundingdino, and OCR (TesseractOCR) pipelines.                                   | `win32` (faster performance)                       |
-|               | `a11y`                              | Relies on accessibility tree extraction for SoM.                                                 | `uia` (more reliable but slower)                   |
-| `a11y_backend`| `win32`, `uia`                      | Dictates how the accessibility tree should be extracted.                                          | `win32` for `oss`; `uia` for `a11y` and mixed types|
-|               | `win32`                             | Faster but less reliable accessibility tree extraction.                                           | Use with `oss` or non-"mixed" types.               |
-|               | `uia`                               | Slower but more reliable accessibility tree extraction.                                           | Use with `a11y`, `mixed-oss` |
+Below is a comparison of various combinations of hyperparameters used by the Navi agent in our study, which can be overridden by specifying `--som-origin <som_origin> --a11y-backend <a11y_backend>` when running the `run-local.sh` script:
+
+| Command | Description | Notes |
+|---------|-------------|--------|
+| `./run-local.sh --som-origin mixed-omni --a11y-backend uia` | Combines Omniparser with accessibility tree information | ⭐**Recommended for best results** |
+| `./run-local.sh --som-origin omni` | Uses Omniparser for screen understanding | |
+| `./run-local.sh --som-origin oss` | Uses webparse, groundingdino, and OCR (TesseractOCR) | 🌲Baseline |
+| `./run-local.sh --som-origin a11y --a11y-backend uia` | Uses slower, more accurate accessibility tree | |
+| `./run-local.sh --som-origin a11y --a11y-backend win32` | Uses faster, less accurate accessibility tree | 🐇Fastest |
+| `./run-local.sh --som-origin mixed-oss --a11y-backend uia` | Combines oss detections with accessibility tree |  |
+
+- `--som-origin` determines how the Navi agent detects screen elements
+- `--a11y-backend` specifies the Accessibility backend type (when using `a11y` or mixed modes)
 
 #### 4.2 Local development tips
 
@@ -354,6 +332,26 @@ If you are interested in contributing, please check out our [Task Development Gu
 | GPT-4V    | $100   |  ~35min with 40 VMs  |
 | GPT-4o    | $100   | ~35min with 40 VMs   |
 | GPT-4o-mini    | $15   | ~30min with 40 VMs   |
+
+
+### How can I customizing resource allocation for local runs?
+
+By default, the `run-local.sh` script attempts to create a QEMU VM with 8 GB of RAM and 8 CPU cores. If your system has limited resources, you can override these defaults by specifying the desired RAM and CPU allocation:
+
+```bash
+./run-local.sh --ram-size 4G --cpu-cores 4
+```
+
+### How can I toggle support for KVM acceleration?
+
+If your system does not support [KVM acceleration](https://github.com/dockur/windows?tab=readme-ov-file#how-do-i-verify-if-my-system-supports-kvm), you can disable it by specifying the `--use-kvm false` flag:
+
+```bash
+./run-local.sh --use-kvm false
+```
+
+Note that running the benchmark locally without KVM acceleration is not recommended due to performance issues. In this case, we recommend preparing the golden image for later running the benchmark on Azure. 
+
 
 ## 👏 Acknowledgements
 

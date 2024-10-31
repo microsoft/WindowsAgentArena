@@ -505,6 +505,11 @@
           <CommandLine>cmd /C "echo. > C:\Users\Docker\Desktop\hello.txt"</CommandLine>
           <Description>Create an empty text file on the desktop</Description>
         </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>27</Order>
+          <CommandLine>bcdedit /set {default} recoveryenabled No</CommandLine>
+          <Description>Disable automatic Windows Recovery after system crashes</Description>
+        </SynchronousCommand>
       </FirstLogonCommands>
     </component>
   </settings>

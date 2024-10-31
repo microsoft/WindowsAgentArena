@@ -19,6 +19,27 @@ import logging
 import subprocess
 import winreg
 
+
+### mouse fix:
+# the cursor doesn't show up in screenshots otherwise
+import ctypes
+from ctypes import Structure, c_long, c_ulong, sizeof, POINTER
+class MOUSEINPUT(Structure):
+   _fields_ = [("dx", c_long), ("dy", c_long), ("mouseData", c_ulong), 
+               ("dwFlags", c_ulong), ("time", c_ulong), ("dwExtraInfo", POINTER(c_ulong))]
+class INPUT_UNION(ctypes.Union):
+   _fields_ = [("mi", MOUSEINPUT)]
+class INPUT(Structure):
+   _fields_ = [("type", c_ulong), ("union", INPUT_UNION)]
+user32 = ctypes.WinDLL('user32')
+extra = c_ulong(0)
+ii_ = INPUT_UNION()
+ii_.mi = MOUSEINPUT(100, 0, 0, 0x0001, 0, ctypes.pointer(extra))
+x = INPUT(0, ii_)
+user32.ShowCursor(True)
+user32.SendInput(1, ctypes.pointer(x), sizeof(INPUT))
+
+
 sleep_after_execution = 0.25
 class Mouse:  
     def __init__(self, rects, window_rect, scale=(1.0, 1.0), logger=None):  
