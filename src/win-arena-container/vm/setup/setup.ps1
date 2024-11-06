@@ -44,20 +44,20 @@ $pythonAlias = $pythonDetails.alias
 
 # Check for Python installation
 $pythonExecutablePath = Get-ChildItem -Path $userPythonPath -Filter python.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
-if (-not $pythonExecutablePath) {
-    Write-Host "Downloading Python $pythonVersion..."
-    $pythonInstallerFilePath = "$env:TEMP\python_installer.exe"
-    $downloadResult = Invoke-DownloadFileFromAvailableMirrors -mirrorUrls $pythonDetails.mirrors -outfile $pythonInstallerFilePath
-    if (-not $downloadResult) {
-        Write-Host "Failed to download Python. Please try again later or install manually."
-    } else {
-        Write-Host "Installing Python for current user..."
-        Start-Process -FilePath $pythonInstallerFilePath -Args "/quiet InstallAllUsers=0 PrependPath=0" -NoNewWindow -Wait
-        $pythonExecutablePath = "$userPythonPath\Python310\python.exe"
-        $setAliasExpression = "Set-Alias -Name $pythonAlias -Value `"$pythonExecutablePath`""
-        Add-Content -Path $PROFILE -Value $setAliasExpression
-        Invoke-Expression $setAliasExpression
-    }
+
+# Force to install Python 3.10 as the pre-installed version on Windows may not work sometimes
+Write-Host "Downloading Python $pythonVersion..."
+$pythonInstallerFilePath = "$env:TEMP\python_installer.exe"
+$downloadResult = Invoke-DownloadFileFromAvailableMirrors -mirrorUrls $pythonDetails.mirrors -outfile $pythonInstallerFilePath
+if (-not $downloadResult) {
+    Write-Host "Failed to download Python. Please try again later or install manually."
+} else {
+    Write-Host "Installing Python for current user..."
+    Start-Process -FilePath $pythonInstallerFilePath -Args "/quiet InstallAllUsers=0 PrependPath=0" -NoNewWindow -Wait
+    $pythonExecutablePath = "$userPythonPath\Python310\python.exe"
+    $setAliasExpression = "Set-Alias -Name $pythonAlias -Value `"$pythonExecutablePath`""
+    Add-Content -Path $PROFILE -Value $setAliasExpression
+    Invoke-Expression $setAliasExpression
 }
 
 ## - Git
