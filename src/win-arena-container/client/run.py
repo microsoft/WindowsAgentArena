@@ -122,7 +122,7 @@ def config() -> argparse.Namespace:
     parser.add_argument("--num_workers", type=int,  default=1, help="Total number of workers") 
 
     # benchmark difficulty level
-    parser.add_argument("--diff_lvl", type=int, default="normal", help="Difficulty level of the benchmark")  
+    parser.add_argument("--diff_lvl", type=str, default="normal", help="Difficulty level of the benchmark")  
 
     args, unknownargs = parser.parse_known_args()
 
@@ -207,9 +207,13 @@ def test(
             if args.diff_lvl == "normal":
                 logger.info(f"Windows Agent Arena: Starting on NORMAL difficulty")
                 config_file = os.path.join(args.test_config_base_dir, f"examples/{domain}/{example_id}.json")
+                logger.info(f"\nTESTING ON TASK CONFIG PATH: {config_file}")
+
             elif args.diff_lvl == "hard":
                 logger.info(f"Windows Agent Arena: Starting on HARDER difficulty")
+                
                 config_file = os.path.join(args.test_config_base_dir, f"examples_noctxt/{domain}/{example_id}.json")
+                logger.info(f"\nTESTING ON TASK CONFIG PATH: {config_file}")
 
             else:
                 sys.exit("Invalid value for arg --diff_lvl. Choose 'normal' or 'hard'.")
@@ -387,7 +391,7 @@ if __name__ == '__main__':
     with open(args.test_all_meta_path, "r", encoding="utf-8") as f:
         test_all_meta = json.load(f)
 
-    logger.info(f"\nTESTING ON TASK PATH: {args.test_all_meta_path}")
+    logger.info(f"\nTESTING ON TASK JSON PATH: {args.test_all_meta_path}")
 
     if args.domain != "all":
         test_all_meta = {args.domain: test_all_meta[args.domain]}
