@@ -151,14 +151,14 @@ def launch_vm_and_job(  worker_id,
     run_config.environment = env  
     run_config.docker = docker_config  
     # Check for required environment variables
-    if 'OPENAI_API_KEY' in config:
+    if 'OPENAI_API_KEY' in azure_config:
         run_config.environment_variables = {
-            "OPENAI_API_KEY": config['OPENAI_API_KEY']
+            "OPENAI_API_KEY": azure_config['OPENAI_API_KEY']
         }
-    elif 'AZURE_API_KEY' in config and 'AZURE_ENDPOINT' in config:
+    elif 'AZURE_API_KEY' in azure_config and 'AZURE_ENDPOINT' in azure_config:
         run_config.environment_variables = {
-            "AZURE_API_KEY": config['AZURE_API_KEY'],
-            "AZURE_ENDPOINT": config['AZURE_ENDPOINT']
+            "AZURE_API_KEY": azure_config['AZURE_API_KEY'],
+            "AZURE_ENDPOINT": azure_config['AZURE_ENDPOINT']
         }
     else:
         raise KeyError("Either 'OPENAI_API_KEY' must be available or both 'AZURE_API_KEY' and 'AZURE_ENDPOINT' must be available.")
