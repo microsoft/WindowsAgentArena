@@ -20,6 +20,7 @@ from mm_agents.navi.agent import NaviAgent
 import requests
 import time
 
+from pathlib import Path
 from threading import Event
 import signal
 
@@ -399,21 +400,59 @@ if __name__ == '__main__':
     logger.info(f"Left tasks:\n{left_info}")
 
     # distribute tasks among workers
-        # Flatten your dict into a list of tasks  
-    all_tasks_test  = [(domain, example_id) for domain in test_file_list for example_id in test_file_list[domain]]  
+    def split_tasks(worker_id, num_workers):
+        logger.info("Splitting examples...")
+        # load all task files
+        all_tasks_metas = [
+            (
+                domain,
+                example_id,
+                json.loads(
+                    (Path(args.test_config_base_dir) / "examples" / f"{domain}" / f"{example_id}.json").read_text(encoding='utf-8')
+                )
+            )
+            for domain in test_file_list
+            for example_id in test_file_list[domain]
+        ]
 
-    # Calculate the start and end indices of the tasks for this worker    
-    tasks_per_worker = len(all_tasks_test) // args.num_workers    
-    extra = len(all_tasks_test) % args.num_workers  # calculate the number of tasks that can't be evenly distributed  
+        # group tasks from the same source .mp4 together
+        grouped_tasks = list()
+        group_sources = dict()
+        for domain, example_id, example in all_tasks_metas:
+            task_info = (domain, example_id, example)
+            if 'source' in example and 'source_idx' in example:
+                src = example['source']
+                if src in group_sources:
+                    grouped_tasks[group_sources[src]].append(task_info)
+                else:
+                    group_sources[src] = len(grouped_tasks)
+                    grouped_tasks.append([task_info])
+            else:
+                grouped_tasks.append([task_info])
+        
+        logger.info(f"Loaded {len(all_tasks_metas)} tasks and {len(grouped_tasks)} task groups")
+
+        def slice(tasklist):
+            # Calculate the start and end indices of the tasks for this worker
+            tasks_per_worker = len(tasklist) // num_workers    
+            num_extra = len(tasklist) % num_workers  # calculate the number of tasks that can't be evenly distributed  
+            
+            start_index = worker_id * tasks_per_worker + min(worker_id, num_extra)
+            num_tasks = tasks_per_worker if worker_id < num_extra else (tasks_per_worker + 1)
+            return tasklist[start_index:start_index+num_tasks]
+        
+        # Slice the task groups for this worker  
+        taskgroups_for_this_worker = slice(grouped_tasks)
+        tasks_for_this_worker = [
+            task_info[:2]
+            for task_group in taskgroups_for_this_worker
+            for task_info in (task_group if len(task_group) < 2 else sorted(task_group, key=lambda info: info[2]['source_idx']))
+        ]
+
+        logger.info(f"Worker {worker_id} split stats: {len(taskgroups_for_this_worker)} groups, containing {len(tasks_for_this_worker)} tasks")
+        return tasks_for_this_worker
     
-    start_index = args.worker_id * tasks_per_worker + min(args.worker_id, extra)  
-    if args.worker_id < extra:  
-        end_index = start_index + tasks_per_worker + 1  
-    else:  
-        end_index = start_index + tasks_per_worker  
-    
-    # Slice the tasks for this worker  
-    tasks_for_this_worker = all_tasks_test[start_index:end_index]
+    tasks_for_this_worker = split_tasks(worker_id=args.worker_id, num_workers=args.num_workers)
 
     # log which tasks this worker is doing
     logger.info(f"Worker {args.worker_id} is doing tasks: {tasks_for_this_worker}")

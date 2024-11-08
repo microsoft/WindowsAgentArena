@@ -254,11 +254,13 @@ class DesktopEnv(gym.Env):
         logger.info("Reverting to snapshot to {}...".format(self.snapshot_name))
 
         if self.remote_vm:
-            # TODO: Implement this
-            # self.controller.revert_to_snapshot(self.snapshot_name)
+            if not task_config or task_config.get('setup', {}).get('close_all', True):
+                logger.info("Closing all applications...")
+                self.setup_controller._close_all_setup()
             
-            logger.error("Not implemented! Reverting to snapshot is not supported for remote VMs! Closing all applications instead")
-            self.setup_controller._close_all_setup()
+            if not task_config and task_config.get('setup', {}).get('load_snapshot', False):
+                logger.error("Not implemented! Reverting to snapshot is not supported for remote VMs!")
+                self.controller.revert_to_snapshot(self.snapshot_name)
 
         time.sleep(5)
 
