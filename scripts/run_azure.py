@@ -63,23 +63,41 @@ def load_args_as_dict():
 
 def launch_vm_and_job(  worker_id, 
                         exp_name, 
-                        ml_client: MLClient, 
-                        ws: Workspace, 
-                        setup_scripts: SetupScripts,
-                        env: Environment,
                         docker_config: DockerConfiguration,
-                        datastore: Datastore,
                         datastore_input_path: str,
                         num_workers: int,
                         agent: str,
-                        config: dict,
+                        azure_config: dict,
+                        docker_img_name: str,
+                        ci_startup_script_path: str,
                         use_managed_identity: bool,
                         json_name: str,
                         model_name: str,
                         som_origin: str,
                         a11y_backend: str
                         ):
-    
+    subscription_id = azure_config['AZURE_SUBSCRIPTION_ID']
+    resource_group = azure_config['AZURE_ML_RESOURCE_GROUP']
+    workspace_name = azure_config['AZURE_ML_WORKSPACE_NAME']
+
+    ml_client = MLClient(
+        DefaultAzureCredential(), subscription_id, resource_group, workspace_name
+    )
+    ws = Workspace(subscription_id=subscription_id, resource_group=resource_group, workspace_name=workspace_name)
+
+    custom_name = "docker-image-example-created" + datetime.now().strftime("%Y%m%d%H%M")
+    env = Environment.from_docker_image(name=custom_name, image=docker_img_name)
+
+    #### CREATE THE STARTUP SCRIPT
+    startup_script_ref = ScriptReference(
+        path=ci_startup_script_path,
+        timeout_minutes=10
+    )
+    setup_scripts = SetupScripts(startup_script=startup_script_ref)
+
+    #### CREATE THE DATA STORE
+    datastore = Datastore.get(workspace=ws, datastore_name="workspaceblobstore")
+
     compute_instance_name = "w" + str(worker_id) + "Exp" + exp_name
 
     try:
@@ -97,10 +115,10 @@ def launch_vm_and_job(  worker_id,
 
         if use_managed_identity:
             identity_config = ManagedIdentityConfiguration(
-                client_id=config['AZURE_MANAGED_IDENTITY_CLIENT_ID'],
-                resource_id="subscriptions/" + config['AZURE_SUBSCRIPTION_ID'] + "/resourceGroups/" + config['AZURE_ML_RESOURCE_GROUP'] + "/providers/Microsoft.ManagedIdentity/userAssignedIdentities/" + config['AZURE_ML_USER_ASSIGNED_IDENTITY'],
-                object_id=config['AZURE_MANAGED_IDENTITY_OBJECT_ID'],
-                principal_id=config['AZURE_MANAGED_IDENTITY_PRINCIPAL_ID'],
+                client_id=azure_config['AZURE_MANAGED_IDENTITY_CLIENT_ID'],
+                resource_id="subscriptions/" + azure_config['AZURE_SUBSCRIPTION_ID'] + "/resourceGroups/" + azure_config['AZURE_ML_RESOURCE_GROUP'] + "/providers/Microsoft.ManagedIdentity/userAssignedIdentities/" + azure_config['AZURE_ML_USER_ASSIGNED_IDENTITY'],
+                object_id=azure_config['AZURE_MANAGED_IDENTITY_OBJECT_ID'],
+                principal_id=azure_config['AZURE_MANAGED_IDENTITY_PRINCIPAL_ID'],
             )
 
             identity = IdentityConfiguration(
@@ -133,14 +151,14 @@ def launch_vm_and_job(  worker_id,
     run_config.environment = env  
     run_config.docker = docker_config  
     # Check for required environment variables
-    if 'OPENAI_API_KEY' in config:
+    if 'OPENAI_API_KEY' in azure_config:
         run_config.environment_variables = {
-            "OPENAI_API_KEY": config['OPENAI_API_KEY']
+            "OPENAI_API_KEY": azure_config['OPENAI_API_KEY']
         }
-    elif 'AZURE_API_KEY' in config and 'AZURE_ENDPOINT' in config:
+    elif 'AZURE_API_KEY' in azure_config and 'AZURE_ENDPOINT' in azure_config:
         run_config.environment_variables = {
-            "AZURE_API_KEY": config['AZURE_API_KEY'],
-            "AZURE_ENDPOINT": config['AZURE_ENDPOINT']
+            "AZURE_API_KEY": azure_config['AZURE_API_KEY'],
+            "AZURE_ENDPOINT": azure_config['AZURE_ENDPOINT']
         }
     else:
         raise KeyError("Either 'OPENAI_API_KEY' must be available or both 'AZURE_API_KEY' and 'AZURE_ENDPOINT' must be available.")
@@ -204,18 +222,6 @@ def launch_experiment(config):
     # )
     # ml_client.environments.create_or_update(env)
     #### alternative: if we want a brand new environment:
-    custom_name = "docker-image-example-created" + datetime.now().strftime("%Y%m%d%H%M")
-    env = Environment.from_docker_image(name=custom_name, image=config['docker_img_name'])
-
-    #### CREATE THE STARTUP SCRIPT
-    startup_script_ref = ScriptReference(
-        path=config['ci_startup_script_path'],
-        timeout_minutes=10
-    )
-    setup_scripts = SetupScripts(startup_script=startup_script_ref)
-
-    #### CREATE THE DATA STORE
-    datastore = Datastore.get(workspace=ws, datastore_name="workspaceblobstore")
 
     #### CREATE THE DOCKER CONFIGURATION
     docker_config = DockerConfiguration(use_docker=True, shared_volumes=True, arguments=["--cap-add", 'NET_ADMIN'], shm_size='16g')
@@ -223,7 +229,9 @@ def launch_experiment(config):
     #### CREATE THE EXPERIMENTS
     experiments = []
     for i in range(config['num_workers']):
-        p = Process(target=launch_vm_and_job, args=(i, config['exp_name'], ml_client, ws, setup_scripts, env, docker_config, datastore, config['datastore_input_path'], config['num_workers'], config['agent'], azure_config, config['use_managed_identity'], config['json_name'], config['model_name'], config['som_origin'], config['a11y_backend']))
+        p = Process(target=launch_vm_and_job, args=(i, config['exp_name'], docker_config, config['datastore_input_path'], 
+            config['num_workers'], config['agent'], azure_config, config['docker_img_name'], config['ci_startup_script_path'],
+            config['use_managed_identity'], config['json_name'], config['model_name'], config['som_origin'], config['a11y_backend']))
         experiments.append(p)
         p.start()
 
