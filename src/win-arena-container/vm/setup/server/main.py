@@ -307,7 +307,7 @@ def launch_app():
 
 @app.route('/screenshot', methods=['GET'])
 def capture_screen_with_cursor():
-    # fixme: when running on virtual machines, the cursor is not captured, don't know why
+    # DEPRECATED: if you want to capture the cursor, use the vm_controller.py screen capture function instead
 
     file_path = os.path.join(os.path.dirname(__file__), "screenshots", "screenshot.png")
     user_platform = platform.system()
@@ -317,24 +317,7 @@ def capture_screen_with_cursor():
 
     # fixme: This is a temporary fix for the cursor not being captured on Windows and Linux
     if user_platform == "Windows":
-        def _download_image(url, path):
-            response = requests.get(url)
-            # raise Exception(" BASEDIR: "+ os.path.dirname(__file__) + " PATH: " + path )
-            with open(path, 'wb') as file:
-                file.write(response.content)
-
-        cursor_path = os.path.join(os.path.dirname(__file__),"screenshots", "cursor.png")
-        if not os.path.exists(cursor_path):
-            # cursor_url = "https://vip.helloimg.com/images/2023/12/02/oQPzmt.png"
-            cursor_url="https://techcommunity.microsoft.com/t5/image/serverpage/image-id/332211i00B4C68911785168/image-size/large?v=v2&px=999"
-            # cursor_url = "https://www.clker.com//cliparts/m/F/E/0/Q/D/rainbow-mouse-hi.png"
-            _download_image(cursor_url, cursor_path)
-            # resize the cursor
-            cursor = Image.open(cursor_path)
-            factor = 32 / cursor.height
-            cursor = cursor.resize((int(cursor.width*factor), int(cursor.height*factor)))
-            cursor.save(cursor_path)
-            
+        cursor_path = os.path.join(os.path.dirname(__file__), "cursor.png")
         screenshot = pyautogui.screenshot()
         cursor_x, cursor_y = pyautogui.position()
         cursor = Image.open(cursor_path)
