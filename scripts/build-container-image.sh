@@ -23,7 +23,7 @@ while [[ $# -gt 0 ]]; do
             echo "Usage: $0 [options]"
             echo "Options:"
             echo "  --mode <dev/azure> : Mode (default: azure)"
-            echo "  --build-base-image <true/false> : Whether to build also the winarena-base image (default: false)"
+            echo "  --build-base-image <true/false> : Whether to build the winarena-base image (default: false)"
             exit 0
             ;;
         *)

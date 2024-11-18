@@ -8,7 +8,7 @@ source ./shared.sh
 # Default parameters
 mode="azure" # Default to azure if no argument is provided
 prepare_image=false
-skip_build=true
+skip_build=false
 interactive=false
 connect=false
 use_kvm=true
@@ -130,7 +130,7 @@ while [[ $# -gt 0 ]]; do
             echo "Options:"
             echo "  --container-name <name> : Name of the arena container (default: winarena)"
             echo "  --prepare-image <true/false> : Prepare an arena golden image (default: false)"
-            echo "  --skip-build <true/false> : Skip building the arena container image (default: true)"
+            echo "  --skip-build <true/false> : Skip building the arena container image (default: false)"
             echo "  --interactive <true/false> : Launches the arena container in interactive mode, providing access to the command line (bin/bash) without initiating the client or VM server processes. (default: false)"
             echo "  --connect <true/false> : Whether to attach to an existing arena container, only if the container exists (default: false)"
             echo "  --use-kvm <true/false> : Whether to use KVM for VM acceleration (default: true)"

@@ -40,7 +40,6 @@ COPY src/win-arena-container/client/requirements.txt /client/requirements.txt
 RUN pip install --no-cache-dir -r /client/requirements.txt && \
     pip install --no-cache-dir requests easyocr tenacity onnxruntime pyOpenSSL sentencepiece anytree
 
-
 # Download model weights
 RUN mkdir -p /models/groundingDINO/ && \
     wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth -O /models/groundingDINO/groundingdino_swint_ogc.pth && \
