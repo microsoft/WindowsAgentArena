@@ -68,25 +68,36 @@ Create a new `config.json` at the root of the project with the necessary keys (f
 }
 ```
 
-### 2. Prepare the Windows Arena Docker image
+### 2. Prepare the Windows Arena Docker Image
 
-To use the default docker image from Docker Hub:
+#### 2.1 Pull the WinArena-Base Image from Docker Hub
+
+To get started, pull the base image from Docker Hub:
 
 ```bash
-docker pull windowsarena/winarena:latest
+docker pull windowsarena/winarena-base:latest
 ```
 
-#### (Optional) 2.1 Build the Windows Arena Docker image locally:
+This image includes all the necessary dependencies (such as packages and models) required to run the code in the `src` directory.
 
-To build your own image from scratch (optional): 
+#### 2.2 Build the WinArena Image Locally
+
+Next, build the WinArena image locally:
+
 ```bash
 cd scripts
 ./build-container-image.sh
-# For docker image build options:
-./build-container-image.sh --help
+
+# If there are any changes in 'Dockerfile-WinArena-Base', use the --build-base-image flag to build also the base image locally
+# ./build-container-image.sh --build-base-image true
+
+# For other build options:
+# ./build-container-image.sh --help
 ```
 
-### 3. Prepare the Windows 11 image
+This will create the `windowsarena/winarena:latest` image with the latest code from the `src` directory.
+
+### 3. Prepare the Windows 11 VM
 
 <div align="center">
     <video src="https://github.com/user-attachments/assets/6d55b9b5-3242-49af-be20-64f2086108b9" height="500" alt="local_prepare_golden_image">
