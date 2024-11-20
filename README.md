@@ -18,6 +18,7 @@ WAA supports the deployment of agents **at scale** using the Azure ML cloud infr
 </div>
 
 ## 📢 Updates
+- 2024-11-10: We added a new difficulty mode for Windows Agent Arena! You can try the new harder difficulty mode by changing the default `diff_lvl="normal"` to `diff_lvl="hard"` in `src/win-arena-container/start_client.sh`. Under the harder difficulty, in many tasks, agents must also learn to initialize/set up the task themselves (e.g., finding and opening the right program/application for the task) rather than have the task "set up" for them by the task config.
 - 2024-10-30: We released the code for our Navi agent with Omniparser! For the top performing mode in the paper, run `./run-local.sh --som-origin mixed-omni --gpu-enabled true`
 - 2024-10-23: Microsoft open-sourced [Omniparser](https://github.com/microsoft/OmniParser), the current top performing screen understanding model in our benchmark.
 - 2024-09-13: We released our [paper](https://arxiv.org/abs/2409.08264), [code](https://github.com/microsoft/WindowsAgentArena), [project page](https://microsoft.github.io/WindowsAgentArena), and [blog post](https://www.microsoft.com/applied-sciences/projects/windows-agent-arena). Check it out!
