@@ -621,7 +621,6 @@ def check_italic_font_size_14(path1, path2):
                     return 0
     return 1
 
-
 def evaluate_alignment(docx_path):
     if not docx_path:
         return 0
