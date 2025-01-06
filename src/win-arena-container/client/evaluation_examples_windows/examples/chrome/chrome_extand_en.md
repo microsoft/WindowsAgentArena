@@ -1,0 +1,6 @@
+| Test Purpose | Usage Description | Test Method | Evaluation Method |
+|--------------|------------------|-------------|-------------------|
+| Test Chrome Font Size Setting | "The webpage font is too small, can you make it larger?" | 1. Launch Chrome browser<br>2. Open Chrome settings<br>3. Adjust font size | func: exact_match<br>type: chrome_font_size<br>Evaluate if font size is successfully adjusted |
+| Test Chrome Tab Management | "Please help me reopen the last closed tab" | 1. Launch Chrome browser<br>2. Configure test tabs<br>3. Close specified tab<br>4. Reopen closed tab | func: is_expected_tabs<br>type: open_tabs_info<br>Verify if tab is correctly restored |
+| Test Chrome Bookmark Management | "Add current webpage to bookmarks bar" | 1. Launch Chrome browser<br>2. Open test webpage<br>3. Add bookmark | func: is_expected_bookmarks<br>type: bookmarks<br>Check if bookmark is successfully added |
+| Test Chrome Cookie Management | "Please delete all cookies from Amazon" | 1. Launch Chrome browser<br>2. Visit Amazon website<br>3. Delete specified cookies | func: is_cookie_deleted<br>type: cookie_data<br>Verify if cookies are deleted | 

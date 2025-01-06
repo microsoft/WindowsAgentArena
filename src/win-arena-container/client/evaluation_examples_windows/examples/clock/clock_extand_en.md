@@ -1,0 +1,7 @@
+| Test Purpose | Usage Description | Test Method | Evaluation Method |
+|--------------|------------------|-------------|-------------------|
+| Test short timer | Set a 15-minute timer | 1. Launch Clock app with `ms-clock://Timers` <br> 2. Sleep 1s for app loading | - func: exact_match <br> - type: check_if_timer_started <br> - Parameters: hours: 0, minutes: 15, seconds: 0 |
+| Test long timer | Set a 4-hour timer | 1. Launch Clock app with `ms-clock://Timers` <br> 2. Sleep 1s for app loading | - func: exact_match <br> - type: check_if_timer_started <br> - Parameters: hours: 4, minutes: 0, seconds: 0 |
+| Test world clock - Single city | Add Paris, France to world clocks | 1. Launch Clock app with `ms-clock://` <br> 2. Sleep 1s for app loading | - func: exact_match <br> - type: check_if_world_clock_exists <br> - Parameters: city: "Paris", country: "France" |
+| Test world clock - Major city | Add New York, USA to world clocks | 1. Launch Clock app with `ms-clock://` <br> 2. Sleep 1s for app loading | - func: exact_match <br> - type: check_if_world_clock_exists <br> - Parameters: city: "New York", country: "USA" |
+| Test world clock - Asian city | Add Beijing, China to world clocks | 1. Launch Clock app with `ms-clock://` <br> 2. Sleep 1s for app loading | - func: exact_match <br> - type: check_if_world_clock_exists <br> - Parameters: city: "Beijing", country: "China" | 

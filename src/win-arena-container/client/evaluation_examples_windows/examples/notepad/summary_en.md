@@ -1,0 +1,6 @@
+# Notepad Test Cases Summary
+
+| No. | ID | Test Purpose | Instructions | Test Method | Evaluation Method | Source |
+|-----|----|--------------|--------------|--------------|--------------------|--------|
+| 1 | 366de66e-cbae-4d72-b042-26390db2b145-WOS | Test basic file creation and saving functionality in Notepad | Please open Notepad, create a new file named "draft.txt", type "This is a draft.", and save it to the Documents folder. | 1. Open Notepad<br>2. Create new file<br>3. Type content<br>4. Save as "draft.txt" in Documents folder | 1. Verify file exists in Documents folder<br>2. Compare file content with expected result from cloud file | |
+| 2 | a7d4b6c5-569b-452e-9e1d-ffdb3d431d15-WOS | Test file loading and text search counting functionality | Please open Notepad, load the file "largefile.txt" from the Documents folder, and search for the word "example", count all instances. Store the number of "example" counts (and nothing else) in a file named "example_count.txt" under Documents folder | 1. Open Notepad<br>2. Load largefile.txt<br>3. Search for "example"<br>4. Count occurrences<br>5. Save count to example_count.txt | 1. Verify example_count.txt exists<br>2. Compare count result with expected result from cloud file | | 

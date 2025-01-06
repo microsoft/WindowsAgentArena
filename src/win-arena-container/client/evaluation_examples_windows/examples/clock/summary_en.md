@@ -1,0 +1,8 @@
+# Clock App Test Cases Summary
+
+| No. | ID | Test Purpose | Instruction | Test Method | Evaluation Method | Source |
+|-----|----|--------------| ------------|-------------|------------------|---------|
+| 1 | 02F10F89-7171-4D37-8550-A00BA8930CDF-2-WOS | Test timer setting functionality for 30 minutes | In the clock app, can you set a timer for half an hour? I need to wrap something up by then. | 1. Launch clock app with ms-clock://Timers<br>2. Wait 1 second<br>3. Activate Clock window<br>4. Wait 0.5 seconds | Check if timer is started with exactly 0 hours, 30 minutes, 0 seconds | None |
+| 2 | 02F10F89-7171-4D37-8550-A00BA8930CDF-WOS | Test timer setting functionality for 3 hours | Start a 3 hour timer using the clock app. | 1. Launch clock app with ms-clock://Timers<br>2. Wait 1 second<br>3. Activate Clock window<br>4. Wait 0.5 seconds | Check if timer is started with exactly 3 hours, 0 minutes, 0 seconds | None |
+| 3 | 91A30BE9-0E11-4374-8D43-41D4D097080A-WOS-2 | Test world clock addition functionality for Kyoto | I am traveling to Kyoto, Japan tomorrow. Can you add a clock for that timezone to my list of world clocks in the Clock app? | 1. Launch clock app with ms-clock://<br>2. Wait 1 second<br>3. Activate Clock window<br>4. Wait 0.5 seconds | Check if world clock exists for Kyoto, Japan | None |
+| 4 | 91A30BE9-0E11-4374-8D43-41D4D097080A-WOS | Test world clock addition functionality for Munich | Please add Munich, Germany to my list of world clocks in the Clock app. | 1. Launch clock app with ms-clock://<br>2. Wait 1 second<br>3. Activate Clock window<br>4. Wait 0.5 seconds | Check if world clock exists for Munich, Germany | None | 
