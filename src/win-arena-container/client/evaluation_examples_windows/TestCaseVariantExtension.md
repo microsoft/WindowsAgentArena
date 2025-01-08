@@ -1,6 +1,17 @@
 # Test Case Variant Extension
 
-This document describes 4 methods for extending test case variants.
+## Overview
+This comprehensive guide outlines 4 methodologies for extending and customizing test case variants in Windows Arena testing scenarios. 
+
+- Instruction-only modifications
+- JSON-based result variations
+- File-based result variations
+- Python evaluator function customizations
+
+The base test cases referenced in this documentation are derived from the [example test suite](./examples), which serves as the foundation for variant implementations.
+
+For a more comprehensive summary of the test cases, please refer to this file: [extended_example_summary](./extended_example_summary.json)
+
 
 ## 1. Change Instruction Only
 
