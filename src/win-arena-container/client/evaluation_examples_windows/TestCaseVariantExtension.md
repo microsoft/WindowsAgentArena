@@ -107,7 +107,7 @@ This method creates new variants by modifying parameters and logic in the evalua
 **Original Instruction:**
 - *Sort files by date modified in the Documents folder.*
 
-Its evaluator function is ```are_files_sorted_by_modified_time```. Here, we can modify the original evaluator function to expose the sort method as a parameter to the evaluator expected rule, enabling new variant test case extensions.
+Its evaluator function is ```are_files_sorted_by_modified_time```. Here, we can modify the [original evaluator function](../../vm/setup/server/main.py#L1637-L1650) to expose the sort method as a parameter to the evaluator expected rule, enabling new variant test case extensions.
 
 **Features:**
 - Allows for more detailed and in-depth evaluator function modifications
