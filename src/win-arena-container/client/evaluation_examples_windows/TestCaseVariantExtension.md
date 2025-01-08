@@ -17,23 +17,23 @@ For a more comprehensive summary of the test cases, please refer to this file: [
 
 This method keeps test steps and expected results unchanged, only generating new instructions through AI inference.
 
-### Example 1 (ID: [28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-3](./examples/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-3.json))
+### Example 1 (ID: [28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-2](./examples/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-2.json))
 
 **Original Instruction:**
 
-- *Use the calculator app, how many days are there between 13/01/2023 and 20/08/2024? Can you save the answer in 'numdays.txt' on the Desktop (e.g. X days)*
+- *Can you use the calculator app to find how many days are between Jan 3, 2024 and Aug 20 2024? Save the result in a file called 'numdays.txt' on the Desktop (e.g. X days)*
 
 **Expected Result:**
-Check if file "numdays.txt" with the content matches "585 days"
+Check if file "numdays.txt" with the content matches "230 days"
 
 **Variant Instruction Examples:**
-These variants use different dates but have the same expected result - outputting a text file with the calculation result "585 days".
+These variants use different dates but have the same expected result - outputting a text file with the calculation result "230 days".
 
-- *Calculate the number of days between March 15, 2023 and October 31, 2023 using the calculator app, and save the result as 'numdays.txt' on the Desktop (e.g. X days)* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-3-1.json)
-- *Using the calculator app, determine how many days are there from April 1, 2023 to November 17, 2023? Save your answer in a file named 'numdays.txt' on the Desktop in the format 'X days'* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-3-2.json)
-- *Open the calculator and find out the number of days between May 20, 2023 and January 5, 2024. Save the result in a text file called 'numdays.txt' on the Desktop with the format 'X days'* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-3-3.json)
-- *Use the calculator to count the days from June 10, 2023 to January 26, 2024, then save the answer as 'numdays.txt' on the Desktop in the format 'X days'* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-3-4.json)
-- *With the calculator app, compute the number of days from February 1, 2023 to September 19, 2023, and save the result on the Desktop as 'numdays.txt' containing 'X days'* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-3-5.json)
+- *Calculate the number of days between March 15, 2023 and October 31, 2023 using the calculator app, and save the result as 'numdays.txt' on the Desktop (e.g. X days)* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-2-1.json)
+- *Using the calculator app, determine how many days are there from April 1, 2023 to November 17, 2023? Save your answer in a file named 'numdays.txt' on the Desktop in the format 'X days'* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-2-2.json)
+- *Open the calculator and find out the number of days between May 20, 2023 and January 5, 2024. Save the result in a text file called 'numdays.txt' on the Desktop with the format 'X days'* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-2-3.json)
+- *Use the calculator to count the days from June 10, 2023 to January 26, 2024, then save the answer as 'numdays.txt' on the Desktop in the format 'X days'* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-2-4.json)
+- *With the calculator app, compute the number of days from February 1, 2023 to September 19, 2023, and save the result on the Desktop as 'numdays.txt' containing 'X days'* [link](./examples_extendedByInstruction/windows_calc/28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-2-5.json)
 
 ### Example 2 (ID: [2ae9ba84-3a0d-4d4c-8338-3a1478dc5fe3-wos](./examples/chrome/2ae9ba84-3a0d-4d4c-8338-3a1478dc5fe3-wos.json))
 
