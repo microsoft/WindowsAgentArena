@@ -1,0 +1,49 @@
+{
+    "id": "049d3788-c979-4ea6-934d-3a35c4630faf-WOS-b",
+    "snapshot": "msedge",
+    "instruction": "Please add this webpage and docs.python.org to my bookmarks bar",
+    "source": "https://www.youtube.com/watch?v=ZaZ8GcTxjXA",
+    "_comments": "Adding multiple URLs to bookmarks bar",
+    "config": [
+      {
+        "type": "launch",
+        "parameters": {
+          "command": [
+            "start",
+            "msedge",
+            "--remote-debugging-port=1337"
+          ]
+        }
+      },
+      {
+        "type": "launch",
+        "parameters": {
+          "command": [
+            "start",
+            "msedge",
+            "https://jalammar.github.io/illustrated-transformer/"
+          ]
+        }
+      }
+    ],
+    "trajectory": "trajectories\\",
+    "related_apps": [
+      "msedge"
+    ],
+    "evaluator": {
+      "func": "is_expected_bookmarks",
+      "result": {
+        "type": "favorites"
+      },
+      "expected": {
+        "type": "rule",
+        "rules": {
+          "type": "bookmark_bar_websites_urls",
+          "urls": [
+            "https://jalammar.github.io/illustrated-transformer/",
+            "https://docs.python.org"
+          ]
+        }
+      }
+    }
+} 

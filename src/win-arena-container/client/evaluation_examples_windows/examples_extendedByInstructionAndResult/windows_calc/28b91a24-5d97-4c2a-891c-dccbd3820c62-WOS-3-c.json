@@ -1,0 +1,38 @@
+{
+    "id": "28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-3-c",
+    "snapshot": "base_setup",
+    "instruction": "Use the calculator app, how many days are there between 31/12/1999 and 01/01/2000? Can you save the answer in 'numdays.txt' on the Desktop (e.g. X days)",
+    "source": "Microsoft Corporation",
+    "config": [
+      {
+        "type": "launch",
+        "parameters": {
+          "command": "calc"
+        }
+      },
+      {
+        "type": "sleep",
+        "parameters": {
+          "seconds": 2
+        }
+      }
+    ],
+    "trajectory": "trajectories/",
+    "related_apps": [
+      "windows_calc"
+    ],
+    "evaluator": {
+      "func": "exact_match",
+      "result": {
+          "type": "is_file_saved_desktop",
+          "filename": "numdays.txt",
+          "textcontent": "1 days"
+      },
+      "expected": {
+          "type": "rule",
+          "rules": {
+              "expected": "true"
+          }
+      }
+    }
+} 

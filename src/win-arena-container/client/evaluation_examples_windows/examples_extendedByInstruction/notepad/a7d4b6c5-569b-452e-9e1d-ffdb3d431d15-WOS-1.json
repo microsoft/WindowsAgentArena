@@ -1,0 +1,67 @@
+{
+  "id": "a7d4b6c5-569b-452e-9e1d-ffdb3d431d15-WOS-1",
+  "snapshot": "notepad",
+  "instruction": "Can you help me count how many times the word 'example' appears in 'largefile.txt' and save just the number in 'example_count.txt' in Documents?",
+  "source": "",
+  "_comments": "",
+  "config": [
+    {
+      "type": "download",
+      "parameters": {
+        "files": [
+          {
+            "url": "https://raw.githubusercontent.com/rogeriobonatti/winarenafiles/main/task_files/notepad/a7d4b6c5-569b-452e-9e1d-ffdb3d431d15-WOS/config/largefile.txt",
+            "path": "C:\\Users\\Docker\\Documents\\largefile.txt"
+          }
+        ]
+      }
+    }
+  ],
+  "trajectory": "trajectories/",
+  "related_apps": [
+    "notepad"
+  ],
+  "evaluator": {
+    "postconfig": [
+      {
+        "type": "open",
+        "parameters": {
+          "path": "C:\\Users\\Docker\\Documents\\largefile.txt"
+        }
+      },
+      {
+        "type": "open",
+        "parameters": {
+          "path": "C:\\Users\\Docker\\Documents\\example_count.txt"
+        }
+      },
+      {
+        "type": "sleep",
+        "parameters": {
+          "seconds": 0.5
+        }
+      },
+      {
+        "type": "execute",
+        "parameters": {
+          "command": [
+            "python",
+            "-c",
+            "import pyautogui; import time; pyautogui.hotkey('ctrl', 's'); time.sleep(0.5); "
+          ]
+        }
+      }
+    ],
+    "func": "compare_text_file",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Documents\\example_count.txt",
+      "dest": "example_count.txt"
+    },
+    "expected": {
+      "type": "cloud_file",
+      "path": "https://raw.githubusercontent.com/rogeriobonatti/winarenafiles/main/task_files/notepad/a7d4b6c5-569b-452e-9e1d-ffdb3d431d15-WOS/eval/example_count_gold.txt",
+      "dest": "example_count_gold.txt"
+    }
+  }
+}

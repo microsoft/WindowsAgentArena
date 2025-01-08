@@ -1,0 +1,55 @@
+{
+  "id": "ac46b5cb-616a-46e0-b287-9628fd0dab06-WOS-2",
+  "snapshot": "base_setup",
+  "instruction": "Relocate all Downloads content to OldDownloads directory while keeping folder organization intact",
+  "source": "Microsoft Corporation",
+  "config": [
+    {
+      "type": "create_folder",
+      "parameters": {
+        "path": "C:\\Users\\Docker\\OldDownloads"
+      }
+    },
+    {
+      "type": "create_folder",
+      "parameters": {
+        "path": "C:\\Users\\Docker\\Downloads\\Test"
+      }
+    },
+    {
+      "type": "download",
+      "parameters": {
+        "files": [
+          {
+            "url": "https://raw.githubusercontent.com/rogeriobonatti/winarenafiles/main/task_files/file_explorer/ac46b5cb-616a-46e0-b287-9628fd0dab06-WOS/config/SampleText.txt",
+            "path": "C:\\Users\\Docker\\Downloads\\Test\\example.txt"
+          }
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 0.5
+      }
+    }
+  ],
+  "trajectory": "trajectories/",
+  "related_apps": [
+    "file_explorer"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+      "type": "is_files_moved_downloads",
+      "folder_name": "Test",
+      "file_name": "example.txt"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": "true"
+      }
+    }
+  }
+}

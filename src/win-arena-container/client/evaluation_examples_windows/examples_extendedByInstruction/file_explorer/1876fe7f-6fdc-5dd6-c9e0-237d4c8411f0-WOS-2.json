@@ -1,0 +1,37 @@
+{
+  "id": "1876fe7f-6fdc-5dd6-c9e0-237d4c8411f0-WOS-2",
+  "snapshot": "file_explorer",
+  "instruction": "Transfer the MyFolder folder from Desktop into Documents",
+  "source": "null",
+  "config": [
+    {
+      "type": "create_folder",
+      "parameters": {
+        "path": "C:\\Users\\Docker\\Desktop\\MyFolder"
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    }
+  ],
+  "trajectory": "trajectories/",
+  "related_apps": [
+    "file_explorer"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+      "type": "vm_folder_exists_in_documents",
+      "folder_name": "MyFolder"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": true
+      }
+    }
+  }
+}

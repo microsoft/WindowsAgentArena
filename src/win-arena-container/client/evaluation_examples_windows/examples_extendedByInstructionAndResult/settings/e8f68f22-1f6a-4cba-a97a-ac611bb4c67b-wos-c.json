@@ -1,0 +1,34 @@
+{
+    "id": "e8f68f22-1f6a-4cba-a97a-ac611bb4c67b-wos-c",
+    "snapshot": "base_setup",
+    "instruction": "Launch Windows Storage Sense settings and enable the feature. Set up automatic storage cleanup to occur once every three months (quarterly) to maintain your system's storage health.",
+    "source": "https://support.microsoft.com/en-us/windows/manage-drive-space-with-storage-sense-654f6ada-7bfc-45e5-966b-e24aded96ad5",
+    "config": [
+      {
+        "type": "launch",
+        "parameters": {
+          "command": [
+            "cmd",
+            "/c",
+            "start ms-settings:storagesense"
+          ]
+        }
+      }
+    ],
+    "trajectory": "trajectories\\",
+    "related_apps": [
+      "settings"
+    ],
+    "evaluator": {
+      "func": "exact_match",
+      "result": {
+        "type": "storage_sense_run_frequency"
+      },
+      "expected": {
+        "type": "rule",
+        "rules": {
+          "expected": "90"
+        }
+      }
+    }
+} 

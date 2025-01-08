@@ -1,0 +1,46 @@
+{
+  "id": "4d34ff3b-5cc8-44b2-a272-fb07927e996e-WOS-4",
+  "snapshot": "msedge",
+  "instruction": "I want to remove Amazon's tracking cookies and data - can you show me how?",
+  "source": "https://support.google.com/chrome/answer/95647?hl=en&ref_topic=7438325&sjid=16867045591165135686-AP#zippy=%2Cdelete-cookies-from-a-site",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "start",
+          "msedge",
+          "--remote-debugging-port=1337",
+          "--disable-features=LockProfileCookieDatabase",
+          "https://www.amazon.com"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    }
+  ],
+  "trajectory": "trajectories\\",
+  "related_apps": [
+    "msedge"
+  ],
+  "evaluator": {
+    "func": "is_cookie_deleted",
+    "result": {
+      "type": "cookie_data_for_edge",
+      "dest": "Cookies"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "type": "domains",
+        "domains": [
+          ".amazon.com"
+        ]
+      }
+    }
+  }
+}

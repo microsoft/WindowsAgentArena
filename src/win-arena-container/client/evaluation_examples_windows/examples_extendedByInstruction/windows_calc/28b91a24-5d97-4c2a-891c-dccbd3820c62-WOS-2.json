@@ -1,0 +1,38 @@
+{
+  "id": "28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-2",
+  "snapshot": "base_setup",
+  "instruction": "Using the calculator app, find out how much time has passed between 15/03/1980 and 01/01/2024. Save the result on Desktop as 'Differences.txt' showing years, months, weeks and days",
+  "source": "Microsoft Corporation",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": "calc"
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    }
+  ],
+  "trajectory": "trajectories/",
+  "related_apps": [
+    "windows_calc"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+      "type": "is_file_saved_desktop",
+      "filename": "Differences.txt",
+      "textcontent": "43 years, 9 months, 3 weeks, 4 days"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": "true"
+      }
+    }
+  }
+}

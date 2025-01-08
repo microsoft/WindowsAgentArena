@@ -1,0 +1,38 @@
+{
+  "id": "28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-1",
+  "snapshot": "base_setup",
+  "instruction": "Can you calculate the time difference between March 15, 1980 and January 1, 2024? Please save the result in a file named 'Differences.txt' on the Desktop with the format 'X years, X months, X weeks, X days'",
+  "source": "Microsoft Corporation",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": "calc"
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    }
+  ],
+  "trajectory": "trajectories/",
+  "related_apps": [
+    "windows_calc"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+      "type": "is_file_saved_desktop",
+      "filename": "Differences.txt",
+      "textcontent": "43 years, 9 months, 3 weeks, 4 days"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": "true"
+      }
+    }
+  }
+}

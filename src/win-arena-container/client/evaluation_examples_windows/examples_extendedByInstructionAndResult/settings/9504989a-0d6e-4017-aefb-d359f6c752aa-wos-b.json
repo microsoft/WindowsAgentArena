@@ -1,0 +1,23 @@
+{
+  "id": "9504989a-0d6e-4017-aefb-d359f6c752aa-wos-b",
+  "snapshot": "base_setup",
+  "instruction": "I'm starting a new remote job with a company in Chicago, and I need to sync my computer's time zone with their office hours. Can you help me set it to 'Central (US & Canada)' time zone?",
+  "source": "https://support.microsoft.com/en-us/windows/how-to-set-your-time-and-time-zone-dfaa7122-479f-5b98-2a7b-fa0b6e01b261",
+  "config": [],
+  "trajectory": "trajectories\\",
+  "related_apps": [
+    "settings"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+      "type": "system_timezone"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": "(UTC-06:00) Central Time (US & Canada)"
+      }
+    }
+  }
+} 

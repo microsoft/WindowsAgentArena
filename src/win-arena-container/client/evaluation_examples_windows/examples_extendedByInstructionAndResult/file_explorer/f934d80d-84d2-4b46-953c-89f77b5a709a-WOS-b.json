@@ -1,0 +1,42 @@
+{
+  "id": "f934d80d-84d2-4b46-953c-89f77b5a709a-WOS-b",
+  "snapshot": "base_setup",
+  "instruction": "Rename the file 'example.txt' on Desktop to 'new_example.txt'.",
+  "source": "Microsoft Corporation",
+  "config": [
+    {
+      "type": "download",
+      "parameters": {
+          "files": [
+              {
+                  "url": "https://raw.githubusercontent.com/rogeriobonatti/winarenafiles/main/task_files/file_explorer/f934d80d-84d2-4b46-953c-89f77b5a709a-WOS/config/SampleText.txt",
+                  "path": "C:\\Users\\Docker\\Desktop\\example.txt"
+              }
+          ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 0.5
+      }
+    }
+  ],
+  "trajectory": "trajectories/",
+  "related_apps": [
+    "file_explorer"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+        "type": "is_file_desktop",
+        "filename": "new_example.txt"
+    },
+    "expected": {
+        "type": "rule",
+        "rules": {
+            "expected": "true"
+        }
+    }
+  }
+} 

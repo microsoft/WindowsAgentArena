@@ -1,0 +1,53 @@
+{
+  "id": "98cfcec4-c74e-4faa-b70d-664fb0a1d457-wos-5",
+  "snapshot": "msedge",
+  "instruction": "I'd like Edge to warn me about suspicious websites - could you enable that protection?",
+  "source": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-security-browse-safer",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "start",
+          "msedge",
+          "--remote-debugging-port=1337"
+        ]
+      }
+    },
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "socat",
+          "tcp-listen:9222,fork",
+          "tcp:localhost:1337"
+        ]
+      }
+    }
+  ],
+  "trajectory": "trajectories\\",
+  "related_apps": [
+    "edge"
+  ],
+  "evaluator": {
+    "postconfig": [
+      {
+        "type": "execute",
+        "parameters": {
+          "command": "taskkill /IM msedge.exe /F",
+          "shell": "true"
+        }
+      }
+    ],
+    "func": "exact_match",
+    "result": {
+      "type": "enable_enhanced_safety_browsing_from_edge"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": 1
+      }
+    }
+  }
+}

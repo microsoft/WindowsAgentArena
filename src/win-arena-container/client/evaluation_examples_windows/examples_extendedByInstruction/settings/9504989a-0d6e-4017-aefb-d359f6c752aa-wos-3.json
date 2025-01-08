@@ -1,0 +1,23 @@
+{
+  "id": "9504989a-0d6e-4017-aefb-d359f6c752aa-wos-3",
+  "snapshot": "base_setup",
+  "instruction": "I want to update my system clock to Pacific timezone (UTC-8)",
+  "source": "https://support.microsoft.com/en-us/windows/how-to-set-your-time-and-time-zone-dfaa7122-479f-5b98-2a7b-fa0b6e01b261",
+  "config": [],
+  "trajectory": "trajectories\\",
+  "related_apps": [
+    "settings"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+      "type": "system_timezone"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": "(UTC-08:00) Pacific Time (US & Canada)"
+      }
+    }
+  }
+}

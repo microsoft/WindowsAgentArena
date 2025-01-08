@@ -1,0 +1,62 @@
+{
+  "id": "7b6c7e24-c58a-49fc-a5bb-d57b80e5b4c3-wos-b",
+  "snapshot": "chrome",
+  "instruction": "I'd like to clear all Google cookies and tracking data from my browser. How can I ensure Google isn't storing my search history?",
+  "source": "https://support.google.com/chrome/answer/95647?hl=en&ref_topic=7438325&sjid=16867045591165135686-AP#zippy=%2Cdelete-cookies-from-a-site",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "google-chrome",
+          "--remote-debugging-port=1337",
+          "--force-renderer-accessibility",
+          "--disable-features=LockProfileCookieDatabase"
+        ]
+      }
+    },
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "socat",
+          "tcp-listen:9222,fork",
+          "tcp:localhost:1337"
+        ]
+      }
+    },
+    {
+      "type": "chrome_open_tabs",
+      "parameters": {
+        "urls_to_open": [
+          "https://www.google.com",
+          "https://www.youtube.com"
+        ]
+      }
+    },
+    {
+        "type": "sleep",
+        "parameters": {
+          "seconds": 2
+        }
+    }
+  ],
+  "trajectory": "trajectories\\",
+  "related_apps": [
+    "chrome"
+  ],
+  "evaluator": {
+    "func": "is_cookie_deleted",
+    "result": {
+      "type": "cookie_data",
+      "dest": "Cookies"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "type": "domains",
+        "domains": [".google.com"]
+      }
+    }
+  }
+} 

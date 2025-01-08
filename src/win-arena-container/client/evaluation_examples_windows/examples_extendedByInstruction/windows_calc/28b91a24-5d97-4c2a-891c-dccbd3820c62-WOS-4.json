@@ -1,0 +1,38 @@
+{
+  "id": "28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-4",
+  "snapshot": "base_setup",
+  "instruction": "Calculate the duration from 1980/03/15 to 2024/01/01 using the calculator app. Save the complete time difference (including years, months, weeks, days) in a file called 'Differences.txt' on Desktop",
+  "source": "Microsoft Corporation",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": "calc"
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    }
+  ],
+  "trajectory": "trajectories/",
+  "related_apps": [
+    "windows_calc"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+      "type": "is_file_saved_desktop",
+      "filename": "Differences.txt",
+      "textcontent": "43 years, 9 months, 3 weeks, 4 days"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": "true"
+      }
+    }
+  }
+}

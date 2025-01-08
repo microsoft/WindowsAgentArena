@@ -1,0 +1,82 @@
+{
+  "id": "7e429b8d-a3f0-4ed0-9b58-08957d00b127-WOS-3",
+  "snapshot": "libreoffice_calc",
+  "instruction": "There's a master list of officers and their branches, and I need to use that information to complete this form by matching the branch names. Could you show me how?",
+  "source": "https://medium.com/@divyangichaudhari17/how-to-use-vlookup-and-hlookup-in-libre-calc-3370698bb3ff",
+  "config": [
+    {
+      "type": "download",
+      "parameters": {
+        "files": [
+          {
+            "url": "https://raw.githubusercontent.com/rogeriobonatti/winarenafiles/main/task_files/calc/7e429b8d-a3f0-4ed0-9b58-08957d00b127-WOS/config/VLOOKUP_Fill_the_form.xlsx",
+            "path": "C:\\Users\\Docker\\Downloads\\VLOOKUP_Fill_the_form.xlsx"
+          }
+        ]
+      }
+    },
+    {
+      "type": "open",
+      "parameters": {
+        "path": "C:\\Users\\Docker\\Downloads\\VLOOKUP_Fill_the_form.xlsx"
+      }
+    }
+  ],
+  "trajectory": "trajectories\\7e429b8d-a3f0-4ed0-9b58-08957d00b127-wos",
+  "related_apps": [
+    "libreoffice calc"
+  ],
+  "evaluator": {
+    "postconfig": [
+      {
+        "type": "activate_window",
+        "parameters": {
+          "window_name": "VLOOKUP_Fill_the_form.xlsx — LibreOffice Calc",
+          "strict": true
+        }
+      },
+      {
+        "type": "sleep",
+        "parameters": {
+          "seconds": 0.5
+        }
+      },
+      {
+        "type": "execute",
+        "parameters": {
+          "command": [
+            "python",
+            "-c",
+            "import pyautogui; pyautogui.hotkey('ctrl', 's');"
+          ]
+        }
+      },
+      {
+        "type": "sleep",
+        "parameters": {
+          "seconds": 0.5
+        }
+      }
+    ],
+    "func": "compare_table",
+    "expected": {
+      "type": "cloud_file",
+      "path": "https://raw.githubusercontent.com/rogeriobonatti/winarenafiles/main/task_files/calc/7e429b8d-a3f0-4ed0-9b58-08957d00b127-WOS/eval/VLOOKUP_Fill_the_form_gold.xlsx",
+      "dest": "VLOOKUP_Fill_the_form_gold.xlsx"
+    },
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Downloads\\VLOOKUP_Fill_the_form.xlsx",
+      "dest": "VLOOKUP_Fill_the_form.xlsx"
+    },
+    "options": {
+      "rules": [
+        {
+          "type": "sheet_data",
+          "sheet_idx0": 0,
+          "sheet_idx1": "EI0"
+        }
+      ]
+    }
+  }
+}

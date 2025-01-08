@@ -1,0 +1,27 @@
+{
+  "id": "46adf721-2949-4426-b069-010b7c128d8f-wos-4",
+  "snapshot": "base_setup",
+  "instruction": "Configure my display's night mode to run from 7 in the evening till 7 in the morning",
+  "source": "https://support.microsoft.com/en-us/windows/set-your-display-for-night-time-in-windows-18fe903a-e0a1-8326-4c68-fd23d7aaf136",
+  "config": [],
+  "trajectory": "trajectories\\",
+  "related_apps": [
+    "settings"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+      "type": "night_light_state"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": [
+          true,
+          "07:00 PM",
+          "07:00 AM"
+        ]
+      }
+    }
+  }
+}

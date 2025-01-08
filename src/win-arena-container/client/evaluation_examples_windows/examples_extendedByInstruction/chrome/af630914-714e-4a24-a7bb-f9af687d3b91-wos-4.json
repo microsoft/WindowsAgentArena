@@ -1,0 +1,72 @@
+{
+  "id": "af630914-714e-4a24-a7bb-f9af687d3b91-wos-4",
+  "snapshot": "chrome",
+  "instruction": "I need to make Chrome's fonts bigger for someone with poor vision - can you help?",
+  "source": "https://www.howtogeek.com/680260/how-to-change-chromes-default-text-size/",
+  "_comments": "go to settings > appearences > customize font",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "google-chrome",
+          "--remote-debugging-port=1337",
+          "--force-renderer-accessibility"
+        ]
+      }
+    },
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "socat",
+          "tcp-listen:9222,fork",
+          "tcp:localhost:1337"
+        ]
+      }
+    }
+  ],
+  "trajectory": "trajectories\\",
+  "related_apps": [
+    "chrome"
+  ],
+  "evaluator": {
+    "postconfig": [
+      {
+        "type": "execute",
+        "parameters": {
+          "command": "taskkill /IM chrome.exe /F",
+          "shell": "true"
+        }
+      },
+      {
+        "type": "sleep",
+        "parameters": {
+          "seconds": 2
+        }
+      },
+      {
+        "type": "launch",
+        "parameters": {
+          "command": [
+            "google-chrome",
+            "--remote-debugging-port=1337",
+            "--force-renderer-accessibility"
+          ]
+        }
+      }
+    ],
+    "func": "check_font_size",
+    "result": {
+      "type": "chrome_font_size"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "type": "range",
+        "min": 16,
+        "max": 99999
+      }
+    }
+  }
+}

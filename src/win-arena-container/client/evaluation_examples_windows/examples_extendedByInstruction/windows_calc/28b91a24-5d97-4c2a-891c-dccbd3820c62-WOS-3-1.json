@@ -1,0 +1,38 @@
+{
+  "id": "28b91a24-5d97-4c2a-891c-dccbd3820c62-WOS-3-1",
+  "snapshot": "base_setup",
+  "instruction": "Calculate the number of days between March 15, 2023 and October 31, 2023 using the calculator app, and save the result as 'numdays.txt' on the Desktop (e.g. X days)",
+  "source": "Microsoft Corporation",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": "calc"
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    }
+  ],
+  "trajectory": "trajectories/",
+  "related_apps": [
+    "windows_calc"
+  ],
+  "evaluator": {
+    "func": "exact_match",
+    "result": {
+      "type": "is_file_saved_desktop",
+      "filename": "numdays.txt",
+      "textcontent": "585 days"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": "true"
+      }
+    }
+  }
+}
