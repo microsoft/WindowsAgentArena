@@ -51,7 +51,7 @@ In most test cases, due to limitations in test steps and expected results, most 
 - *I'd like to set my Chrome profile name as Thomas - how do I do that?* [link](./examples_extendedByInstruction/chrome/2ae9ba84-3a0d-4d4c-8338-3a1478dc5fe3-wos-4.json)
 - *Would you help me modify my Chrome browser profile name to Thomas?* [link](./examples_extendedByInstruction/chrome/2ae9ba84-3a0d-4d4c-8338-3a1478dc5fe3-wos-5.json)
 
-**Coverage:** This method can be used to extend all feasible test cases (142/151), [currently extended to 142*5=710 test cases](./examples_extendedByInstruction).
+**Coverage:** This method can be used to extend all feasible test cases (142/151), [currently extended to 142*5=710 test cases](./examples_extendedByInstructionAndResult).
 
 ## 2. Change Instruction and Evaluator Result (JSON)
 
