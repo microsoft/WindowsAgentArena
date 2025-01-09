@@ -76,7 +76,7 @@ Parameter ```Emma```:
 Parameter ```Work Profile```:
 - *I need to set up a separate Chrome profile for work. Can you help me change the profile name to 'Work Profile'?* [link](./examples_extendedByInstructionAndResult/chrome/2ae9ba84-3a0d-4d4c-8338-3a1478dc5fe3-wos-c.json)
 
-**Coverage:** 32/151 test cases are suitable for this method, [extended to 32*3=96 test cases](./examples_extendedByEvaluatorResult).
+**Coverage:** 32/151 test cases are suitable for this method, [extended to 32*3=96 test cases](./examples_extendedByInstructionAndResult).
 
 ## 3. Change Instruction and Evaluator Result (File)
 
