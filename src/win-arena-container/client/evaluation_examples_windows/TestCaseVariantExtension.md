@@ -1,12 +1,15 @@
 # Test Case Variant Extension
 
-## Overview
-This comprehensive guide outlines 4 methodologies for extending and customizing test case variants in Windows Arena testing scenarios. 
 
-- Instruction-only modifications
-- JSON-based result variations
-- File-based result variations
-- Python evaluator function customizations
+This document outlines 4 primary methods for extending test cases in Windows Arena:
+
+1. **Instruction-Only Modification**: Generates new test variants by modifying only the natural language instructions while maintaining the same test steps and expected results.
+
+2. **Instruction and Evaluator(JSON) Modification**: Creates variants by changing both instructions and expected results in JSON format, while keeping test steps constant.
+
+3. **Instruction and Evaluator(File) Modification**: Specifically designed for test cases involving file outputs (xlsx, png, txt, etc.), allowing modifications to both instructions and expected file results.
+
+4. **Instruction and Evaluator(Python) Modification**: Enables deep customization through modifications to both instructions and the underlying Python evaluator functions.
 
 The base test cases referenced in this documentation are derived from the [example test suite](./examples), which serves as the foundation for variant implementations.
 
@@ -51,7 +54,8 @@ In most test cases, due to limitations in test steps and expected results, most 
 - *I'd like to set my Chrome profile name as Thomas - how do I do that?* [link](./examples_extendedByInstruction/chrome/2ae9ba84-3a0d-4d4c-8338-3a1478dc5fe3-wos-4.json)
 - *Would you help me modify my Chrome browser profile name to Thomas?* [link](./examples_extendedByInstruction/chrome/2ae9ba84-3a0d-4d4c-8338-3a1478dc5fe3-wos-5.json)
 
-**Coverage:** This method can be used to extend all feasible test cases (142/151), [currently extended to 142*5=710 test cases](./examples_extendedByInstructionAndResult).
+### Coverage:
+ This method can be used to extend all feasible test cases (142/151), [currently extended to 142*5=710 test cases](./examples_extendedByInstructionAndResult).
 
 ## 2. Change Instruction and Evaluator Result (JSON)
 
@@ -91,12 +95,13 @@ This method is suitable for test cases where the expected result is a specific f
 **Expected Result:**
 Check if file "Student_Level_Fill_Blank.xlsx" is the same as the file downloaded from [cloud](https://raw.githubusercontent.com/rogeriobonatti/winarenafiles/main/task_files/calc/01b269ae-2111-4a07-81fd-3fcd711993b0-WOS/config/Student_Level_Fill_Blank.xlsx).
 
-**Features:**
+### Features:
 - Expected results involve file comparison
 - Requires more manual operation and modification
 - Currently lacks automated implementation solutions
 
-**Coverage:** 69/151 test cases are suitable for this method.
+### Coverage:
+69/151 test cases are suitable for this method.
 
 ## 4. Change Instruction and Evaluator Function (Python)
 
@@ -109,9 +114,10 @@ This method creates new variants by modifying parameters and logic in the evalua
 
 Its evaluator function is ```are_files_sorted_by_modified_time```. Here, we can modify the [original evaluator function](../../vm/setup/server/main.py#L1637-L1650) to expose the sort method as a parameter to the evaluator expected rule, enabling new variant test case extensions.
 
-**Features:**
+### Features:
 - Allows for more detailed and in-depth evaluator function modifications
 - Supports customized extensions
 - Requires higher development effort
 
-**Coverage:** Theoretically, all test cases can be extended using this method, but it requires significant development investment. 
+### Coverage:
+ Theoretically, all test cases can be extended using this method, but it requires significant development investment. 
