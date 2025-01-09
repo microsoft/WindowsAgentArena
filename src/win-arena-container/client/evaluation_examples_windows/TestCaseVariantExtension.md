@@ -1,15 +1,15 @@
 # Test Case Variant Extension
 
-
+## Overview
 This document outlines 4 primary methods for extending test cases in Windows Arena:
 
-1. **Instruction-Only Modification**: Generates new test variants by modifying only the natural language instructions while maintaining the same test steps and expected results.
+1. [Instruction-Only Modification](./TestCaseVariantExtension.md#1-change-instruction-only): Generates new test variants by modifying only the natural language instructions while maintaining the same test steps and expected results.
 
-2. **Instruction and Evaluator(JSON) Modification**: Creates variants by changing both instructions and expected results in JSON format, while keeping test steps constant.
+2. [Instruction and Evaluator(JSON) Modification](./TestCaseVariantExtension.md#2-change-instruction-and-evaluator-result-json): Creates variants by changing both instructions and expected results in JSON format, while keeping test steps constant.
 
-3. **Instruction and Evaluator(File) Modification**: Specifically designed for test cases involving file outputs (xlsx, png, txt, etc.), allowing modifications to both instructions and expected file results.
+3. [Instruction and Evaluator(File) Modification](./TestCaseVariantExtension.md#3-change-instruction-and-evaluator-result-file): Specifically designed for test cases involving file outputs (xlsx, png, txt, etc.), allowing modifications to both instructions and expected file results.
 
-4. **Instruction and Evaluator(Python) Modification**: Enables deep customization through modifications to both instructions and the underlying Python evaluator functions.
+4. [Instruction and Evaluator(Python) Modification](./TestCaseVariantExtension.md#4-change-instruction-and-evaluator-function-python): Enables deep customization through modifications to both instructions and the underlying Python evaluator functions.
 
 The base test cases referenced in this documentation are derived from the [example test suite](./examples), which serves as the foundation for variant implementations.
 
@@ -80,7 +80,9 @@ Parameter ```Emma```:
 Parameter ```Work Profile```:
 - *I need to set up a separate Chrome profile for work. Can you help me change the profile name to 'Work Profile'?* [link](./examples_extendedByInstructionAndResult/chrome/2ae9ba84-3a0d-4d4c-8338-3a1478dc5fe3-wos-c.json)
 
-**Coverage:** 32/151 test cases are suitable for this method, [extended to 32*3=96 test cases](./examples_extendedByInstructionAndResult).
+
+### Coverage:
+32/151 test cases are suitable for this method, [extended to 32*3=96 test cases](./examples_extendedByInstructionAndResult).
 
 ## 3. Change Instruction and Evaluator Result (File)
 
@@ -112,6 +114,9 @@ This method creates new variants by modifying parameters and logic in the evalua
 **Original Instruction:**
 - *Sort files by date modified in the Documents folder.*
 
+**Expected Result:**
+Check if files in the VM Documents folder are sorted by date modified.
+
 Its evaluator function is ```are_files_sorted_by_modified_time```. Here, we can modify the [original evaluator function](../../vm/setup/server/main.py#L1637-L1650) to expose the sort method as a parameter to the evaluator expected rule, enabling new variant test case extensions.
 
 ### Features:
@@ -120,4 +125,4 @@ Its evaluator function is ```are_files_sorted_by_modified_time```. Here, we can 
 - Requires higher development effort
 
 ### Coverage:
- Theoretically, all test cases can be extended using this method, but it requires significant development investment. 
+Theoretically, all test cases can be extended using this method, but it requires significant development investment. 
