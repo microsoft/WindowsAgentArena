@@ -42,7 +42,7 @@ You can troubleshoot any errors occurring during the preparation phase of the go
 Logs of the Python server running on the Windows 11 VM can instead be found under: [src/win-arena-container/vm/setup/server/server.log](../src/win-arena-container/vm/setup/server/server.log)
 
 ### Interactive mode - how to launch the docker without running the vm and client processes:
-During the development of any agents and extensions for the benchmark tasks, it might be useful to start the container without starting the client and VM processes. In this case, run:
+During the development of any agents and extensions for the benchmark tasks, it might be useful to start the container without starting the client and VM processes.
 
 In this case run:
 ```bash
@@ -70,7 +70,7 @@ cd scripts
 
 ```bash
 curl -v -X GET http://20.20.20.21:5000/screenshot
-# you should get a HTTP/1.1 200 OK respose
+# you should get a HTTP/1.1 200 OK response
 ```
 
 ### Connecting with the Python server from outside the docker:
