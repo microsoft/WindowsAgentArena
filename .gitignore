@@ -283,3 +283,8 @@ src/win-arena-container/client/.vscode/launch.json
 # src/win-arena-container/client/evaluation_examples_windows/examples/chrome/6c4c23a1-42a4-43cc-9db1-2f86ff3738cc-wos.json 
 # src/win-arena-container/client/evaluation_examples_windows/examples/chrome/7f52cab9-535c-4835-ac8c-391ee64dc930-wos.json 
 # src/win-arena-container/client/evaluation_examples_windows/examples/chrome/cabb3bae-cccb-41bd-9f5d-0f3a9fecd825-wos.json 
+
+# Ignore the files when preparing agents.
+src/win-arena-container/vm/setup/agents.json
+src/win-arena-container/vm/setup/mm_agents/*
+src/win-arena-container/vm/setup/Logs.txt

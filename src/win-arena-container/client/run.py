@@ -122,7 +122,10 @@ def config() -> argparse.Namespace:
     parser.add_argument("--num_workers", type=int,  default=1, help="Total number of workers") 
 
     # benchmark difficulty level
-    parser.add_argument("--diff_lvl", type=str, default="normal", help="Difficulty level of the benchmark")  
+    parser.add_argument("--diff_lvl", type=str, default="normal", help="Difficulty level of the benchmark")
+
+    # agent setting
+    parser.add_argument("--agent_settings", type=str, default='', help="JSON string of agent settings in key-value pairs")
 
     args, unknownargs = parser.parse_known_args()
 
@@ -162,6 +165,16 @@ def test(
         "num_workers": args.num_workers,
     }
 
+    # Convert the JSON string to a dictionary
+    if args.agent_settings:
+        try:
+            agent_settings = json.loads(args.agent_settings)
+        except json.JSONDecodeError:
+            print("Invalid JSON string provided for --agent_settings")
+            agent_settings = {}
+    else:
+        agent_settings = {}
+
     if cfg_args["agent_name"] == "navi":
         if cfg_args["som_origin"] in ["a11y", "omni", "mixed-omni"]:
             som_config = None
@@ -190,7 +203,12 @@ def test(
         from mm_agents.claude.agent import ClaudeAgent
         agent = ClaudeAgent()
     else:
-        raise ValueError(f"Unknown agent name: {cfg_args['agent_name']}")
+        from mm_agents.server_agents.agent import ServerAgent
+        if agent_settings is not None and len(agent_settings) > 0:
+            agent_name = agent_settings.get("agent_name", cfg_args["agent_name"])
+        else:
+            agent_name = cfg_args["agent_name"]
+        agent = ServerAgent(agent_name=agent_name, agent_settings=agent_settings)
     
     env = DesktopEnv(
         action_space=agent.action_space,

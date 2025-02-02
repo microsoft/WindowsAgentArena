@@ -35,6 +35,10 @@ done
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+# Run prepare-agents.sh
+echo "Running prepare-agents.sh..."
+$SCRIPT_DIR/prepare-agents.sh
+
 echo "$SCRIPT_DIR/../"
 
 if [ "$build_base_image" = true ]; then

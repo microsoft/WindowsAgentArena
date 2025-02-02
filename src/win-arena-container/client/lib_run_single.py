@@ -31,53 +31,60 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
     init_timestamp = start_time.strftime("%Y%m%d@%H%M%S")
     recorder.record_init(obs, example, init_timestamp)
     
-    while not done and step_idx < max_steps:
-        if obs is None:
-            logger.error("Observation is None. Waiting a little to do next step.")
-            time.sleep(5)
-            step_idx += 1
-            continue
-
-        logger.info("Agent: Thinking...")
-        response, actions, logs, computer_update_args = agent.predict(
-            instruction,
-            obs
-        )
-
-        # update the computer object, used by navi's action space
-        if computer_update_args:
-            env.controller.update_computer(**computer_update_args)
+    from mm_agents.server_agents.agent import ServerAgent
+    if isinstance(agent, ServerAgent):
+        logger.info("Agent: Running server agent %s...", agent.agent_name)
+        logger.info("Agent settings: %s...", agent.agent_settings)
+        env.controller.run_agent(agent.agent_name, instruction, agent.agent_settings)
         
-        # step environment with agent actions 
-        for action in actions:
-            # Capture the timestamp before executing the action
-            action_timestamp = datetime.datetime.now().strftime("%Y%m%d@%H%M%S")
-            elapsed_timestamp = f"{datetime.datetime.now() - start_time}"
-            logger.info("Step %d: %s", step_idx + 1, action)
-            
-            obs, reward, done, info = env.step(action, args.sleep_after_execution)
+    else:
+        while not done and step_idx < max_steps:
+            if obs is None:
+                logger.error("Observation is None. Waiting a little to do next step.")
+                time.sleep(5)
+                step_idx += 1
+                continue
 
-            logger.info("Reward: %.2f", reward)
-            logger.info("Done: %s", done)
-            
-            # Record step data
-            recorder.record_step(
-                obs, 
-                logs,
-                step_idx,
-                action_timestamp,
-                elapsed_timestamp,
-                action,
-                reward,
-                done,
-                info
+            logger.info("Agent: Thinking...")
+            response, actions, logs, computer_update_args = agent.predict(
+                instruction,
+                obs
             )
 
-            if done:
-                logger.info("The episode is done.")
-                break
-        # inc step counter
-        step_idx += 1
+            # update the computer object, used by navi's action space
+            if computer_update_args:
+                env.controller.update_computer(**computer_update_args)
+
+            # step environment with agent actions 
+            for action in actions:
+                # Capture the timestamp before executing the action
+                action_timestamp = datetime.datetime.now().strftime("%Y%m%d@%H%M%S")
+                elapsed_timestamp = f"{datetime.datetime.now() - start_time}"
+                logger.info("Step %d: %s", step_idx + 1, action)
+
+                obs, reward, done, info = env.step(action, args.sleep_after_execution)
+
+                logger.info("Reward: %.2f", reward)
+                logger.info("Done: %s", done)
+
+                # Record step data
+                recorder.record_step(
+                    obs, 
+                    logs,
+                    step_idx,
+                    action_timestamp,
+                    elapsed_timestamp,
+                    action,
+                    reward,
+                    done,
+                    info
+                )
+
+                if done:
+                    logger.info("The episode is done.")
+                    break
+            # inc step counter
+            step_idx += 1
     
     logger.info("Running evaluator(s)...")
     result = env.evaluate()

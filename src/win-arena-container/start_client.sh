@@ -10,6 +10,7 @@ num_workers="1"
 result_dir="./results"
 json_name="evaluation_examples_windows/test_all.json"
 diff_lvl="normal"
+agent_settings=""
 
 # parse agent argument
 while [[ $# -gt 0 ]]; do
@@ -53,7 +54,11 @@ while [[ $# -gt 0 ]]; do
         --diff-lvl)
             diff_lvl=$2  
             shift 2  
-            ;;              
+            ;;
+        --agent-settings)
+            agent_settings=$2  
+            shift 2  
+            ;;           
         --help)
             echo "Usage: $0 [options]"
             echo "Options:"
@@ -67,11 +72,14 @@ while [[ $# -gt 0 ]]; do
             echo "  --result-dir <dir>              The directory to store the results (default: ./results)"
             echo "  --json-name <name>              The name of the JSON file to use (default: test_all.json)"
             echo "  --diff-lvl <level>              The difficulty level of benchmark (default: normal, available options are: normal, hard)"  
+            echo "  --agent-settings <settings>     The additional agent settings, which should be a json string."  
             exit 0
             ;;
         *)
     esac
 done
+
+echo "Running agent $agent..."
 
 cd /client
 if [ "$clean_results" = true ]; then
@@ -80,4 +88,4 @@ if [ "$clean_results" = true ]; then
 fi
 
 echo "Running agent $agent..."
-python run.py --agent "$agent" --model "$model" --som_origin "$som_origin" --a11y_backend "$a11y_backend" --worker_id "$worker_id" --num_workers "$num_workers" --result_dir "$result_dir" --test_all_meta_path "$json_name" --diff_lvl "$diff_lvl"
+python run.py --agent_name "$agent" --model "$model" --som_origin "$som_origin" --a11y_backend "$a11y_backend" --worker_id "$worker_id" --num_workers "$num_workers" --result_dir "$result_dir" --test_all_meta_path "$json_name" --diff_lvl "$diff_lvl" --agent_settings "$agent_settings"

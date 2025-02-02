@@ -398,6 +398,13 @@ if (Test-Path $requirementsFile) {
     exit
 }
 
+# Install all setup for agents.
+try {
+    & "$PSScriptRoot\setupAgents.ps1"
+} catch {
+    Write-Host "An error occurred while executing setupAgents.ps1: $($_.Exception.Message)"
+}
+
 # Add a firewall rule to allow incoming connections on the specified port for the Python executable
 $pythonServerRuleName = "PythonHTTPServer-$pythonServerPort"
 if (-not (Get-NetFirewallRule -Name $pythonServerRuleName -ErrorAction SilentlyContinue)) {
@@ -416,7 +423,7 @@ if (-not (Get-NetFirewallRule -Name $caddyProxyRuleName -ErrorAction SilentlyCon
     Write-Host "Firewall rule already exists. $caddyProxyRuleName "
 }
 
-$onLogonScriptPath = "$scriptFolder\on-logon.ps1"
+$onLogonScriptPath = "$scriptFolder\on-logon.vbs"
 # Check if the scheduled task exists before unregistering it
 if (Get-ScheduledTask -TaskName $onLogonTaskName -ErrorAction SilentlyContinue) {
     Write-Host "Scheduled task $onLogonTaskName already exists."

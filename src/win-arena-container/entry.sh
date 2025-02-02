@@ -15,7 +15,8 @@ clean_results=true
 worker_id="0"
 num_workers="1"
 result_dir="./results"
-json_name="evaluation_examples_windows/test_all.json" 
+json_name="evaluation_examples_windows/test_all.json"
+agent_settings=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -63,6 +64,10 @@ while [[ $# -gt 0 ]]; do
             json_name=$2
             shift 2
             ;;
+        --agent-settings)
+            agent_settings=$2  
+            shift 2  
+            ;; 
         --help)
             echo "Usage: $0 [options]"
             echo "Options:"
@@ -77,6 +82,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --num-workers <num>             The number of workers"
             echo "  --result-dir <dir>              The directory to store the results (default: ./results)"
             echo "  --json-name <name>              The name of the JSON file to use (default: test_all.json)"
+            echo "  --agent-settings <settings>     The additional agent settings, which should be a json string."  
             exit 0
             ;;
         *)
@@ -103,7 +109,8 @@ else
     # Start the client script
     if [ "$start_client" = "true" ]; then
         echo "Starting client..."
-        ./start_client.sh --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --clean-results $clean_results --worker-id $worker_id --num-workers $num_workers --result-dir $result_dir --json-name $json_name
+        echo $agent_settings
+        ./start_client.sh --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --clean-results $clean_results --worker-id $worker_id --num-workers $num_workers --result-dir $result_dir --json-name $json_name --agent-settings "$agent_settings"
     else
         echo "Keeping container alive"
         while true; do

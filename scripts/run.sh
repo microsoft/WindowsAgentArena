@@ -26,6 +26,8 @@ model="gpt-4-vision-preview"
 som_origin="oss"
 a11y_backend="uia"
 gpu_enabled=false
+agent_settings=""
+json_name="evaluation_examples_windows/test_all.json"
 OPENAI_API_KEY=""
 AZURE_API_KEY=""
 AZURE_ENDPOINT=""
@@ -109,6 +111,10 @@ while [[ $# -gt 0 ]]; do
             gpu_enabled=$2
             shift 2
             ;;
+        --agent-settings)
+            agent_settings=$2  
+            shift 2  
+            ;;
         --openai-api-key)
             OPENAI_API_KEY="$2"
             shift 2
@@ -123,6 +129,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --mode)
             mode=$2
+            shift 2
+            ;;
+        --json-name)
+            json_name=$2
             shift 2
             ;;
         --help)
@@ -151,6 +161,8 @@ while [[ $# -gt 0 ]]; do
             echo "  --azure-api-key <key> : The Azure OpenAI API key"
             echo "  --azure-endpoint <url> : The Azure OpenAI Endpoint"
             echo "  --mode <dev/azure> : Mode (default: azure)"
+            echo "  --json-name <name>              The name of the JSON file to use (default: test_all.json)"
+            echo "  --agent-settings <settings>     The additional agent settings, which should be a json string."  
             exit 0
             ;;
         *)
@@ -201,6 +213,7 @@ echo "Using VM Setup Image path: $vm_setup_image_path"
 echo "Using VM storage mount path: $vm_storage_mount_path"
 echo "Using server mount path: $server_mount_path"
 echo "Using client mount path: $client_mount_path"
+echo "$agent_settings"
 
 # Check if /dev/kvm exists
 if [ ! -e /dev/kvm ]; then
@@ -301,8 +314,11 @@ invoke_docker_container() {
     # Add the image name with tag
     docker_command+=" $winarena_full_image_name:$winarena_image_tag"
     
+    # Escape double quotes
+    escaped_agent_settings=$(echo "$agent_settings" | sed 's/"/\\"/g')
+
     # Set the entrypoint arguments
-    entrypoint_args=" -c './entry.sh --prepare-image $prepare_image --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend'"
+    entrypoint_args=" -c './entry.sh --prepare-image $prepare_image --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --json-name $json_name --agent-settings \"$escaped_agent_settings\"'"
     if [ "$interactive" = true ]; then
         entrypoint_args=""
     fi

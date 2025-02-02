@@ -26,6 +26,8 @@ model="gpt-4-vision-preview"
 som_origin="oss"
 a11y_backend="uia"
 gpu_enabled=false
+json_name="evaluation_examples_windows/test_all.json"
+agent_settings=""
 
 # Parse the command line arguments
 while [[ $# -gt 0 ]]; do
@@ -110,6 +112,14 @@ while [[ $# -gt 0 ]]; do
             mode=$2
             shift 2
             ;;
+        --json-name)
+            json_name=$2
+            shift 2
+            ;;
+        --agent-settings)
+            agent_settings=$2  
+            shift 2  
+            ;; 
         --help)
             echo "Usage: $0 [options]"
             echo "Options:"
@@ -133,6 +143,8 @@ while [[ $# -gt 0 ]]; do
             echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
             echo "  --mode <dev/azure> : Mode (default: azure)"
+            echo "  --json-name <name>              The name of the JSON file to use (default: test_all.json)"
+            echo "  --agent-settings <settings>     The additional agent settings, which should be a json string."  
             exit 0
             ;;
         *)
@@ -161,4 +173,6 @@ if [[ -z "$OPENAI_API_KEY" && (-z "$AZURE_API_KEY" || -z "$AZURE_ENDPOINT") ]]; 
     log_error_exit "Either OPENAI_API_KEY must be set or both AZURE_API_KEY and AZURE_ENDPOINT must be set: $1"
 fi
 
-./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --use-kvm $use_kvm --ram-size $ram_size --cpu-cores $cpu_cores --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT
+echo "$agent_settings"
+
+./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --use-kvm $use_kvm --ram-size $ram_size --cpu-cores $cpu_cores --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT --json-name $json_name --agent-settings "$agent_settings"

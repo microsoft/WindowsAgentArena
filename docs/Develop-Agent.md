@@ -2,8 +2,11 @@
 
 Want to test your own agents in Windows Agent Arena? You can use our default agent as a template and create your own folder under `src/win-arena-container/client/mm_agents`. You just need to ensure that your `agent.py` file includes the `predict()` and `reset()` functions.
 
-## Steps to Create Your Custom Agent
+# Steps to Create Your Custom Agent
+The windows Agent Arena support two types of the agent, first is to only to have the prediction and utitlize the Desktop environment sdk to do the action exection. the second one is to 
+totally running on server mode.
 
+## Client mode onboarding
 ### 1. Create a New Agent Folder
 
 Navigate to the `mm_agents` directory:
@@ -105,7 +108,40 @@ execute_actions(actions)  # Function to execute the predicted actions
 
 Once your agent is ready, submit a Pull Request (PR) to the repository with your new agent folder and code changes. Ensure your code follows the project's guidelines and is well-documented.
 
-## Important Considerations
+## Server mode onboarding
+### Define your environment script
+
+Prepare a script to setup the windows for your agent. you can refer to [UFO setup](https://github.com/microsoft/UFO/blob/dev/waa/windows_arena/setup.ps1)
+
+### Define the start up script to accept the WAA prompt
+
+The script is to accept the WAA prompt to run your agent on windows, refer to [UFO startup](https://github.com/microsoft/UFO/blob/dev/waa/windows_arena/startup.ps1)
+
+### Define your agent repo setting to easily clone the agent code base
+
+Add json element for your agent as below in `AgentRepoConfig.json`
+
+```json
+{
+  "repositories": [
+    {
+      "name": "UFO",
+      "url": "https://github.com/PaulJiangMS/UFO",
+      "runningmode": "server",
+      "setupscript": "windows_arena/setup.ps1", 
+      "startuptype": "powershell",
+      "startuppoint": "windows_arena/startup.ps1"
+    }
+  ]
+}
+```
+
+### Note for service mode
+
+You need to finish the steps for server mode first, then following the steps to prepare windows image.
+
+
+##  Important Considerations
 
 - **Observation Data**: The `obs` dictionary contains vital information like screenshots, window titles, and clipboard content. Use this data to inform your agent's decisions.
 - **Action Format**: The list returned by `predict()` should contain executable actions or code blocks that the environment can interpret.
