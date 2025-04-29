@@ -1,0 +1,5 @@
+# Claude agent dependencies
+anthropic>=0.3.0            # For making API calls to Claude (direct API)
+boto3>=1.28.0               # For AWS interactions when using Claude on Bedrock
+aws-codeartifact-pytest-version-client>=1.0.0  # For AWS environment setup
+Pillow>=9.0.0               # For image handling
