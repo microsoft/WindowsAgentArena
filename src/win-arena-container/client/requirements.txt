@@ -67,3 +67,5 @@ ultralytics
 py7zr
 anthropic
 einops
+boto3
+aws-codeartifact-pytest-version-client
