@@ -5,6 +5,8 @@ set -e
 
 source ./shared.sh
 
+export OPENAI_API_KEY=empty
+
 # Default parameters
 mode="azure" # Default to azure if no argument is provided
 prepare_image=false
