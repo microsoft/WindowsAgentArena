@@ -235,6 +235,47 @@ def execute_command():
         #     'data': data
         # }), 500    
 
+@app.route('/notify', methods=['POST'])
+def notify_env_agent():
+    
+    data = request.json
+    # The 'command' key in the JSON request should contain the command to be executed.
+    data_ = data.get('data', ">>>>>>> no data in post <<<<<<<")
+
+    try:
+        
+        # find file from file_path
+        file_path = os.path.expandvars(os.path.expanduser(request.form['file_path']))
+
+        # if not exist, then create a new file; else write to file
+        if not os.path.exists(file_path):
+            with open(file_path, "w") as file:
+                file.write("created new notify logger file\n")
+
+        # Write the new data to the file
+        with open(file_path, "a") as file:
+            file.write(data_+"\n")
+
+        return jsonify({
+            'status': 'success',
+            'output': result.stdout,
+            'error': result.stderr,
+            'returncode': result.returncode
+        })
+    except Exception as e:
+        logger.error("\n" + traceback.format_exc() + "\n")
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+        # return jsonify({
+        #     'status': 'error',
+        #     'message': str(e),
+        #     'shell': str(shell),
+        #     'command': command,
+        #     'data': data
+        # }), 500    
+
 def _get_machine_architecture() -> str:
     """ Get the machine architecture, e.g., x86_64, arm64, aarch64, i386, etc.
     """
