@@ -170,7 +170,7 @@ def execute_command_windows():
     data = request.get_json() 
     # shell = data.get('shell', False)  
     command = data.get('command')  
-    print(command)
+    print("/execute_windows: "+command)
 
     try:  
         # exec(command_with_computer)  
@@ -234,7 +234,6 @@ def execute_command():
         #     'command': command,
         #     'data': data
         # }), 500    
-
 
 def _get_machine_architecture() -> str:
     """ Get the machine architecture, e.g., x86_64, arm64, aarch64, i386, etc.

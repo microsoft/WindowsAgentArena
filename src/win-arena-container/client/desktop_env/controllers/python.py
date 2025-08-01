@@ -174,15 +174,17 @@ class PythonController:
         }
 
 
-        try:
-            response = requests.post(self.http_server + "/execute_windows", headers=headers, json=payload, timeout=90)
-            if response.status_code == 200:
-                logger.info("Command executed successfully: %s", response.text)
-            else:
-                logger.error("Failed to execute command. Status code: %d", response.status_code)
-            return response.json()
-        except requests.exceptions.RequestException as e:
-            logger.error("An error occurred while trying to execute the command: %s", e)
+        # try:
+        logger.info("execute_python_windows_command self.http_server: " + str(self.http_server))
+        response = requests.post(self.http_server + "/execute_windows", headers=headers, json=payload, timeout=90)
+        logger.info("execute_python_windows_command response: " + str(response))
+        if response.status_code == 200:
+            logger.info("Command executed successfully: %s", response.text)
+        else:
+            logger.error("Failed to execute command. Status code: %d", response.status_code)
+        return response.json()
+        # except requests.exceptions.RequestException as e:
+        #     logger.error("An error occurred while trying to execute the command: %s", e)
 
     def execute_python_command(self, command: str) -> None:
         """

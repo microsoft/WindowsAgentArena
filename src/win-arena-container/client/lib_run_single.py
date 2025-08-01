@@ -6,6 +6,7 @@ import os
 import time
 import traceback
 from trajectory_recorder import TrajectoryRecorder
+import pyfile_inject_execute
 
 logger = logging.getLogger("desktopenv.experiment")
 
@@ -16,10 +17,16 @@ with open("./settings.json", "r") as file:
 time_limit = data["time_limit"]
 
 def run_single_example(agent, env, example, max_steps, instruction, args, example_result_dir, scores):
+    logger.info("run_single_example start...")
     agent.reset()
     obs = env.reset(task_config=example)
     done = False
     step_idx = 0
+
+    # inject and execute
+    logger.info("pyfile_inject_execute.inject_and_execute starts")
+    pyfile_inject_execute.inject_and_execute(envV = env, controllerV=env.controller)
+    logger.info("pyfile_inject_execute.inject_and_execute ends")
 
     #env.controller.start_recording()
     start_time = datetime.datetime.now()
@@ -39,10 +46,12 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
             continue
 
         logger.info("Agent: Thinking...")
+        pyfile_inject_execute.notify(envV = env, controllerV=env.controller, data = "before agent.predict")
         response, actions, logs, computer_update_args = agent.predict(
             instruction,
             obs
         )
+        pyfile_inject_execute.notify(envV = env, controllerV=env.controller, data = "after agent.predict")
 
         # update the computer object, used by navi's action space
         if computer_update_args:
@@ -55,7 +64,9 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
             elapsed_timestamp = f"{datetime.datetime.now() - start_time}"
             logger.info("Step %d: %s", step_idx + 1, action)
             
+            pyfile_inject_execute.notify(envV = env, controllerV=env.controller, data = "before env.step")
             obs, reward, done, info = env.step(action, args.sleep_after_execution)
+            pyfile_inject_execute.notify(envV = env, controllerV=env.controller, data = "after env.step")
 
             logger.info("Reward: %.2f", reward)
             logger.info("Done: %s", done)
@@ -90,3 +101,5 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
     # Record final results
     recorder.record_end(result, start_time)
     # env.controller.end_recording(os.path.join(example_result_dir, "recording.mp4"))
+    
+    logger.info("run_single_example end...")
