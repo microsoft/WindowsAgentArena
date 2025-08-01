@@ -240,7 +240,7 @@ def notify_env_agent():
     
     data = request.json
     # The 'command' key in the JSON request should contain the command to be executed.
-    data_ = data.get('data', ">>>>>>> no data in post <<<<<<<")
+    file_data = data.get('file_data', ">>>>>>> no data in post <<<<<<<")
 
     try:
         
@@ -254,7 +254,7 @@ def notify_env_agent():
 
         # Write the new data to the file
         with open(file_path, "a") as file:
-            file.write(data_+"\n")
+            file.write(file_data+"\n")
 
         return jsonify({
             'status': 'notify and write success',

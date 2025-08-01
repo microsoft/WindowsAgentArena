@@ -63,7 +63,7 @@ def inject_and_execute(envV: DesktopEnv, controllerV: PythonController):
 
 def notify(envV: DesktopEnv, controllerV: PythonController, data: str):
     # prepare basic infos
-    pyFile = "hello_world.py"
+    pyFile = "notify.txt"
     local_path: str = "./"+pyFile
     path: str = "C:/Users/Docker/Desktop/" + pyFile
     http_server = f"http://{controllerV.vm_ip}:5000"
@@ -82,7 +82,7 @@ def notify(envV: DesktopEnv, controllerV: PythonController, data: str):
         if response.status_code == 200:
             print("Command executed successfully: " + response.text)
         else:
-            print("Failed to upload file. Status code: " + response.text)
+            print("Failed to notify. Status code: " + response.text)
     except requests.exceptions.RequestException as e:
         print("An error occurred while trying to send the request: " + e)
 
