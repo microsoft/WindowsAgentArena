@@ -170,7 +170,7 @@ def execute_command_windows():
     data = request.get_json() 
     # shell = data.get('shell', False)  
     command = data.get('command')  
-    print(command)
+    print("/execute_windows: "+command)
 
     try:  
         # exec(command_with_computer)  
@@ -235,6 +235,45 @@ def execute_command():
         #     'data': data
         # }), 500    
 
+@app.route('/notify', methods=['POST'])
+def notify_env_agent():
+    
+    data = request.json
+    # The 'command' key in the JSON request should contain the command to be executed.
+    file_data_ = data.get('file_data', ">>>>>>> no data in post <<<<<<<")
+    file_path_ = data.get('file_path', "C:/Users/Docker/Desktop/temp.txt")
+
+    try:
+        
+        # find file from file_path
+        file_path = os.path.expandvars(os.path.expanduser(file_path_))
+
+        # if not exist, then create a new file; else write to file
+        if not os.path.exists(file_path):
+            with open(file_path, "w") as file:
+                file.write("created new notify logger file\n")
+
+        # Write the new data to the file
+        with open(file_path, "a") as file:
+            file.write(file_data_+"\n")
+
+        return jsonify({
+            'status': 'notify and write success',
+            'error': ''
+        })
+    except Exception as e:
+        logger.error("\n" + traceback.format_exc() + "\n")
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+        # return jsonify({
+        #     'status': 'error',
+        #     'message': str(e),
+        #     'shell': str(shell),
+        #     'command': command,
+        #     'data': data
+        # }), 500    
 
 def _get_machine_architecture() -> str:
     """ Get the machine architecture, e.g., x86_64, arm64, aarch64, i386, etc.

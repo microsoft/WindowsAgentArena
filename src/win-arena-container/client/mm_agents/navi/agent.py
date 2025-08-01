@@ -3,6 +3,7 @@ import logging
 import re
 from typing import Dict, List
 # from mm_agents.planner.computer import Computer, WindowManager
+from mm_agents.navi.gpt.openAI_planner import OpenAI_Planner
 from mm_agents.navi.gpt.gpt4v_planner import GPT4V_Planner
 from mm_agents.navi.gpt import planner_messages
 import copy
@@ -113,9 +114,12 @@ class NaviAgent:
 
         if model == 'phi3-v':
             from mm_agents.navi.gpt.phi3_planner import Phi3_Planner
-            self.gpt4v_planner = Phi3_Planner(server='azure',model='phi3-v',temperature=temperature)
+            # self.gpt4v_planner = Phi3_Planner(server='azure',model='phi3-v',temperature=temperature)
+            self.gpt4v_planner = OpenAI_Planner(temperature=temperature)
         else:
-            self.gpt4v_planner = GPT4V_Planner(server=self.server, model=self.model, temperature=temperature)
+            # self.gpt4v_planner = GPT4V_Planner(server=self.server, model=self.model, temperature=temperature)
+            self.gpt4v_planner = OpenAI_Planner(temperature=temperature)
+
             if use_last_screen:
                 self.gpt4v_planner.system_prompt = planner_messages.planning_system_message_shortened_previmg
         
@@ -398,10 +402,15 @@ class NaviAgent:
                 image_prompts = [last_image, image_prompt_resized]
 
             # send to gpt
-            logger.info("Thinking...")
+            logger.info("Thinking... model:"+self.gpt4v_planner.model)
+            logger.info("OpenAI info 1: "+self.gpt4v_planner.gpt4v.model)
+            logger.info("OpenAI info 2: "+str(self.gpt4v_planner.gpt4v.client.base_url))
+            logger.info("OpenAI info 3: "+str(self.gpt4v_planner.gpt4v.client.api_key))
             plan_result = self.gpt4v_planner.plan(image_prompts, user_question)
 
         logs['plan_result'] = plan_result
+
+        logger.info("plan_result: "+str(plan_result))
 
         # extract the textual memory block
         memory_block = re.search(r'```memory\n(.*?)```', plan_result, re.DOTALL)
