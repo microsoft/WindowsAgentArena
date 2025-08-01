@@ -8,7 +8,7 @@ import json
 import re
 
 class OpenAI_Planner():
-    def __init__(self, server="azure", model="Qwen/Qwen2.5-VL-72B-Instruct", temperature=1.0):
+    def __init__(self, server="azure", model="ByteDance-Seed/UI-TARS-1.5-7B", temperature=1.0):
         self.server = server
         self.model = model
         self.temperature = temperature

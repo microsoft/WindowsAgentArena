@@ -19,14 +19,14 @@ from tenacity import (
 class GPT4VisionOAI:  
   
     # def __init__(self, model="gpt-4o"):  
-    def __init__(self, model="Qwen/Qwen2.5-VL-72B-Instruct"):  
+    def __init__(self, model="ByteDance-Seed/UI-TARS-1.5-7B"):  
         self.model = model
         #oad key from environment variable
         self.api_key = os.getenv("OPENAI_API_KEY")
         if self.api_key is None:
             print("API key not found in environment variable. Setting to 'empty'.")
             self.api_key = "empty"
-        self.client = openai.OpenAI(api_key=self.api_key,base_url="http://ec2-35-88-109-159.us-west-2.compute.amazonaws.com:18000/v1", max_retries=0)  
+        self.client = openai.OpenAI(api_key=self.api_key,base_url="http://ec2-35-88-109-159.us-west-2.compute.amazonaws.com:18001/v1", max_retries=0)  
   
     def encode_image(self, image: Union[str, Image.Image]) -> str:  
         if isinstance(image, str):  
@@ -109,7 +109,7 @@ def main():
     system_prompt = "You are a helpful assistant."
 
     # SINGLE RESOURCE
-    gpt4v_wrapper = GPT4VisionOAI(model="Qwen/Qwen2.5-VL-72B-Instruct")
+    gpt4v_wrapper = GPT4VisionOAI(model="ByteDance-Seed/UI-TARS-1.5-7B")
 
     # process a single image
     start_time = time.time()
