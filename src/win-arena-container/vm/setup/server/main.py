@@ -240,12 +240,13 @@ def notify_env_agent():
     
     data = request.json
     # The 'command' key in the JSON request should contain the command to be executed.
-    file_data = data.get('file_data', ">>>>>>> no data in post <<<<<<<")
+    file_data_ = data.get('file_data', ">>>>>>> no data in post <<<<<<<")
+    file_path_ = data.get('file_path', "C:/Users/Docker/Desktop/temp.txt")
 
     try:
         
         # find file from file_path
-        file_path = os.path.expandvars(os.path.expanduser(request.form['file_path']))
+        file_path = os.path.expandvars(os.path.expanduser(file_path_))
 
         # if not exist, then create a new file; else write to file
         if not os.path.exists(file_path):
@@ -254,7 +255,7 @@ def notify_env_agent():
 
         # Write the new data to the file
         with open(file_path, "a") as file:
-            file.write(file_data+"\n")
+            file.write(file_data_+"\n")
 
         return jsonify({
             'status': 'notify and write success',

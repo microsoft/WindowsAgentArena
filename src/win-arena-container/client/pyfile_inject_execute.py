@@ -3,6 +3,7 @@ import os
 import os.path
 import logging
 import requests
+import json
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 from desktop_env.controllers.python import PythonController
@@ -69,16 +70,13 @@ def notify(envV: DesktopEnv, controllerV: PythonController, data: str):
     http_server = f"http://{controllerV.vm_ip}:5000"
 
     
-    form = MultipartEncoder({
-        "file_path": path,
-        "file_data": data
-    })
-    headers = {"Content-Type": form.content_type}
+    payload = json.dumps({"file_path": path, "file_data": data})
+    headers = {'Content-Type': 'application/json'}
 
     try:
         print("REQUEST ADDRESS: %s", http_server + "/notify")
-        print("REQUEST FORM: "+str(form))
-        response = requests.post(http_server + "/notify", headers=headers, data=form)
+        print("REQUEST FORM: "+str(payload))
+        response = requests.post(http_server + "/notify", headers=headers, data=payload, timeout=90)
         if response.status_code == 200:
             print("Command executed successfully: " + response.text)
         else:
