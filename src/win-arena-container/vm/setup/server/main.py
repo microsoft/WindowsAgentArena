@@ -257,10 +257,8 @@ def notify_env_agent():
             file.write(data_+"\n")
 
         return jsonify({
-            'status': 'success',
-            'output': result.stdout,
-            'error': result.stderr,
-            'returncode': result.returncode
+            'status': 'notify and write success',
+            'error': ''
         })
     except Exception as e:
         logger.error("\n" + traceback.format_exc() + "\n")
