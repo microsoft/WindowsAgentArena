@@ -45,6 +45,13 @@ logging.basicConfig(
 
 experiments_json = None
 
+def resolve_search_provider(config):
+    # Explicit experiment/CLI settings take precedence over the environment.
+    provider = config.get('search_provider') if 'search_provider' in config else os.environ.get('WAA_SEARCH_PROVIDER', 'parallel')
+    if provider not in ('parallel', 'none'):
+        raise ValueError('search_provider must be parallel or none')
+    return provider
+
 def load_args_as_dict():
     parser = argparse.ArgumentParser(description='Script to create a Windows Arena run for benchmarking on Azure ML.')
     parser.add_argument('--ci_startup_script_path', default='Users/rbonatti/compute-instance-startup.sh', help='Path to the startup script for the compute instance (default: Users/rbonatti/compute-instance-startup.sh)')  
@@ -58,6 +65,9 @@ def load_args_as_dict():
     parser.add_argument('--model_name', default='gpt-4o-mini', help='Model name (default: gpt-4o-mini)') #gpt-4o-mini or gpt-4-vision-preview or gpt-4o or gpt-4-1106-vision-preview  
     parser.add_argument('--som_origin', default='oss', help='Origin of the SOM (default: internal)') #internal or oss or a11y or mixed  
     parser.add_argument('--a11y_backend', default='uia', help='Type of acc tree. uia more precise, win32 faster') #uia (slower) or win32 (faster)
+    parser.add_argument('--search-provider', '--search_provider', dest='search_provider',
+                        choices=['parallel', 'none'], default=argparse.SUPPRESS,
+                        help='Navi help search; overrides a saved choice (default: WAA_SEARCH_PROVIDER or parallel)')
     args, _ = parser.parse_known_args()
     return vars(args)
 
@@ -74,8 +84,10 @@ def launch_vm_and_job(  worker_id,
                         json_name: str,
                         model_name: str,
                         som_origin: str,
-                        a11y_backend: str
+                        a11y_backend: str,
+                        search_provider=None
                         ):
+    search_provider = resolve_search_provider({} if search_provider is None else {'search_provider': search_provider})
     subscription_id = azure_config['AZURE_SUBSCRIPTION_ID']
     resource_group = azure_config['AZURE_ML_RESOURCE_GROUP']
     workspace_name = azure_config['AZURE_ML_WORKSPACE_NAME']
@@ -169,7 +181,7 @@ def launch_vm_and_job(  worker_id,
 
     src = ScriptRunConfig(source_directory="./azure_files",
                         script='run_entry.py',
-                        arguments=[input, output, exp_name, num_workers, worker_id, agent, json_name, model_name, som_origin, a11y_backend],
+                        arguments=[input, output, exp_name, num_workers, worker_id, agent, json_name, model_name, som_origin, a11y_backend, search_provider],
                         run_config=run_config)
 
     experiment = Experiment(workspace=ws, name=exp_name)  
@@ -197,7 +209,9 @@ def launch_vm_and_job(  worker_id,
     
 
 def launch_experiment(config):
-    
+    # Resolve and validate before any Azure clients or paid compute are started.
+    config['search_provider'] = resolve_search_provider(config)
+    logging.info('Navi search provider: %s', config['search_provider'])
     #### CREATE THE CREDENTIALS FROM THE CONFIG FILE
     script_dir = Path(__file__).parent
     config_path = script_dir / '..' / 'config.json'
@@ -231,7 +245,7 @@ def launch_experiment(config):
     for i in range(config['num_workers']):
         p = Process(target=launch_vm_and_job, args=(i, config['exp_name'], docker_config, config['datastore_input_path'], 
             config['num_workers'], config['agent'], azure_config, config['docker_img_name'], config['ci_startup_script_path'],
-            config['use_managed_identity'], config['json_name'], config['model_name'], config['som_origin'], config['a11y_backend']))
+            config['use_managed_identity'], config['json_name'], config['model_name'], config['som_origin'], config['a11y_backend'], config['search_provider']))
         experiments.append(p)
         p.start()
 
@@ -240,7 +254,13 @@ def launch_experiment(config):
 
     logging.info("All experiments have been completed.")
 
-def launch_batch(experiments):
+def launch_batch(experiments, search_provider=None):
+    # Validate every pending experiment before launching the first paid resource.
+    for config in experiments.values():
+        if not config.get('_done', False) and '_stop_time' not in config:
+            if search_provider is not None:
+                config['search_provider'] = search_provider
+            config['search_provider'] = resolve_search_provider(config)
     for exp_name, config in experiments.items():
         if config.get('_done', False) or '_stop_time' in config:
             logging.info(f"Skipping experiment: {exp_name} as it has already been completed.")
@@ -275,6 +295,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run Azure ML experiments')
     parser.add_argument('--experiments_json', help='Path to JSON file containing multiple experiments')
     parser.add_argument('--update_json', action='store_true', help='Update the experiments JSON with provided arguments')
+    parser.add_argument('--search-provider', '--search_provider', dest='search_provider',
+                        choices=['parallel', 'none'], default=argparse.SUPPRESS,
+                        help='Override the search provider for pending experiments')
     args, _ = parser.parse_known_args()
     
     if args.experiments_json:
@@ -296,8 +319,9 @@ if __name__ == "__main__":
             exp_config = load_args_as_dict()
             exp_name = exp_config["exp_name"]
             
-            # Preserve existing keys starting with '_' in the experiment config
-            existing_config = {k: v for k, v in experiments.get(exp_name, {}).items() if k.startswith('_')}
+            # Preserve metadata and saved search choice unless explicitly overridden.
+            existing_config = {k: v for k, v in experiments.get(exp_name, {}).items()
+                               if k.startswith('_') or k == 'search_provider'}
             exp_config = {**existing_config, **exp_config}  # Merge with new config
 
             experiments[exp_name] = exp_config
@@ -319,7 +343,7 @@ if __name__ == "__main__":
         try:
             with open(args.experiments_json, 'r') as f:
                 experiments = json.load(f)
-            launch_batch(experiments)
+            launch_batch(experiments, getattr(args, 'search_provider', None))
         except Exception as e:
             logging.error(f"Error loading experiments from JSON: {str(e)}")
             # Print the stack trace

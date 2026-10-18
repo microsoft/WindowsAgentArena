@@ -4,6 +4,7 @@ agent="navi"
 model="gpt-4-vision-preview"
 som_origin="oss"
 a11y_backend="uia"
+search_provider="${WAA_SEARCH_PROVIDER-parallel}"
 clean_results=true
 worker_id="0"
 num_workers="1"
@@ -34,6 +35,14 @@ while [[ $# -gt 0 ]]; do
             clean_results=$2
             shift 2
             ;;
+        --search-provider)
+            if [[ $# -lt 2 ]]; then
+                echo "--search-provider requires parallel or none" >&2
+                exit 2
+            fi
+            search_provider="$2"
+            shift 2
+            ;;
         --worker-id)
             worker_id=$2
             shift 2
@@ -62,6 +71,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --som-origin <som_origin>       The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss)"
             echo "  --a11y-backend <a11y_backend>   The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --clean-results <bool>          Clean the results directory before running the client (default: true)"
+            echo "  --search-provider <parallel/none> Navi help search (default: WAA_SEARCH_PROVIDER or parallel)"
             echo "  --worker-id <id>                The worker ID"
             echo "  --num-workers <num>             The number of workers"
             echo "  --result-dir <dir>              The directory to store the results (default: ./results)"
@@ -73,6 +83,12 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Reject invalid configuration before cleaning results or starting the client.
+case "$search_provider" in
+    parallel|none) ;;
+    *) echo "Search provider must be parallel or none" >&2; exit 2 ;;
+esac
+
 cd /client
 if [ "$clean_results" = true ]; then
     echo "Cleaning results directory..."
@@ -80,4 +96,4 @@ if [ "$clean_results" = true ]; then
 fi
 
 echo "Running agent $agent..."
-python run.py --agent "$agent" --model "$model" --som_origin "$som_origin" --a11y_backend "$a11y_backend" --worker_id "$worker_id" --num_workers "$num_workers" --result_dir "$result_dir" --test_all_meta_path "$json_name" --diff_lvl "$diff_lvl"
+python run.py --agent "$agent" --model "$model" --som_origin "$som_origin" --a11y_backend "$a11y_backend" --search-provider "$search_provider" --worker_id "$worker_id" --num_workers "$num_workers" --result_dir "$result_dir" --test_all_meta_path "$json_name" --diff_lvl "$diff_lvl"

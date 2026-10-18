@@ -11,6 +11,7 @@ agent="navi"
 model="gpt-4-vision-preview"
 som_origin="oss"
 a11y_backend="uia"
+search_provider="${WAA_SEARCH_PROVIDER-parallel}"
 clean_results=true
 worker_id="0"
 num_workers="1"
@@ -47,6 +48,14 @@ while [[ $# -gt 0 ]]; do
             clean_results=$2
             shift 2
             ;;
+        --search-provider)
+            if [[ $# -lt 2 ]]; then
+                echo "--search-provider requires parallel or none" >&2
+                exit 2
+            fi
+            search_provider="$2"
+            shift 2
+            ;;
         --worker-id)
             worker_id=$2
             shift 2
@@ -73,6 +82,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --som-origin <som_origin>       The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss)"
             echo "  --a11y-backend <a11y_backend>   The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --clean-results <bool>          Clean the results directory before running the client (default: true)"
+            echo "  --search-provider <parallel/none> Navi help search (default: WAA_SEARCH_PROVIDER or parallel)"
             echo "  --worker-id <id>                The worker ID"
             echo "  --num-workers <num>             The number of workers"
             echo "  --result-dir <dir>              The directory to store the results (default: ./results)"
@@ -82,6 +92,11 @@ while [[ $# -gt 0 ]]; do
         *)
     esac
 done
+
+case "$search_provider" in
+    parallel|none) ;;
+    *) echo "Search provider must be parallel or none" >&2; exit 2 ;;
+esac
 
 # Starts the VM and blocks until the Windows Arena Server is ready
 echo "Starting VM..."
@@ -103,7 +118,7 @@ else
     # Start the client script
     if [ "$start_client" = "true" ]; then
         echo "Starting client..."
-        ./start_client.sh --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --clean-results $clean_results --worker-id $worker_id --num-workers $num_workers --result-dir $result_dir --json-name $json_name
+        ./start_client.sh --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --search-provider "$search_provider" --clean-results $clean_results --worker-id $worker_id --num-workers $num_workers --result-dir $result_dir --json-name $json_name
     else
         echo "Keeping container alive"
         while true; do

@@ -195,6 +195,23 @@ Below is a comparison of various combinations of hyperparameters used by the Nav
 - `--som-origin` determines how the Navi agent detects screen elements
 - `--a11y-backend` specifies the Accessibility backend type (when using `a11y` or mixed modes)
 
+#### Navi application-help search
+
+Navi can request web search or page excerpts while planning a desktop action, for example to find an application's command or keyboard shortcut. Unconfigured runs now use [Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp) at `https://search.parallel.ai/mcp`, with search in Fast mode. Parallel's anonymous endpoint requires no account or API key; service quotas still apply. The OpenAI or Azure model credentials above remain required.
+
+This adds external reference information to the agent and changes the former no-direct-search baseline. To run with that previous search behavior, use:
+
+```bash
+cd scripts
+./run-local.sh --search-provider none
+```
+
+`none` disables Navi's direct search and fetch tools; GUI browser actions remain available. You can save this choice in the shell with `export WAA_SEARCH_PROVIDER=none`. Explicit `--search-provider parallel` or `--search-provider none` takes precedence over the environment. Direct client runs accept the same flag (also spelled `--search_provider`). Invalid values fail before starting the VM/client. The effective setting is recorded in each task's `run_config.json` and the run arguments log; keep search settings consistent when comparing results.
+
+Search and fetch run only when the planner requests them, with at most two tool requests per desktop step. Requested task queries and fetch URLs go to Parallel, and returned excerpts/URLs are supplied to the configured model. Screenshots are not sent to Parallel by this integration. Disable direct search if that external access is unsuitable for your tasks. Tool errors, including quotas and timeouts, are returned to the planner without automatically switching providers or retrying. The planner then continues to produce the normal desktop action.
+
+For Azure, set `"search_provider": "none"` or `"search_provider": "parallel"` in each experiment object. An explicit experiment value is preserved; when absent, the launching shell's `WAA_SEARCH_PROVIDER` applies, defaulting to `parallel`. Pass `--search-provider` to `run_azure.py` to override pending experiments, or to `--update_json` to save a new choice. Updating other experiment settings preserves an existing search choice. Invalid providers are rejected before Azure compute is launched. Build and use an image containing these changes for Azure jobs.
+
 #### 4.2 Local development tips
 
 At first sight it might seem challenging to develop/debug code running inside the docker container. However, we provide a few tips to make this process easier. Check the [Development-Tips Doc](./docs/Development-Tips.md) for more details such as:
