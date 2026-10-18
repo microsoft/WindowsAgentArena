@@ -25,6 +25,7 @@ agent="navi"
 model="gpt-4-vision-preview"
 som_origin="oss"
 a11y_backend="uia"
+search_provider="${WAA_SEARCH_PROVIDER-parallel}"
 gpu_enabled=false
 
 # Parse the command line arguments
@@ -106,6 +107,13 @@ while [[ $# -gt 0 ]]; do
             gpu_enabled=$2
             shift 2
             ;;
+        --search-provider)
+            if [[ $# -lt 2 ]]; then
+                log_error_exit "--search-provider requires parallel or none"
+            fi
+            search_provider="$2"
+            shift 2
+            ;;
         --mode)
             mode=$2
             shift 2
@@ -132,6 +140,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss, omni, mixed-omni)"
             echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
+            echo "  --search-provider <parallel/none> : Navi help search (default: WAA_SEARCH_PROVIDER or parallel)"
             echo "  --mode <dev/azure> : Mode (default: azure)"
             exit 0
             ;;
@@ -141,6 +150,11 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+case "$search_provider" in
+    parallel|none) ;;
+    *) log_error_exit "Search provider must be parallel or none" ;;
+esac
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -161,4 +175,4 @@ if [[ -z "$OPENAI_API_KEY" && (-z "$AZURE_API_KEY" || -z "$AZURE_ENDPOINT") ]]; 
     log_error_exit "Either OPENAI_API_KEY must be set or both AZURE_API_KEY and AZURE_ENDPOINT must be set: $1"
 fi
 
-./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --use-kvm $use_kvm --ram-size $ram_size --cpu-cores $cpu_cores --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT
+./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --use-kvm $use_kvm --ram-size $ram_size --cpu-cores $cpu_cores --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --search-provider "$search_provider" --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT
