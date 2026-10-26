@@ -14,6 +14,10 @@ def main():
     model_name = sys.argv[8]
     som_origin = sys.argv[9]
     a11y_backend = sys.argv[10]
+    # Keep older jobs (without the trailing provider argument) compatible.
+    search_provider = sys.argv[11] if len(sys.argv) > 11 else os.environ.get('WAA_SEARCH_PROVIDER', 'parallel')
+    if search_provider not in ('parallel', 'none'):
+        raise ValueError('search_provider must be parallel or none')
 
     # print all args
     print("All args:")
@@ -72,7 +76,7 @@ def main():
     os.system("/entry_setup.sh") # since it's in root we can just do /script.sh and don't need cd /
 
     # launches the client script
-    os.system(f"cd /client && python run.py --agent_name {agent} --worker_id {worker_id} --num_workers {num_workers} --result_dir {result_dir} --test_all_meta_path {json_name} --model {model_name} --som_origin {som_origin} --a11y_backend {a11y_backend}")
+    os.system(f"cd /client && python run.py --agent_name {agent} --worker_id {worker_id} --num_workers {num_workers} --result_dir {result_dir} --test_all_meta_path {json_name} --model {model_name} --som_origin {som_origin} --a11y_backend {a11y_backend} --search-provider {search_provider}")
 
     print("Finished running entry script")
 

@@ -96,6 +96,11 @@ def config() -> argparse.Namespace:
 
     # agent config
     parser.add_argument("--agent_name", type=str, default="navi")
+    parser.add_argument(
+        "--search-provider", "--search_provider", dest="search_provider",
+        choices=["parallel", "none"], default=os.environ.get("WAA_SEARCH_PROVIDER", "parallel"),
+        help="Navi application-help search provider (default: WAA_SEARCH_PROVIDER or parallel)",
+    )
     parser.add_argument("--som_origin", type=str, default="oss") # options: 'oss', 'a11y', 'mixed-oss'
     parser.add_argument("--max_trajectory_length", type=int, default=3)
     parser.add_argument("--test_config_base_dir", type=str, default="evaluation_examples_windows")
@@ -126,6 +131,10 @@ def config() -> argparse.Namespace:
 
     args, unknownargs = parser.parse_known_args()
 
+    # argparse does not check string defaults against choices.
+    if args.search_provider not in ("parallel", "none"):
+        parser.error("WAA_SEARCH_PROVIDER must be parallel or none")
+
     return args
 
 def test(
@@ -150,6 +159,7 @@ def test(
         "a11y_backend": args.a11y_backend,
         "max_trajectory_length": args.max_trajectory_length,
         "agent_name": args.agent_name,
+        "search_provider": args.search_provider,
         "som_origin": args.som_origin,
         "model": args.model,
         "temperature": args.temperature,
@@ -184,7 +194,8 @@ def test(
             model=args.model,
             som_config=som_config,
             som_origin=args.som_origin,
-            temperature=args.temperature
+            temperature=args.temperature,
+            search_provider=args.search_provider,
         )
     elif cfg_args["agent_name"] == "claude":
         from mm_agents.claude.agent import ClaudeAgent
@@ -242,6 +253,8 @@ def test(
                 example_id
             )
             os.makedirs(example_result_dir, exist_ok=True)
+            with open(os.path.join(example_result_dir, "run_config.json"), "w", encoding="utf-8") as f:
+                json.dump(cfg_args, f, indent=2)
             
             # Example Logging Config {{{
             os.makedirs(os.path.join(example_result_dir, "logs"), exist_ok=True)

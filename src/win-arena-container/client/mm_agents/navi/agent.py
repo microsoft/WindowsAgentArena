@@ -5,6 +5,9 @@ from typing import Dict, List
 # from mm_agents.planner.computer import Computer, WindowManager
 from mm_agents.navi.gpt.gpt4v_planner import GPT4V_Planner
 from mm_agents.navi.gpt import planner_messages
+from mm_agents.navi.web_search import (
+    ParallelSearchClient, WEB_TOOLS_PROMPT, plan_with_web_tools, resolve_search_provider,
+)
 import copy
 from io import BytesIO
 
@@ -80,10 +83,13 @@ class NaviAgent:
             auto_window_maximize = False,
             use_last_screen = True,
             temperature: float = 0.5,
+            search_provider=None,
     ):
         self.action_space = "code_block"
         self.server = server
         self.model = model
+        self.search_provider = resolve_search_provider(search_provider)
+        self.web_search = ParallelSearchClient(model) if self.search_provider == "parallel" else None
         self.som_origin = som_origin
         if som_config is None:
             config = {
@@ -122,6 +128,9 @@ class NaviAgent:
         from mm_agents.navi.screenparsing_oss.utils.obs import parser_to_prompt
         self.parser_to_prompt = parser_to_prompt
 
+        if self.web_search is not None:
+            self.gpt4v_planner.system_prompt += WEB_TOOLS_PROMPT
+
         self.memory_block_text_empty = """
 ```memory
 # empty memory block
@@ -139,7 +148,7 @@ class NaviAgent:
         """
         Predict the next action(s) based on the current observation.
         """
-        logs={}
+        logs={"search_provider": self.search_provider}
         
         if self.obs_view == "screen":
             image_file = BytesIO(obs['screenshot'])
@@ -399,7 +408,9 @@ class NaviAgent:
 
             # send to gpt
             logger.info("Thinking...")
-            plan_result = self.gpt4v_planner.plan(image_prompts, user_question)
+            plan_result = plan_with_web_tools(
+                self.gpt4v_planner, image_prompts, user_question, self.web_search, logs,
+            )
 
         logs['plan_result'] = plan_result
 
@@ -453,6 +464,8 @@ class NaviAgent:
 
 
     def reset(self):
+        if self.web_search is not None:
+            self.web_search.reset()
         self.memory_block_text = self.memory_block_text_empty
         self.prev_actions = []
         self.prev_window_title = None

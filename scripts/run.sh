@@ -25,6 +25,7 @@ agent="navi"
 model="gpt-4-vision-preview"
 som_origin="oss"
 a11y_backend="uia"
+search_provider="${WAA_SEARCH_PROVIDER-parallel}"
 gpu_enabled=false
 OPENAI_API_KEY=""
 AZURE_API_KEY=""
@@ -109,6 +110,13 @@ while [[ $# -gt 0 ]]; do
             gpu_enabled=$2
             shift 2
             ;;
+        --search-provider)
+            if [[ $# -lt 2 ]]; then
+                log_error_exit "--search-provider requires parallel or none"
+            fi
+            search_provider="$2"
+            shift 2
+            ;;
         --openai-api-key)
             OPENAI_API_KEY="$2"
             shift 2
@@ -147,6 +155,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss, omni, mixed-omni)"
             echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
+            echo "  --search-provider <parallel/none> : Navi help search (default: WAA_SEARCH_PROVIDER or parallel)"
             echo "  --openai-api-key <key> : The OpenAI API key"
             echo "  --azure-api-key <key> : The Azure OpenAI API key"
             echo "  --azure-endpoint <url> : The Azure OpenAI Endpoint"
@@ -159,6 +168,12 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Validate before the provider is forwarded through Docker's shell command.
+case "$search_provider" in
+    parallel|none) ;;
+    *) log_error_exit "Search provider must be parallel or none" ;;
+esac
 
 # Static parameters
 if [ "$mode" = "dev" ]; then # Only for dev mode
@@ -302,7 +317,7 @@ invoke_docker_container() {
     docker_command+=" $winarena_full_image_name:$winarena_image_tag"
     
     # Set the entrypoint arguments
-    entrypoint_args=" -c './entry.sh --prepare-image $prepare_image --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend'"
+    entrypoint_args=" -c './entry.sh --prepare-image $prepare_image --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --search-provider $search_provider'"
     if [ "$interactive" = true ]; then
         entrypoint_args=""
     fi

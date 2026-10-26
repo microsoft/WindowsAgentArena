@@ -110,3 +110,9 @@ Once your agent is ready, submit a Pull Request (PR) to the repository with your
 - **Observation Data**: The `obs` dictionary contains vital information like screenshots, window titles, and clipboard content. Use this data to inform your agent's decisions.
 - **Action Format**: The list returned by `predict()` should contain executable actions or code blocks that the environment can interpret.
 - **Logging**: Use the `logging` module to help debug your agent. This can be invaluable for tracking down issues.
+
+## Navi application-help tools
+
+The built-in Navi agent resolves `search_provider` from an explicit constructor/CLI choice, then `WAA_SEARCH_PROVIDER`, then `parallel`. Use `search_provider="none"` (or `--search-provider none` in the launch scripts) to disable direct web search/fetch and retain the former no-direct-search baseline. Existing model/server selection and credentials still apply. The [README](../README.md#navi-application-help-search) describes local and Azure configuration, data sharing and benchmark recording.
+
+Navi intercepts structured search/fetch requests in its planning path, executes them against the anonymous [Parallel Search MCP endpoint](https://docs.parallel.ai/integrations/mcp/search-mcp), and gives the returned reference text and URLs to the model before consuming the final desktop-action plan. Requests are bounded to two per desktop step. Tool failures are visible to the planner, and retrieved text is treated as reference data. GUI actions keep their existing return format and execute in the Windows environment; search/fetch requests execute in the client. No additional Parallel credential is required.
