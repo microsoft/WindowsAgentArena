@@ -15,6 +15,7 @@ import traceback
 from tqdm import tqdm
 
 import lib_run_single
+from result_utils import parse_result_value
 from desktop_env.envs.desktop_env import DesktopEnv
 from mm_agents.navi.agent import NaviAgent
 import requests
@@ -345,9 +346,11 @@ def get_result(action_space, use_model, observation_type, result_dir, trial_id, 
                 if os.path.isdir(example_path):
                     if "result.txt" in os.listdir(example_path):
                         # empty all files under example_id
+                        result_path = os.path.join(example_path, "result.txt")
                         try:
-                            all_result.append(float(open(os.path.join(example_path, "result.txt"), "r").read()))
-                        except:
+                            with open(result_path, "r") as result_file:
+                                all_result.append(parse_result_value(result_file.read(), result_path))
+                        except OSError:
                             all_result.append(0.0)
 
     if not all_result:

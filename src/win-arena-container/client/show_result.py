@@ -1,6 +1,7 @@
 import os
 import argparse
 import json
+from result_utils import parse_result_value
 
 def get_result(target_dir):
     if not os.path.exists(target_dir):
@@ -22,24 +23,16 @@ def get_result(target_dir):
                         # empty all files under example_id
                         if domain not in domain_result:
                             domain_result[domain] = []
-                        result = open(os.path.join(example_path, "result.txt"), "r").read()
-                        try:
-                            domain_result[domain].append(float(result))
-                        except:
-                            domain_result[domain].append(float(bool(result)))
+                        result_path = os.path.join(example_path, "result.txt")
+                        with open(result_path, "r") as result_file:
+                            result = parse_result_value(result_file.read(), result_path)
+                        domain_result[domain].append(result)
 
                         if domain not in all_result_for_analysis:
                             all_result_for_analysis[domain] = {}
                         all_result_for_analysis[domain][example_id] = domain_result[domain][-1]
 
-                        try:
-                            result = open(os.path.join(example_path, "result.txt"), "r").read()
-                            try:
-                                all_result.append(float(result))
-                            except:
-                                all_result.append(float(bool(result)))
-                        except:
-                            all_result.append(0.0)
+                        all_result.append(result)
                     else:
                         print("No result.txt in", example_path)
                         if domain not in missing_domains:
@@ -93,4 +86,3 @@ if __name__ == '__main__':
 
     get_result(target_dir)
 
-        
