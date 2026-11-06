@@ -91,7 +91,7 @@ computer.mouse.single_click() # Performs a single mouse click action at the curr
 computer.mouse.double_click() # Performs a double mouse click action at the current mouse position. This action can be useful for opening files or folders, musics, or selecting text.
 computer.mouse.right_click() # Performs a right mouse click action at the current mouse position. This action can be useful for opening context menus or other options.
 computer.mouse.scroll(dir="down") # Scrolls the screen in a particular direction ("up" or "down"). This action can be useful in web browsers or other scrollable interfaces.
-computer.mouse.drag(x=0.35, y=0.48) # Drags the mouse from the current position to the specified position. This action can be useful for selecting text or moving files.
+computer.mouse.drag(screen_x=640, screen_y=360) # Drags from the current position to absolute screen pixel coordinates (not normalized coordinates). This action can be useful for selecting text or moving files.
 
 # keyboard-related functions
 computer.keyboard.write("hello") # Writes the given text string
@@ -241,7 +241,7 @@ computer.mouse.single_click()
 computer.mouse.double_click()
 computer.mouse.right_click() 
 computer.mouse.scroll(dir="down")
-computer.mouse.drag(x=0.35, y=0.48)
+computer.mouse.drag(screen_x=640, screen_y=360) # Destination uses absolute screen pixels, not normalized coordinates.
 
 # Keyboard functions
 computer.keyboard.write("text")
