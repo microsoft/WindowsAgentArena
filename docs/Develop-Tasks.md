@@ -1,6 +1,6 @@
 # Develop new Tasks in WAA
 
-First and foremost, we recommend getting familiar with our own task examples to get a sense of the configuration required for setting up a task as well as common setups, commands, patterns, etc. We also provide a brief example below. If developing a task for a program/application category that already exists in this repo (e.g., Chrome, Edge, LibreOffice, etc.), we highly recommend getting familiar with our existing task machineary including but not limited to its getters, evaluators, etc. and making modifications from there.
+First and foremost, we recommend getting familiar with our own task examples to get a sense of the configuration required for setting up a task as well as common setups, commands, patterns, etc. We also provide a brief example below. If developing a task for a program/application category that already exists in this repo (e.g., Chrome, Edge, LibreOffice, etc.), we highly recommend getting familiar with our existing task machinery including but not limited to its getters, evaluators, etc. and making modifications from there.
 
 ## Task Definition & Configuration  
 
@@ -44,7 +44,7 @@ First and foremost, we recommend getting familiar with our own task examples to 
 }
 ```
  
-Figure above: Task JSON configuration example defined by five key components represented by the colored JSON keys: a task ID, an instruction, an initial configuration (config), an evaluator, and a result.
+The figure above: Task JSON configuration example defined by five key components represented by the colored JSON keys: a task ID, an instruction, an initial configuration (config), an evaluator, and a result.
 
 To better illustrate how tasks are defined, configured, and implemented, we refer to an example of a task JSON shown above. Each task follows a similar format:
 
