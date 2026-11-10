@@ -328,6 +328,10 @@ python show_azure.py --json_config "experiments.json" --result_dir <path_to_down
 ## 🤖 BYOA: Bring Your Own Agent
 Want to test your own agents in Windows Agent Arena? You can use our default agent as a template and create your own folder under `src/win-arena-container/client/mm_agents`. You just need to make sure that your `agent.py` file features `predict()` and `reset()` functions. For more information on agent development check out the [BYOA Doc](./docs/Develop-Agent.md).
 
+## Related external benchmarks
+
+[ClawBench](https://github.com/TIGER-AI-Lab/ClawBench) is a complementary benchmark for AI web agents performing real-world tasks across live websites. It is independent of Windows Agent Arena and is not integrated or supported by this repository; the link is provided for readers comparing agent-evaluation environments.
+
 ## 👩‍💻 Open-source contributions
 
 We welcome contributions to the Windows Agent Arena project. In particular, we welcome:
