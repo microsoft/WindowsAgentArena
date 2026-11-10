@@ -5,6 +5,8 @@ set -e
 
 source ./shared.sh
 
+export OPENAI_API_KEY=empty
+
 # Default parameters
 mode="azure" # Default to azure if no argument is provided
 prepare_image=false
@@ -22,7 +24,7 @@ browser_port=8006
 rdp_port=3390
 start_client=true
 agent="navi"
-model="gpt-4-vision-preview"
+model="Qwen/Qwen2.5-VL-72B-Instruct"
 som_origin="oss"
 a11y_backend="uia"
 gpu_enabled=false

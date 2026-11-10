@@ -18,13 +18,15 @@ from tenacity import (
 
 class GPT4VisionOAI:  
   
-    def __init__(self, model="gpt-4o"):  
+    # def __init__(self, model="gpt-4o"):  
+    def __init__(self, model="ByteDance-Seed/UI-TARS-1.5-7B"):  
         self.model = model
         #oad key from environment variable
         self.api_key = os.getenv("OPENAI_API_KEY")
         if self.api_key is None:
-            print("API key not found in environment variable.")
-        self.client = openai.OpenAI(api_key=self.api_key)  
+            print("API key not found in environment variable. Setting to 'empty'.")
+            self.api_key = "empty"
+        self.client = openai.OpenAI(api_key=self.api_key,base_url="http://ec2-35-88-109-159.us-west-2.compute.amazonaws.com:18001/v1", max_retries=0)  
   
     def encode_image(self, image: Union[str, Image.Image]) -> str:  
         if isinstance(image, str):  
@@ -55,7 +57,7 @@ class GPT4VisionOAI:
             }  
         }  
     
-    @retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(30))
+    # @retry(wait=wait_random_exponential(min=1, max=1), stop=stop_after_attempt(30))
     def process_images(self, system_prompt: str, question: str, images: Union[str, Image.Image, List[Union[str, Image.Image]]], detail="auto", max_tokens=300, temperature=1.0, only_text=True, format="JPEG") -> str:  
         
         if system_prompt==None:
@@ -73,14 +75,19 @@ class GPT4VisionOAI:
                 base64_image = self.encode_image(image)  
                 content.append(self.get_base64_payload(base64_image, detail=detail))  
   
+        print("gpt4voai model: "+self.model)
+        print("gpt4voai client info 1: "+str(self.client.api_key))
+        print("gpt4voai client info 2: "+str(self.client.base_url))
+        print("gpt4voai client info 3: "+str(self.client.max_retries))
+
         response = self.client.chat.completions.create(  
             # model="gpt-4-vision-preview",  
             model=self.model,  
             messages=[ 
-                {
-                    "role": "system",
-                    "content": system_prompt
-                }, 
+                # {
+                #     "role": "system",
+                #     "content": system_prompt
+                # }, 
                 {  
                     "role": "user",  
                     "content": content  
@@ -102,7 +109,7 @@ def main():
     system_prompt = "You are a helpful assistant."
 
     # SINGLE RESOURCE
-    gpt4v_wrapper = GPT4VisionOAI(model="gpt-4-1106-vision-preview")
+    gpt4v_wrapper = GPT4VisionOAI(model="ByteDance-Seed/UI-TARS-1.5-7B")
 
     # process a single image
     start_time = time.time()
